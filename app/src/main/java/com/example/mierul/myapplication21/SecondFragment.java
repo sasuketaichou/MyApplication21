@@ -1,0 +1,70 @@
+package com.example.mierul.myapplication21;
+
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * Created by mierul on 3/16/2017.
+ */
+
+public class SecondFragment extends BaseFragment {
+    TextView textView;
+    ImageView imageView;
+    String title;
+    String imagePath;
+    Bitmap bitmap;
+
+    public static SecondFragment newInstance(String title, String imagePath) {
+
+        Bundle args = new Bundle();
+        args.putString("title",title);
+        args.putString("imgPath",imagePath);
+        SecondFragment fragment = new SecondFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        title = getArguments().getString("title");
+        imagePath = getArguments().getString("imgPath");
+
+        AssetManager ass = getActivity().getAssets();
+        InputStream is = null;
+        try {
+            is = ass.open("img/"+imagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bitmap = BitmapFactory.decodeStream(is);
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_second,container,false);
+
+        textView = (TextView)view.findViewById(R.id.tv);
+        imageView = (ImageView)view.findViewById(R.id.iv);
+        imageView.setImageBitmap(bitmap);
+
+        initToolbar(view,getClass().getSimpleName(),true);
+
+        return view;
+    }
+}
