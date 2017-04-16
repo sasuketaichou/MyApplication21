@@ -14,7 +14,7 @@ import android.widget.TextView;
 /**
  * Created by mierul on 3/14/2017.
  */
-public class NavThird extends Fragment {
+public class NavThird extends BaseFragment {
     String title = NavThird.class.getSimpleName();
     TextView tv;
 
@@ -40,11 +40,7 @@ public class NavThird extends Fragment {
         tv = (TextView)view.findViewById(R.id.tv);
         tv.setText(title);
 
-        Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(NavThird.class.getSimpleName());
-        ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        initToolbar(view,title,true);
         return view;
     }
 }

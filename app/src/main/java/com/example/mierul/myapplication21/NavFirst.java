@@ -4,11 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +13,7 @@ import android.widget.TextView;
 /**
  * Created by mierul on 3/14/2017.
  */
-public class NavFirst extends Fragment {
+public class NavFirst extends BaseFragment {
     int page = 1;
     String title = NavFirst.class.getSimpleName();
     TextView tv;
@@ -45,14 +40,7 @@ public class NavFirst extends Fragment {
         tv = (TextView)view.findViewById(R.id.tv);
         tv.setText(title);
 
-        Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(NavFirst.class.getSimpleName());
-        // Get a support ActionBar corresponding to this toolbar
-        ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
-
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+        initToolbar(view,title,true);
 
         return view;
     }
