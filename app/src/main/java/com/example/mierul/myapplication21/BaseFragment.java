@@ -60,6 +60,21 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public void replaceFragmentHome(){
+        try{
+            FragmentManager fragmentManager = getFragmentManager();
+            FirstFragment home = (FirstFragment) fragmentManager.findFragmentByTag(FirstFragment.class.getSimpleName());
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
+                    .replace(R.id.root_main_frame,home)
+                    .commit();
+
+        }catch (Exception e){
+            Log.e(TAG,"replaceFragmentHome",e);
+        }
+
+    }
+
 
     public void popFragment(){
         try{

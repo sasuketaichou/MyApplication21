@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Created by mierul on 3/26/2017.
  */
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth mAuth;
@@ -60,12 +60,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.fragment_login,container,false);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(LoginFragment.class.getSimpleName());
-        ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-
+        initToolbar(view,LoginFragment.class.getSimpleName(),true);
         Button buttonLogin = (Button)view.findViewById(R.id.btn_login);
         buttonLogin.setOnClickListener(this);
         Button buttonRegister = (Button)view.findViewById(R.id.btn_register);
@@ -95,13 +90,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-
-                                        FragmentManager fragmentManager = getFragmentManager();
-                                        FirstFragment home = (FirstFragment) fragmentManager.findFragmentByTag(FirstFragment.class.getSimpleName());
-                                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
-                                                .replace(R.id.root_main_frame,home)
-                                                .commit();
+                                        replaceFragmentHome();
 
                                         Toast.makeText(getActivity(), "Welcome "+task.getResult().getUser().getDisplayName(), Toast.LENGTH_LONG).show();
                                     } else {

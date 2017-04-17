@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +15,9 @@ import android.widget.TextView;
  * Created by mierul on 3/14/2017.
  */
 public class NavFirst extends BaseFragment {
+    private final String TAG ="NavFirst" ;
     int page = 1;
-    String title = NavFirst.class.getSimpleName();
+    String title = TAG;
     TextView tv;
 
     public static Fragment newInstance(int page, String title) {
@@ -51,9 +53,7 @@ public class NavFirst extends BaseFragment {
 
         switch (id){
             case android.R.id.home:
-                FragmentManager fragmentManager = getFragmentManager();
-                FirstFragment homeFragment = (FirstFragment) getFragmentManager().findFragmentByTag(FirstFragment.class.getSimpleName());
-                fragmentManager.beginTransaction().replace(R.id.root_main_frame,homeFragment).commit();
+                Log.v(TAG,"nav1st R.id.home");
         }
         return super.onOptionsItemSelected(item);
     }

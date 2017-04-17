@@ -63,7 +63,7 @@ public class SecondFragment extends BaseFragment {
         imageView = (ImageView)view.findViewById(R.id.iv);
         imageView.setImageBitmap(bitmap);
 
-        initToolbar(view,getClass().getSimpleName(),true);
+        initToolbar(view,SecondFragment.class.getSimpleName(),true);
 
         return view;
     }
