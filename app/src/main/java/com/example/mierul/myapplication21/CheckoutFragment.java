@@ -36,6 +36,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         title = getArguments().getString("title");
         imagePath = getArguments().getString("imgPath");
         bitmap = BitmapFactory.decodeStream(getImage(imagePath));
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -86,11 +87,18 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.checkout_menu, menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.v("naruto",item.getItemId()+"");
-        if(item.getItemId() == android.R.id.home){
-            //popFragment();
+        switch (item.getItemId()){
+            case android.R.id.home:
+                popFragment();
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

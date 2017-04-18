@@ -29,20 +29,16 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-
-        Log.v(TAG,"MainActivity : "+getSupportFragmentManager().getBackStackEntryCount());
-        switch (id){
-            case android.R.id.home:
-                Log.v(TAG,"MainActivity home");
-//
+//        switch (id){
+//            case android.R.id.home:
 //                FragmentManager fragmentManager = getSupportFragmentManager();
 //                FirstFragment home = (FirstFragment) fragmentManager.findFragmentByTag(FirstFragment.class.getSimpleName());
 //                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //                fragmentTransaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
 //                        .replace(R.id.root_main_frame,home)
 //                        .commit();
-                return false;
-        }
+//                break;
+//        }
         return super.onOptionsItemSelected(item);
     }
 }
