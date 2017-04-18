@@ -12,17 +12,12 @@ import android.view.ViewGroup;
  * Created by mierul on 3/14/2017.
  */
 public class RootFragment extends Fragment {
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view =inflater.inflate(R.layout.fragment_root,container,false);
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.root_main_frame,new FirstFragment(),FirstFragment.class.getSimpleName())
                 .addToBackStack(null)
                 .commit();
-
-        return view;
     }
 }

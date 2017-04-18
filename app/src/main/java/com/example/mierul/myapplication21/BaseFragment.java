@@ -1,5 +1,6 @@
 package com.example.mierul.myapplication21;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by mierul on 4/15/2017.
@@ -86,7 +90,19 @@ public abstract class BaseFragment extends Fragment {
             Log.e(TAG,"popFragment :",e);
 
         }
-
     }
+
+    public InputStream getImage(String imagePath){
+        AssetManager ass = getActivity().getAssets();
+        InputStream is = null;
+        try {
+            is = ass.open("img/"+imagePath);
+        } catch (IOException e) {
+            Log.e(TAG,"getImage",e);
+        }
+
+        return is;
+    }
+
 }
 
