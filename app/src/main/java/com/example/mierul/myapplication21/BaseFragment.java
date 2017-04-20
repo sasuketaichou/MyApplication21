@@ -92,11 +92,22 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private void setLastfragment(Fragment fragment){
-        FragmentStack.addStack(fragment);
+        try{
+            FragmentStack.addStack(fragment);
+        }catch (Exception e){
+            Log.e(TAG,"setLastFragment",e);
+        }
     }
 
     private Fragment getLastFragment(){
-        return FragmentStack.getPrevious();
+        Fragment fragment = null;
+        try{
+            fragment = FragmentStack.getPrevious();
+
+        }catch (Exception e){
+            Log.e(TAG,"getLastFragment",e);
+        }
+        return fragment;
     }
 }
 

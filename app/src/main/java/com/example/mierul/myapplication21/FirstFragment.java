@@ -45,7 +45,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getData();
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
 
     }
 

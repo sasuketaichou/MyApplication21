@@ -19,6 +19,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initFragment();
+    }
+
+    private void initFragment() {
         FirstFragment firstFragment = new FirstFragment();
         //add to custom stack
         FragmentStack.addStack(firstFragment);
@@ -35,16 +39,30 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-//        switch (id){
-//            case android.R.id.home:
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                FirstFragment home = (FirstFragment) fragmentManager.findFragmentByTag(FirstFragment.class.getSimpleName());
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
-//                        .replace(R.id.root_main_frame,home)
-//                        .commit();
-//                break;
-//        }
+        switch (id){
+            case android.R.id.home:
+                previousFragment();
+                break;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void previousFragment() {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction
+                .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
+                .replace(R.id.root_main_frame,FragmentStack.getPrevious())
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (!FragmentStack.isEmpty()){
+            previousFragment();
+        }else {
+            super.onBackPressed();
+        }
     }
 }

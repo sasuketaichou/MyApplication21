@@ -86,8 +86,10 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                previousFragment();
+                //previousFragment();
         }
         return true;
     }
+
+
 }

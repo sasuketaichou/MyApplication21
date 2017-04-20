@@ -23,5 +23,12 @@ public class FragmentStack {
         stack.push(fragment);
     }
 
+    public static boolean isEmpty(){
+        //only to be used by activity
+        //which left only firstfragment
+        stack.pop();
+        return stack.isEmpty();
+    }
+
 
 }
