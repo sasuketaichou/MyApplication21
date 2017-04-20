@@ -19,10 +19,16 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirstFragment firstFragment = new FirstFragment();
+        //add to custom stack
+        FragmentStack.addStack(firstFragment);
         //set a container
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.root_main_frame, new RootFragment());
-        transaction.commit();
+        transaction.add(R.id.root_main_frame, firstFragment);
+        transaction
+                //.addToBackStack(null)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     @Override

@@ -80,23 +80,15 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case android.R.id.home:
-                //popFragment();
                 break;
-
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.checkout_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                popFragment();
+                previousFragment();
                 break;
         }
         return true;

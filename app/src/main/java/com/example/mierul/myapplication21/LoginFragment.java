@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,6 +38,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         mAuth = FirebaseAuth.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -90,7 +92,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        replaceFragmentHome();
+                                        previousFragment();
 
                                         Toast.makeText(getActivity(), "Welcome "+task.getResult().getUser().getDisplayName(), Toast.LENGTH_LONG).show();
                                     } else {
@@ -120,5 +122,14 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                previousFragment();
+        }
+        return true;
     }
 }

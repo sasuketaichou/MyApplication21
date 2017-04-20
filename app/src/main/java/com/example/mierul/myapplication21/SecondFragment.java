@@ -5,8 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -41,6 +41,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         title = getArguments().getString("title");
         imagePath = getArguments().getString("imgPath");
         bitmap = BitmapFactory.decodeStream(getImage(imagePath));
+        setHasOptionsMenu(true);
 
     }
 
@@ -52,6 +53,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         textView = (TextView)view.findViewById(R.id.tv);
         ImageView imageView = (ImageView)view.findViewById(R.id.iv);
         imageView.setImageBitmap(bitmap);
+        imageView.setOnClickListener(this);
         Button button = (Button)view.findViewById(R.id.btn_addToCart);
         button.setOnClickListener(this);
 
@@ -75,11 +77,17 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
             case R.id.btn_addToCart:
                 checkOut();
                 break;
-//            case android.R.id.home:
-//                Log.v(TAG,"SecondFragment");
-//                //popFragment();
-//                break;
-
+            case R.id.iv:
+                break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                previousFragment();
+        }
+        return true;
     }
 }

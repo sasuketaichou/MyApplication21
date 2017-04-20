@@ -13,6 +13,7 @@ import android.view.View;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Stack;
 
 /**
  * Created by mierul on 4/15/2017.
@@ -49,49 +50,6 @@ public abstract class BaseFragment extends Fragment {
         return toolbar;
     }
 
-    public void replaceFragment(Fragment fragment){
-
-        try{
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-            transaction.replace(R.id.root_main_frame,fragment);
-            //replace the fragment with added to stack
-            transaction.addToBackStack(null);
-            transaction.commit();
-
-        }catch (Exception e){
-            Log.e(TAG,"replaceFragment",e);
-        }
-    }
-
-    public void replaceFragmentHome(){
-        try{
-            FragmentManager fragmentManager = getFragmentManager();
-            FirstFragment home = (FirstFragment) fragmentManager.findFragmentByTag(FirstFragment.class.getSimpleName());
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
-                    .replace(R.id.root_main_frame,home)
-                    .commit();
-
-        }catch (Exception e){
-            Log.e(TAG,"replaceFragmentHome",e);
-        }
-
-    }
-
-
-    public void popFragment(){
-        try{
-            //to be use for up button-
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.popBackStack();
-
-        }catch (Exception e){
-            Log.e(TAG,"popFragment :",e);
-
-        }
-    }
-
     public InputStream getImage(String imagePath){
         AssetManager ass = getActivity().getAssets();
         InputStream is = null;
@@ -104,5 +62,41 @@ public abstract class BaseFragment extends Fragment {
         return is;
     }
 
+    public void previousFragment(){
+        try{
+            FragmentManager manager = getFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction
+                    .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
+                    .replace(R.id.root_main_frame,getLastFragment())
+                    .commit();
+
+        }catch (Exception e){
+            Log.e(TAG,"previousFragment",e);
+        }
+    }
+
+    public void replaceFragment(Fragment fragment){
+        try{
+            setLastfragment(fragment);
+            FragmentManager manager = getFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
+                    .replace(R.id.root_main_frame,fragment)
+                    .commit();
+
+        }catch (Exception e){
+            Log.e(TAG,"replaceFragment",e);
+        }
+    }
+
+    private void setLastfragment(Fragment fragment){
+        FragmentStack.addStack(fragment);
+    }
+
+    private Fragment getLastFragment(){
+        return FragmentStack.getPrevious();
+    }
 }
 
