@@ -200,4 +200,12 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void closedDrawer(){
+        drawer.closeDrawer(Gravity.START);
+    }
+
+    public boolean isDrawerOpen(){
+        return drawer.isDrawerOpen(Gravity.START);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.mierul.myapplication21;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import java.util.Stack;
 
@@ -26,8 +27,18 @@ public class FragmentStack {
     public static boolean isEmpty(){
         //only to be used by activity
         //which left only firstfragment
-        stack.pop();
+        if(stack.size()==1) {
+            stack.pop();
+        }
         return stack.isEmpty();
+    }
+
+    private static Fragment getFragment(int index){
+        return !stack.isEmpty()&&index>=0 ? stack.get(index):null;
+    }
+
+    public static Fragment getFirstFragment(){
+        return getFragment(0);
     }
 
 

@@ -59,10 +59,16 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        if (!FragmentStack.isEmpty()){
+        if (checkDrawer()){
+            ((FirstFragment)(FragmentStack.getFirstFragment())).closedDrawer();
+        }else if(!FragmentStack.isEmpty()) {
             previousFragment();
-        }else {
+        }else{
             super.onBackPressed();
         }
+    }
+
+    private boolean checkDrawer() {
+        return ((FirstFragment)(FragmentStack.getFirstFragment())).isDrawerOpen();
     }
 }
