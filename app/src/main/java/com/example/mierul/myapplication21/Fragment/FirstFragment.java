@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Fragment;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -11,10 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,6 +23,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.DataModel;
+import com.example.mierul.myapplication21.ItemClickSupport;
+import com.example.mierul.myapplication21.R;
+import com.example.mierul.myapplication21.RVAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.InputStream;

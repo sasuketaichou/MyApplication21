@@ -1,26 +1,30 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.R;
+
 /**
  * Created by mierul on 3/14/2017.
  */
-public class NavThird extends BaseFragment {
-    String title = NavThird.class.getSimpleName();
+public class NavFirst extends BaseFragment {
+    private final String TAG ="NavFirst" ;
+    int page = 1;
+    String title = TAG;
     TextView tv;
 
     public static Fragment newInstance(int page, String title) {
 
-        NavThird fragment = new NavThird();
+        NavFirst fragment = new NavFirst();
         Bundle args = new Bundle();
         args.putInt("number",page);
         args.putString("title",title);
@@ -30,17 +34,29 @@ public class NavThird extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_nav_third,container,false);
+        View view = inflater.inflate(R.layout.fragment_nav_first,container,false);
         tv = (TextView)view.findViewById(R.id.tv);
         tv.setText(title);
 
         initToolbar(view,title,true);
+
         return view;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id =item.getItemId();
+
+        switch (id){
+            case android.R.id.home:
+                Log.v(TAG,"nav1st R.id.home");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

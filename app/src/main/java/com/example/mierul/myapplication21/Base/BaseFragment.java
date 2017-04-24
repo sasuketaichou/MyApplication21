@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Base;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+
+import com.example.mierul.myapplication21.FragmentStack;
+import com.example.mierul.myapplication21.R;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,22 +1,18 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Fragment;
 
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
+import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.R;
 
 /**
  * Created by Hexa-Amierul.Japri on 17/4/2017.

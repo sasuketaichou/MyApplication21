@@ -1,14 +1,12 @@
 package com.example.mierul.myapplication21;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
+
+import com.example.mierul.myapplication21.Base.BaseActivity;
+import com.example.mierul.myapplication21.Fragment.FirstFragment;
 
 public class MainActivity extends BaseActivity {
 

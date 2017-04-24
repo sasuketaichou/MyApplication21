@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.R;
 
 /**
  * Created by mierul on 3/16/2017.

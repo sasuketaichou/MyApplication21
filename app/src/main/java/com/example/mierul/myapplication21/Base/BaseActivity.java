@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Base;
 
 import android.support.v7.app.AppCompatActivity;
 
