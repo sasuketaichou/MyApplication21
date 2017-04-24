@@ -30,7 +30,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
-    private FirebaseAuth firebaseAuth;
+    private static final String TAG = LoginFragment.class.getSimpleName();
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private EditText username,password;
@@ -40,17 +41,16 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mAuth = FirebaseAuth.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d(LoginFragment.class.getSimpleName(), "onAuthStateChanged:signed_in:" + user.getUid());
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
-                    Log.d(LoginFragment.class.getSimpleName(), "onAuthStateChanged:signed_out");
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
         };
@@ -87,7 +87,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
                 if(!user.isEmpty() && !pass.isEmpty()) {
 
-                    firebaseAuth.signInWithEmailAndPassword(user, pass)
+                    mAuth.signInWithEmailAndPassword(user, pass)
                             .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
