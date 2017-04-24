@@ -21,7 +21,7 @@ import java.util.Stack;
 
 public abstract class BaseFragment extends Fragment {
 
-    private static final String TAG = "RootFragment";
+    private static final String TAG = "BaseFragment";
     private Toolbar toolbar = null;
 
     @Override
