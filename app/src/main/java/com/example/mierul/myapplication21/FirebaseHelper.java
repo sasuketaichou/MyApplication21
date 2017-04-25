@@ -55,13 +55,16 @@ public class FirebaseHelper {
                     .addOnCompleteListener((Activity)context, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(!task.isSuccessful()){
+                    if(task.isSuccessful()){
+
+                    } else {
                         Log.e(TAG,"signInWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
                 }
             });
             result = mAuth.getCurrentUser() != null;
+            Log.v("naruto","result : "+result);
 
         } catch (Exception e ){
             Log.e(TAG,"signInWithEmailAndPassword",e);

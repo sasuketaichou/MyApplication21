@@ -123,6 +123,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             case R.id.btn_register:
                 int type = 2;
                 replaceFragment(LoginFragment.newInstance(type));
+
                 break;
         }
 
