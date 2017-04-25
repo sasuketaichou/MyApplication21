@@ -34,7 +34,8 @@ public class FirebaseHelper {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()){
-                        Toast.makeText(context,"Error : "+task,Toast.LENGTH_SHORT).show();
+                        Log.e(TAG,"createUserWithEmailAndPassword",task.getException());
+                        Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -55,7 +56,8 @@ public class FirebaseHelper {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()){
-                        Toast.makeText(context,"Error : "+task,Toast.LENGTH_SHORT).show();
+                        Log.e(TAG,"signInWithEmailAndPassword",task.getException());
+                        Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -86,6 +88,14 @@ public class FirebaseHelper {
             profile.setPhoto(user.getPhotoUrl());
         }
         return profile;
+    }
+
+    public void setProfile(Profile profile){
+
+    }
+
+    public boolean isLogin(){
+        return mAuth.getCurrentUser()!=null;
     }
 
 

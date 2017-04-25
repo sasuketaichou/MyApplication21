@@ -118,7 +118,8 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
                     Toast.makeText(getContext(),"got id",Toast.LENGTH_SHORT).show();
                     //profile fragment
                 } else {
-                    replaceFragment(new LoginFragment());
+                    int type = 1;
+                    replaceFragment(LoginFragment.newInstance(type));
                     drawer.closeDrawer(Gravity.START);
                 }
             }

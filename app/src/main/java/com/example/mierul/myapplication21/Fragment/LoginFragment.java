@@ -1,24 +1,20 @@
 package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 
 /**
  * Created by mierul on 3/26/2017.
@@ -26,30 +22,28 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String TAG = LoginFragment.class.getSimpleName();
+    private static final String TAG = "LoginFragment";
 
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseHelper helper;
     private EditText username,password;
+    private int type;
+
+    public static LoginFragment newInstance(int type){
+
+        Bundle args = new Bundle();
+        args.putInt("type",type);
+        LoginFragment fragment = new LoginFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
+        helper = new FirebaseHelper(getContext());
+        type= getArguments().getInt("type");
     }
 
     @Nullable
@@ -59,17 +53,47 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         View view = inflater.inflate(R.layout.fragment_login,container,false);
 
         initToolbar(view,LoginFragment.class.getSimpleName(),true);
-        Button buttonLogin = (Button)view.findViewById(R.id.btn_login);
-        buttonLogin.setOnClickListener(this);
-        Button buttonRegister = (Button)view.findViewById(R.id.btn_register);
-        buttonRegister.setOnClickListener(this);
 
         username = (EditText)view.findViewById(R.id.input_username);
         password = (EditText)view.findViewById(R.id.input_password);
-        username.setText("");
-        password.setText("");
+
+        switch(type){
+            case 1:
+                initViewLogin(view);
+                break;
+            case 2:
+                initViewSignup(view);
+                break;
+        }
 
         return view;
+    }
+
+    private void initViewSignup(View view) {
+
+        Button buttonLogin = (Button)view.findViewById(R.id.btn_login);
+        buttonLogin.setOnClickListener(this);
+        buttonLogin.setText("Create Account");
+
+        Button buttonRegister = (Button)view.findViewById(R.id.btn_register);
+        buttonRegister.setVisibility(View.GONE);
+
+        TextView link_login = (TextView)view.findViewById(R.id.link_login);
+        link_login.setVisibility(View.GONE);
+
+
+    }
+
+    private void initViewLogin(View view) {
+
+        Button buttonLogin = (Button)view.findViewById(R.id.btn_login);
+        buttonLogin.setOnClickListener(this);
+        buttonLogin.setText("Login");
+
+        Button buttonRegister = (Button)view.findViewById(R.id.btn_register);
+        buttonRegister.setOnClickListener(this);
+        buttonRegister.setText("Sign Up");
+
     }
 
     @Override
@@ -78,46 +102,52 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         switch (view.getId()){
             case R.id.btn_login:
 
-                String user = username.getText().toString().trim();
-                String pass = password.getText().toString().trim();
+                if(validateForm()) {
+                    String email = username.getText().toString();
+                    String pass = password.getText().toString();
 
-                if(!user.isEmpty() && !pass.isEmpty()) {
-
-                    mAuth.signInWithEmailAndPassword(user, pass)
-                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        previousFragment();
-
-                                        Toast.makeText(getActivity(), "Welcome "+task.getResult().getUser().getDisplayName(), Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toast.makeText(getActivity(), "Login failed :" + task, Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
+                    switch(type){
+                        case 1:
+                            if(helper.signInWithEmailAndPassword(email,pass)){
+                                previousFragment();
+                            }
+                            break;
+                        case 2:
+                            if(helper.createUserWithEmailAndPassword(email,pass)){
+                                previousFragment();
+                            }
+                            break;
+                    }
                 }
                 break;
             case R.id.btn_register:
+                int type = 2;
+                replaceFragment(LoginFragment.newInstance(type));
                 break;
         }
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String email = username.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            username.setError("Required.");
+            valid = false;
+        } else {
+            username.setError(null);
         }
 
-    }
+        String pass = password.getText().toString();
+        if (TextUtils.isEmpty(pass)) {
+            password.setError("Required.");
+            valid = false;
+        } else {
+            password.setError(null);
+        }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-
+        return valid;
     }
 
     @Override

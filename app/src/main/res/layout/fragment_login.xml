@@ -59,15 +59,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:padding="12dp"
-                android:text="Login"/>
+                android:padding="12dp"/>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_register"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="Sign Up"/>
+                android:padding="12dp"/>
 
             <TextView android:id="@+id/link_login"
                 android:layout_width="fill_parent"
