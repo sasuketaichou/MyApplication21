@@ -13,6 +13,7 @@ public class Profile {
     private String providerId;
     private String providers;
     private String uId;
+    private Uri photo;
 
     public String getEmail() {
         return email;
@@ -69,7 +70,5 @@ public class Profile {
     public void setPhoto(Uri photo) {
         this.photo = photo;
     }
-
-    Uri photo;
 
 }
