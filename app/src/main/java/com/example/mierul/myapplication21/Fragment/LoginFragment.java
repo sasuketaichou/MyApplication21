@@ -61,18 +61,16 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         username = (EditText)view.findViewById(R.id.input_username);
         password = (EditText)view.findViewById(R.id.input_password);
 
-        initLayoutListener(view);
         initView(view);
 
         return view;
     }
 
-    private void initLayoutListener(final View view) {
-        view.findViewById(R.id.loginLayout).setOnTouchListener(new View.OnTouchListener() {
+    private void initLayoutListener() {
+        getView().findViewById(R.id.loginLayout).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                getInputMethodManager()
-                        .hideSoftInputFromWindow(view.getRootView().getWindowToken(), 0);
+                hideSoftKeyboard();
                 return true;
             }
         });
@@ -104,9 +102,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-
-        //username.onEditorAction(EditorInfo.IME_ACTION_DONE);
-        //password.onEditorAction(EditorInfo.IME_ACTION_DONE);
 
         switch (view.getId()){
             case R.id.btn_login:
@@ -184,5 +179,19 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
             previousFragment();
         }
         hideProgressDialog();
+    }
+
+    @Override
+    public void onResume() {
+        if(getView()!=null){
+            initLayoutListener();
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        hideSoftKeyboard();
+        super.onDestroyView();
     }
 }

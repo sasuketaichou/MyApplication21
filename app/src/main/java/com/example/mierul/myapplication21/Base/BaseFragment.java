@@ -145,5 +145,12 @@ public abstract class BaseFragment extends Fragment {
         }
         return inputMethodManager;
     }
+
+    public void hideSoftKeyboard(){
+        if(getView()!= null && getInputMethodManager().isActive()){
+            getInputMethodManager()
+                .hideSoftInputFromWindow(getView().getRootView().getWindowToken(), 0);
+        }
+    }
 }
 
