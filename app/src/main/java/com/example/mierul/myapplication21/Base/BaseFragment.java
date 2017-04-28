@@ -2,22 +2,22 @@ package com.example.mierul.myapplication21.Base;
 
 import android.app.ProgressDialog;
 import android.content.res.AssetManager;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.mierul.myapplication21.FragmentStack;
 import com.example.mierul.myapplication21.R;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Stack;
+
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by mierul on 4/15/2017.
@@ -28,11 +28,7 @@ public abstract class BaseFragment extends Fragment {
     private static final String TAG = "BaseFragment";
     private Toolbar toolbar = null;
     public ProgressDialog mProgressDialog;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private InputMethodManager inputMethodManager;
 
     public void initToolbar(View view,String title,Boolean displayUp){
         try{
@@ -141,6 +137,13 @@ public abstract class BaseFragment extends Fragment {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    public InputMethodManager getInputMethodManager(){
+        if(inputMethodManager == null){
+            inputMethodManager =(InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        }
+        return inputMethodManager;
     }
 }
 

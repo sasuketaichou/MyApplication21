@@ -41,7 +41,6 @@ public class FirebaseHelper {
                         Log.e(TAG,"createUserWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
-
                     postToBus(isLogin());
                 }
             });
@@ -62,8 +61,6 @@ public class FirebaseHelper {
                         Log.e(TAG,"signInWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
-
-                    Log.v("naruto", String.valueOf(mAuth.getCurrentUser()!=null));
                     postToBus(isLogin());
                 }
             });

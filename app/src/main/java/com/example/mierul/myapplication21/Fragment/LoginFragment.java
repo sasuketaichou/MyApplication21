@@ -3,12 +3,11 @@ package com.example.mierul.myapplication21.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 
 /**
  * Created by mierul on 3/26/2017.
@@ -63,9 +61,22 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         username = (EditText)view.findViewById(R.id.input_username);
         password = (EditText)view.findViewById(R.id.input_password);
 
+        initLayoutListener(view);
         initView(view);
 
         return view;
+    }
+
+    private void initLayoutListener(final View view) {
+        view.findViewById(R.id.loginLayout).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                getInputMethodManager()
+                        .hideSoftInputFromWindow(view.getRootView().getWindowToken(), 0);
+                return true;
+            }
+        });
+
     }
 
     private void initView(View view) {
@@ -118,7 +129,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
             case R.id.btn_register:
                 int type = 2;
                 switchFragment(LoginFragment.newInstance(type));
-
                 break;
         }
 
@@ -170,7 +180,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     @Subscribe
     public void FirebaseHelperListener(BooleanEvent result){
-        Log.d("naruto",result.toString());
         if(result.getResult()){
             previousFragment();
         }

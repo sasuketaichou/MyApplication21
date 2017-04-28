@@ -162,12 +162,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             Log.e(TAG,"selectDrawerItem",e);
         }
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        //animation before replace or it wont show effect
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
-                .replace(R.id.root_main_frame, fragment)
-                .commit();
+        replaceFragment(fragment);
 
         // Highlight the selected item has been done by NavigationView
         item.setChecked(true);
