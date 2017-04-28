@@ -38,8 +38,8 @@ import java.util.List;
  * Created by mierul on 3/14/2017.
  */
 public class FirstFragment extends BaseFragment implements ItemClickSupport.OnItemClickListener {
-    DrawerLayout drawer;
-    List<DataModel> item;
+    private DrawerLayout drawer;
+    private List<DataModel> item;
 
     private static final String TAG = "FirstFragment";
 
@@ -49,7 +49,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         super.onCreate(savedInstanceState);
         getData();
         setHasOptionsMenu(true);
-
     }
 
     private void getData() {

@@ -1,5 +1,6 @@
 package com.example.mierul.myapplication21.Base;
 
+import android.app.ProgressDialog;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ public abstract class BaseFragment extends Fragment {
 
     private static final String TAG = "BaseFragment";
     private Toolbar toolbar = null;
+    public ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,8 +69,7 @@ public abstract class BaseFragment extends Fragment {
 
     public void previousFragment(){
         try{
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction
                     .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
                     .replace(R.id.root_main_frame,getLastFragment())
@@ -81,16 +82,29 @@ public abstract class BaseFragment extends Fragment {
 
     public void replaceFragment(Fragment fragment){
         try{
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
+                    .replace(R.id.root_main_frame,fragment)
+                    .commit();
+
             setLastfragment(fragment);
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
+
+        }catch (Exception e){
+            Log.e(TAG,"replaceFragment",e);
+        }
+    }
+
+    public void switchFragment(Fragment fragment){
+        try{
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
                     .replace(R.id.root_main_frame,fragment)
                     .commit();
 
         }catch (Exception e){
-            Log.e(TAG,"replaceFragment",e);
+            Log.e(TAG,"switchFragment",e);
         }
     }
 
@@ -111,6 +125,22 @@ public abstract class BaseFragment extends Fragment {
             Log.e(TAG,"getLastFragment",e);
         }
         return fragment;
+    }
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 }
 

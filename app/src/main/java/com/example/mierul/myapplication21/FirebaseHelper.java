@@ -13,43 +13,44 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by mierul on 4/24/2017.
  */
 
 public class FirebaseHelper {
     private final static String TAG = "FirebaseHelper";
-    private final Context context;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private Context context;
+    private FirebaseAuth mAuth;
 
     public FirebaseHelper(Context context){
         this.context = context;
+        mAuth = FirebaseAuth.getInstance();
     }
 
-    public boolean createUserWithEmailAndPassword(String email,String password){
-        boolean result = false;
+    public void createUserWithEmailAndPassword(String email,String password){
         try {
             mAuth.createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(!task.isSuccessful()){
+                    if(task.isSuccessful()){
+
+                    } else{
                         Log.e(TAG,"createUserWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
+
+                    postToBus(isLogin());
                 }
             });
-            result = mAuth.getCurrentUser() != null;
-
         } catch (Exception e ){
             Log.e(TAG,"createUserWithEmailAndPassword",e);
         }
-
-        return result;
     }
 
-    public boolean signInWithEmailAndPassword(String user,String pass){
-        boolean result = false;
+    public void signInWithEmailAndPassword(String user,String pass){
         try{
             mAuth.signInWithEmailAndPassword(user,pass)
                     .addOnCompleteListener((Activity)context, new OnCompleteListener<AuthResult>() {
@@ -61,16 +62,15 @@ public class FirebaseHelper {
                         Log.e(TAG,"signInWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
+
+                    Log.v("naruto", String.valueOf(mAuth.getCurrentUser()!=null));
+                    postToBus(isLogin());
                 }
             });
-            result = mAuth.getCurrentUser() != null;
-            Log.v("naruto","result : "+result);
 
         } catch (Exception e ){
             Log.e(TAG,"signInWithEmailAndPassword",e);
         }
-        
-        return result;
     }
 
     public void sign_out(){
@@ -99,6 +99,10 @@ public class FirebaseHelper {
 
     public boolean isLogin(){
         return mAuth.getCurrentUser()!=null;
+    }
+
+    public void postToBus(boolean result) {
+        EventBus.getDefault().post(new BooleanEvent(result));
     }
 
 
