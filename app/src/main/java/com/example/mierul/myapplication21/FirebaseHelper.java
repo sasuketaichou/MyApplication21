@@ -26,7 +26,14 @@ public class FirebaseHelper {
 
     public FirebaseHelper(Context context){
         this.context = context;
-        mAuth = FirebaseAuth.getInstance();
+        getInstance();
+    }
+
+    private FirebaseAuth getInstance(){
+        if(mAuth==null){
+            mAuth = FirebaseAuth.getInstance();
+        }
+        return mAuth;
     }
 
     public void createUserWithEmailAndPassword(String email,String password){
@@ -35,9 +42,7 @@ public class FirebaseHelper {
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-
-                    } else{
+                    if(!task.isSuccessful()){
                         Log.e(TAG,"createUserWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
@@ -55,9 +60,7 @@ public class FirebaseHelper {
                     .addOnCompleteListener((Activity)context, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-
-                    } else {
+                    if(!task.isSuccessful()){
                         Log.e(TAG,"signInWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }

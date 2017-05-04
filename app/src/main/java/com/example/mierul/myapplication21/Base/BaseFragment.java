@@ -139,7 +139,7 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public InputMethodManager getInputMethodManager(){
+    private InputMethodManager getInputMethodManager(){
         if(inputMethodManager == null){
             inputMethodManager =(InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
         }

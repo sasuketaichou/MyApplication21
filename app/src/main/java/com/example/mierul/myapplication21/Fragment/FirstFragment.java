@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,6 +28,7 @@ import com.example.mierul.myapplication21.ItemClickSupport;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.RVAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -64,7 +64,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
                 Bitmap bitmap = BitmapFactory.decodeStream(is);
 
                 item.add(new DataModel(path,bitmap));
-                //Log.v("app21","getData : "+path);
             }
 
         } catch (Exception e){
@@ -111,16 +110,17 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             @Override
             public void onClick(View view) {
 
-                boolean auth = FirebaseAuth.getInstance().getCurrentUser() != null;
+                FirebaseUser user =FirebaseAuth.getInstance().getCurrentUser();
+                boolean auth = user != null;
 
                 if(auth){
-                    Toast.makeText(getContext(),"got id",Toast.LENGTH_SHORT).show();
                     //profile fragment
+                    replaceFragment(new ProfileFragment());
                 } else {
                     int type = 1;
                     replaceFragment(LoginFragment.newInstance(type));
-                    drawer.closeDrawer(Gravity.START);
                 }
+                drawer.closeDrawer(Gravity.START);
             }
         });
     }
