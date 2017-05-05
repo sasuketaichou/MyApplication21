@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Model;
 
 import android.net.Uri;
 
@@ -6,7 +6,7 @@ import android.net.Uri;
  * Created by mierul on 4/18/2017.
  */
 
-public class Profile {
+public class ProfileFirebaseModel {
     private String email;
     private String displayName;
     private String providerData;

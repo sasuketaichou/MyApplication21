@@ -23,10 +23,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
-import com.example.mierul.myapplication21.DataModel;
+import com.example.mierul.myapplication21.Model.ProductModel;
 import com.example.mierul.myapplication21.ItemClickSupport;
 import com.example.mierul.myapplication21.R;
-import com.example.mierul.myapplication21.RVAdapter;
+import com.example.mierul.myapplication21.Adapter.ProductAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class FirstFragment extends BaseFragment implements ItemClickSupport.OnItemClickListener {
     private DrawerLayout drawer;
-    private List<DataModel> item;
+    private List<ProductModel> item;
 
     private static final String TAG = "FirstFragment";
 
@@ -63,7 +63,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
                 InputStream is = assetmanager.open("img/"+path);
                 Bitmap bitmap = BitmapFactory.decodeStream(is);
 
-                item.add(new DataModel(path,bitmap));
+                item.add(new ProductModel(path,bitmap));
             }
 
         } catch (Exception e){
@@ -89,9 +89,9 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         NavigationView navigationView = (NavigationView)view.findViewById(R.id.nav_view);
         setupDrawerContent(navigationView);
 
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.productRecyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        RVAdapter adapter = new RVAdapter(item);
+        ProductAdapter adapter = new ProductAdapter(item);
         recyclerView.setAdapter(adapter);
 
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(this);

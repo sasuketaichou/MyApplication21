@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
+import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,14 +28,11 @@ public class FirebaseHelper {
 
     public FirebaseHelper(Context context){
         this.context = context;
-        getInstance();
+        mAuth = FirebaseAuth.getInstance();
     }
 
-    private FirebaseAuth getInstance(){
-        if(mAuth==null){
-            mAuth = FirebaseAuth.getInstance();
-        }
-        return mAuth;
+    public FirebaseHelper(){
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public void createUserWithEmailAndPassword(String email,String password){
@@ -81,11 +80,19 @@ public class FirebaseHelper {
         }
     }
 
-    public Profile getProfile(){
-        Profile profile = null;
+    public boolean isLogin(){
+        return mAuth.getCurrentUser()!=null;
+    }
+
+    public void postToBus(boolean result) {
+        EventBus.getDefault().post(new FirebaseHelperEvent(result));
+    }
+
+    public ProfileFirebaseModel getProfile(){
+        ProfileFirebaseModel profile = null;
         FirebaseUser user = mAuth.getCurrentUser();
         if(user != null){
-            profile = new Profile();
+            profile = new ProfileFirebaseModel();
             profile.setDisplayName(user.getDisplayName());
             profile.setEmail(user.getEmail());
             profile.setPhoto(user.getPhotoUrl());
@@ -93,19 +100,10 @@ public class FirebaseHelper {
         return profile;
     }
 
-    public void setProfile(Profile profile){
 
+    public ProfileDetailsModel getDetails() {
+        ProfileDetailsModel details = new ProfileDetailsModel();
+        //TODO grab data from firebase
+        return details;
     }
-
-    public boolean isLogin(){
-        return mAuth.getCurrentUser()!=null;
-    }
-
-    public void postToBus(boolean result) {
-        EventBus.getDefault().post(new BooleanEvent(result));
-    }
-
-
-
-
 }

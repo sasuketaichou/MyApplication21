@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Model;
 
 import android.graphics.Bitmap;
 
@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
  * Created by mierul on 3/16/2017.
  */
 
-public class DataModel {
+public class ProductModel {
     private String name;
     private Bitmap photo;
 
-    public DataModel(String name, Bitmap photo) {
+    public ProductModel(String name, Bitmap photo) {
         this.name = name;
         this.photo = photo;
     }

@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,22 +7,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mierul.myapplication21.Model.ProductModel;
+import com.example.mierul.myapplication21.R;
+
 import java.util.List;
 
 /**
  * Created by mierul on 3/16/2017.
  */
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    List<DataModel> item;
+    private List<ProductModel> item;
 
-    public RVAdapter(List<DataModel> item) {
+    public ProductAdapter(List<ProductModel> item) {
         this.item = item;
     }
 
     @Override
-    public RVAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.card_view,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
@@ -31,9 +34,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ProductAdapter.ViewHolder holder, int position) {
 
-        DataModel model = item.get(position);
+        ProductModel model = item.get(position);
 
         TextView textView = holder.name_product;
         textView.setText(model.getName());

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
-import com.example.mierul.myapplication21.BooleanEvent;
+import com.example.mierul.myapplication21.FirebaseHelperEvent;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -174,7 +174,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
     }
 
     @Subscribe
-    public void FirebaseHelperListener(BooleanEvent result){
+    public void FirebaseHelperListener(FirebaseHelperEvent result){
         if(result.getResult()){
             previousFragment();
         }
