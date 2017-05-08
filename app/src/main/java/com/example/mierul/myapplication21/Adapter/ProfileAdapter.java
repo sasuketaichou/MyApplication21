@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mierul.myapplication21.Fragment.ProfileFragment;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.ProfileAdapterEvent;
 import com.example.mierul.myapplication21.R;
@@ -45,19 +46,19 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         String mContent="";
         switch(position){
             case 0:
-                mTitle = "NAME";
+                mTitle = ProfileFragment.PROFILE_NAME;
                 mContent = item.getName();
                 break;
             case 1:
-                mTitle = "EMAIL";
+                mTitle = ProfileFragment.PROFILE_EMAIL;
                 mContent = item.getEmail();
                 break;
             case 2:
-                mTitle = "ADDRESS";
+                mTitle = ProfileFragment.PROFILE_ADDRESS;
                 mContent = item.getAddress();
                 break;
             case 3:
-                mTitle = "CONTACT";
+                mTitle = ProfileFragment.PROFILE_CONTACT;
                 mContent = item.getContactNumber();
                 break;
         }

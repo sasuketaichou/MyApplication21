@@ -147,9 +147,18 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void hideSoftKeyboard(){
-        if(getView()!= null && getInputMethodManager().isActive()){
+        if(getView()!= null){
             getInputMethodManager()
-                .hideSoftInputFromWindow(getView().getRootView().getWindowToken(), 0);
+                    .hideSoftInputFromWindow(getView().getRootView().getWindowToken(), 0);
+                    //.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        }
+    }
+
+    public void showSoftKeyboard(){
+        if(getInputMethodManager().isActive()){
+            getInputMethodManager()
+                    //.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
+                    .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         }
     }
 }

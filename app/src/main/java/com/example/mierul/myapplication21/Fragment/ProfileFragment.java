@@ -29,6 +29,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private ProfileFirebaseModel profileFirebase;
     private ProfileDetailsModel profileDetails;
 
+    public static String PROFILE_NAME = "NAME";
+    public static String PROFILE_ADDRESS = "ADDRESS";
+    public static String PROFILE_EMAIL = "EMAIL";
+    public static String PROFILE_CONTACT = "CONTACT";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,8 +80,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     @Subscribe
     public void ProfileAdapterListener(ProfileAdapterEvent profileAdapterEvent){
-        //TODO add next fragment to edit profile details
-
+        int position = profileAdapterEvent.getPosition();
+        replaceFragment(EditProfileFragment.newInstance(position));
     }
 
     @Override

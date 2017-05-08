@@ -91,7 +91,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                 buttonRegister.setOnClickListener(this);
                 break;
 
-            case 2 :
+            case 2:
                 buttonLogin.setOnClickListener(this);
                 buttonLogin.setText("Create Account");
                 buttonRegister.setVisibility(View.GONE);
