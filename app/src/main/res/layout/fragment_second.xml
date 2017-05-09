@@ -20,8 +20,9 @@
         />
 
     <TableLayout
+        android:id="@+id/tableTv"
         android:layout_below="@+id/iv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TableRow
@@ -128,8 +129,42 @@
         android:padding="12dp"
         android:text="Add to cart"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@id/btn_addToCart">
 
+        <Button
+            android:id="@+id/btn_plus"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:text="+"
+            android:visibility="visible"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
+        <TextView
+            android:id="@+id/num_order"
+            android:gravity="center"
+            android:hint="1"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-
+        <Button
+            android:id="@+id/btn_minus"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:text="-"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+    </LinearLayout>
 </RelativeLayout>

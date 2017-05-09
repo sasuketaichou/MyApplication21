@@ -24,19 +24,18 @@ import org.greenrobot.eventbus.EventBus;
 public class FirebaseHelper {
     private final static String TAG = "FirebaseHelper";
     private Context context;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public FirebaseHelper(Context context){
         this.context = context;
-        mAuth = FirebaseAuth.getInstance();
     }
 
     public FirebaseHelper(){
-        mAuth = FirebaseAuth.getInstance();
     }
 
     public void createUserWithEmailAndPassword(String email,String password){
         try {
+
             mAuth.createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -48,8 +47,8 @@ public class FirebaseHelper {
                     postToBus(isLogin());
                 }
             });
-        } catch (Exception e ){
-            Log.e(TAG,"createUserWithEmailAndPassword",e);
+        } catch (NullPointerException npe ){
+            Log.e(TAG,"createUserWithEmailAndPassword",npe);
         }
     }
 
@@ -67,8 +66,8 @@ public class FirebaseHelper {
                 }
             });
 
-        } catch (Exception e ){
-            Log.e(TAG,"signInWithEmailAndPassword",e);
+        } catch (NullPointerException npe ){
+            Log.e(TAG,"signInWithEmailAndPassword",npe);
         }
     }
 

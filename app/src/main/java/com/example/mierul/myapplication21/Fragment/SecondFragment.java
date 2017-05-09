@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +23,11 @@ import com.example.mierul.myapplication21.R;
 
 public class SecondFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = SecondFragment.class.getSimpleName();
-    TextView textView;
-    String title;
-    String imagePath;
-    Bitmap bitmap;
+    private String title;
+    private String imagePath;
+    private Bitmap bitmap;
+    private TextView numberOfOrder;
+    private int mInteger =1;
 
     public static SecondFragment newInstance(String title, String imagePath) {
 
@@ -44,8 +46,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         title = getArguments().getString("title");
         imagePath = getArguments().getString("imgPath");
         bitmap = BitmapFactory.decodeStream(getImage(imagePath));
-        setHasOptionsMenu(true);
-
     }
 
     @Nullable
@@ -53,25 +53,24 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_second,container,false);
 
-        textView = (TextView)view.findViewById(R.id.tv);
+        numberOfOrder = (TextView)view.findViewById(R.id.num_order);
         ImageView imageView = (ImageView)view.findViewById(R.id.iv);
         imageView.setImageBitmap(bitmap);
         imageView.setOnClickListener(this);
         Button button = (Button)view.findViewById(R.id.btn_addToCart);
         button.setOnClickListener(this);
 
-        initToolbar(view,SecondFragment.class.getSimpleName(),true);
+        view.findViewById(R.id.btn_plus).setOnClickListener(this);
+        view.findViewById(R.id.btn_minus).setOnClickListener(this);
 
+        initToolbar(view,TAG,true);
 
         return view;
     }
 
-
-
     public void checkOut(){
         CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(title,imagePath);
         replaceFragment(checkoutFragment);
-
     }
 
     @Override
@@ -82,16 +81,29 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.iv:
                 break;
+            case R.id.btn_minus:
+                decreaseInteger();
+                break;
+            case R.id.btn_plus:
+                increaseInteger();
+                break;
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                //previousFragment();
+    private void increaseInteger() {
+        display(++mInteger);
+    }
+
+    private void decreaseInteger() {
+        if(mInteger == 1){
+            display(1);
+            return;
         }
-        return true;
+        display(--mInteger);
+    }
+
+    private void display(int number) {
+        numberOfOrder.setText(String.valueOf(number));
     }
 
 

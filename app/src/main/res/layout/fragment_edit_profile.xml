@@ -27,7 +27,6 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:enabled="false"
             android:text="OK"
             android:visibility="visible"
             android:textColor="@color/white"
@@ -44,7 +43,6 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:enabled="false"
             android:text="Cancel"
             android:textColor="@color/white"
             android:background="@color/colorPrimaryDark"/>

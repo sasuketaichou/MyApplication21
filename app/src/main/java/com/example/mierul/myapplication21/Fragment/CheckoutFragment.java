@@ -23,8 +23,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     String title;
     String imagePath;
     Bitmap bitmap;
-    private int minteger = 0;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,20 +44,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         iv.setImageBitmap(bitmap);
 
         return view;
-    }
-
-    public void increaseInteger(View view) {
-        display(minteger++);
-
-    }public void decreaseInteger(View view) {
-        if(minteger == 0)
-            return;
-
-        display(minteger--);
-    }
-
-    private void display(int number) {
-        textView.setText(String.valueOf(number));
     }
 
     public static CheckoutFragment newInstance(String title, String imagePath) {
