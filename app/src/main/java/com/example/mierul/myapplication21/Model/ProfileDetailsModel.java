@@ -5,41 +5,16 @@ package com.example.mierul.myapplication21.Model;
  */
 
 public class ProfileDetailsModel {
-    private String name;
-    private String email;
-    private String address;
-    private String contactNumber;
+    public String name;
+    public String address;
+    public String contact;
 
-    public String getName() {
-        return name;
+    public ProfileDetailsModel(){
     }
 
-    public void setName(String name) {
+    public ProfileDetailsModel(String name,String address,String contact){
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
         this.address = address;
+        this.contact = contact;
     }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
 }

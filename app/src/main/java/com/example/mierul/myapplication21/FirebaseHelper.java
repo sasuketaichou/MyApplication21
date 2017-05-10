@@ -14,6 +14,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -100,9 +105,43 @@ public class FirebaseHelper {
     }
 
 
-    public ProfileDetailsModel getDetails() {
-        ProfileDetailsModel details = new ProfileDetailsModel();
+    public void getDetails() {
         //TODO grab data from firebase
-        return details;
+        DatabaseReference usersProfile = getUsersProfileRef();
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ProfileDetailsModel model = dataSnapshot.getValue(ProfileDetailsModel.class);
+                EventBus.getDefault().post(model);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        usersProfile.addValueEventListener(postListener);
+    }
+
+    private DatabaseReference getRootRef(){
+        return FirebaseDatabase.getInstance().getReference();
+    }
+
+    private DatabaseReference getUsersRef(){
+        String uId = mAuth.getCurrentUser().getUid();
+        return uId.isEmpty()? null:getRootRef().child("users").child(uId);
+    }
+
+    private DatabaseReference getOrdersRef(){
+        String uId = mAuth.getCurrentUser().getUid();
+        return uId.isEmpty()? null:getRootRef().child("orders").child(uId);
+    }
+
+    private DatabaseReference getUsersProfileRef(){
+        return getUsersRef().child("Profile");
+    }
+
+    private DatabaseReference getUsersOrderRef(){
+        return getUsersRef().child("Order");
     }
 }

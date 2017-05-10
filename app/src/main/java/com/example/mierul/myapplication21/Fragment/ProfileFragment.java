@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private FirebaseHelper helper;
     private ProfileFirebaseModel profileFirebase;
     private ProfileDetailsModel profileDetails;
+    private RecyclerView recyclerView;
 
     public static String PROFILE_NAME = "NAME";
     public static String PROFILE_ADDRESS = "ADDRESS";
@@ -43,9 +45,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         initView(view);
 
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.profileRecyclerView);
+        recyclerView = (RecyclerView)view.findViewById(R.id.profileRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new ProfileAdapter(profileDetails));
 
         return view;
     }
@@ -58,8 +59,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         helper = new FirebaseHelper();
-        profileFirebase = helper.getProfile();
-        profileDetails = helper.getDetails();
+        //trigger getDetails to get data
+        helper.getDetails();
+        //TODO get details here!!!
     }
 
     public static Fragment newInstance() {
@@ -94,5 +96,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Subscribe
+    public void FirebaseHelperListener(ProfileDetailsModel model){
+        //update ui after finish loading data
+        recyclerView.setAdapter(new ProfileAdapter(model));
+
     }
 }

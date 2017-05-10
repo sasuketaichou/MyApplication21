@@ -47,19 +47,20 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         switch(position){
             case 0:
                 mTitle = ProfileFragment.PROFILE_NAME;
-                mContent = item.getName();
+                mContent = item.name;
                 break;
             case 1:
                 mTitle = ProfileFragment.PROFILE_EMAIL;
-                mContent = item.getEmail();
+                //Todo get email
+                mContent = item.name;
                 break;
             case 2:
                 mTitle = ProfileFragment.PROFILE_ADDRESS;
-                mContent = item.getAddress();
+                mContent = item.address;
                 break;
             case 3:
                 mTitle = ProfileFragment.PROFILE_CONTACT;
-                mContent = item.getContactNumber();
+                mContent = item.contact;
                 break;
         }
         title.setText(mTitle);
