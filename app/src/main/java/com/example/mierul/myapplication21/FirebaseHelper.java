@@ -106,7 +106,6 @@ public class FirebaseHelper {
 
 
     public void getDetails() {
-        //TODO grab data from firebase
         DatabaseReference usersProfile = getUsersProfileRef();
         ValueEventListener postListener = new ValueEventListener() {
             @Override

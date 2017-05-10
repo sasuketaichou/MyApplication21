@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Adapter.ProfileAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
@@ -27,9 +28,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
     private FirebaseHelper helper;
-    private ProfileFirebaseModel profileFirebase;
-    private ProfileDetailsModel profileDetails;
     private RecyclerView recyclerView;
+    private String name;
+    private String email;
 
     public static String PROFILE_NAME = "NAME";
     public static String PROFILE_ADDRESS = "ADDRESS";
@@ -53,20 +54,31 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private void initView(View view) {
         view.findViewById(R.id.btn_signout).setOnClickListener(this);
+
+        ((TextView)view.findViewById(R.id.user_profile_name)).setText(name);
+        ((TextView)view.findViewById(R.id.user_profile_email)).setText(email);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        name = getArguments().getString("username");
+        email = getArguments().getString("email");
+
         helper = new FirebaseHelper();
         //trigger getDetails to get data
         helper.getDetails();
-        //TODO get details here!!!
+        showProgressDialog();
     }
 
-    public static Fragment newInstance() {
+    public static ProfileFragment newInstance(String username, String email) {
 
         ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString("username",username);
+        args.putString("email",email);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -101,7 +113,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Subscribe
     public void FirebaseHelperListener(ProfileDetailsModel model){
         //update ui after finish loading data
-        recyclerView.setAdapter(new ProfileAdapter(model));
-
+        ProfileAdapter adapter = new ProfileAdapter(model);
+        recyclerView.setAdapter(adapter);
+        hideProgressDialog();
     }
 }

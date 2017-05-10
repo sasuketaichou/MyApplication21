@@ -111,11 +111,15 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             public void onClick(View view) {
 
                 FirebaseUser user =FirebaseAuth.getInstance().getCurrentUser();
+                //TODO check for null
+                String name = user.getDisplayName();
+                String email = user.getEmail();
+
                 boolean auth = user != null;
 
                 if(auth){
                     //profile fragment
-                    replaceFragment(new ProfileFragment());
+                    replaceFragment(ProfileFragment.newInstance(name,email));
                 } else {
                     int type = 1;
                     replaceFragment(LoginFragment.newInstance(type));
