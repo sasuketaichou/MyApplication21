@@ -2,10 +2,8 @@ package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,12 +70,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         showProgressDialog();
     }
 
-    public static ProfileFragment newInstance(String username, String email) {
+    public static ProfileFragment newInstance(ProfileFirebaseModel model) {
 
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putString("username",username);
-        args.putString("email",email);
+        args.putString("username",model.getDisplayName());
+        args.putString("email",model.getEmail());
         fragment.setArguments(args);
         return fragment;
     }

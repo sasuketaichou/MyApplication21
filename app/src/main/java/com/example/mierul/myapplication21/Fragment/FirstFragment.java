@@ -23,12 +23,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Model.ProductModel;
 import com.example.mierul.myapplication21.ItemClickSupport;
+import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.Adapter.ProductAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ import java.util.List;
 public class FirstFragment extends BaseFragment implements ItemClickSupport.OnItemClickListener {
     private DrawerLayout drawer;
     private List<ProductModel> item;
+    private FirebaseHelper helper;
 
     private static final String TAG = "FirstFragment";
 
@@ -49,6 +50,8 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         super.onCreate(savedInstanceState);
         getData();
         setHasOptionsMenu(true);
+
+        helper = new FirebaseHelper();
     }
 
     private void getData() {
@@ -110,16 +113,12 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             @Override
             public void onClick(View view) {
 
-                FirebaseUser user =FirebaseAuth.getInstance().getCurrentUser();
-                //TODO check for null
-                String name = user.getDisplayName();
-                String email = user.getEmail();
-
-                boolean auth = user != null;
+                boolean auth = helper.isLogin();
+                ProfileFirebaseModel model = helper.getProfile();
 
                 if(auth){
                     //profile fragment
-                    replaceFragment(ProfileFragment.newInstance(name,email));
+                    replaceFragment(ProfileFragment.newInstance(model));
                 } else {
                     int type = 1;
                     replaceFragment(LoginFragment.newInstance(type));
@@ -169,7 +168,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         replaceFragment(fragment);
 
         // Highlight the selected item has been done by NavigationView
-        item.setChecked(true);
+        item.setChecked(false);
         // Set action bar title
         //toolbar.setTitle(item.getTitle());
         // Close the navigation drawer
@@ -196,7 +195,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
         switch (id){
             case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
+                helper.sign_out();
                 Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
                 return true;
         }

@@ -51,8 +51,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                 break;
             case 1:
                 mTitle = ProfileFragment.PROFILE_EMAIL;
-                //Todo get email
-                mContent = item.name;
+                mContent = item.email;
                 break;
             case 2:
                 mTitle = ProfileFragment.PROFILE_ADDRESS;

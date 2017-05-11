@@ -8,11 +8,111 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <EditText
-        android:id="@+id/user_profile_edit"
+    <TableLayout
+        android:id="@+id/tableTv"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar" />
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:text=" : "
+                />
+
+            <EditText
+                android:ems="10"
+                android:padding="10dp"
+                android:hint="Address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/address_address"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="City"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:text=" : "
+                />
+
+            <EditText
+                android:padding="10dp"
+                android:hint="City"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/address_city"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Poscode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:text=" : "
+                />
+
+            <EditText
+                android:id="@+id/address_postcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Postcode"
+                android:padding="10dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:text=" : "
+                />
+
+            <EditText
+                android:enabled="false"
+                android:padding="10dp"
+                android:hint="Malaysia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/address_country"/>
+        </TableRow>
+
+    </TableLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +127,6 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:enabled="false"
             android:text="OK"
             android:visibility="visible"
             android:textColor="@color/white"
@@ -44,7 +143,6 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:enabled="false"
             android:text="Cancel"
             android:textColor="@color/white"
             android:background="@color/colorPrimaryDark"/>

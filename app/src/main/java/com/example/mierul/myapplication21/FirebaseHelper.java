@@ -31,6 +31,13 @@ public class FirebaseHelper {
     private Context context;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    public enum Node {
+        name,
+        address,
+        contact,
+        email
+    }
+
     public FirebaseHelper(Context context){
         this.context = context;
     }
@@ -48,6 +55,9 @@ public class FirebaseHelper {
                     if(!task.isSuccessful()){
                         Log.e(TAG,"createUserWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
+                    } else {
+                        //for new user, create empty Profile branch
+                        setNewUserDetails();
                     }
                     postToBus(isLogin());
                 }
@@ -92,7 +102,12 @@ public class FirebaseHelper {
         EventBus.getDefault().post(new FirebaseHelperEvent(result));
     }
 
+    public void postToBus(ProfileDetailsModel model) {
+        EventBus.getDefault().post(model);
+    }
+
     public ProfileFirebaseModel getProfile(){
+
         ProfileFirebaseModel profile = null;
         FirebaseUser user = mAuth.getCurrentUser();
         if(user != null){
@@ -106,20 +121,42 @@ public class FirebaseHelper {
 
 
     public void getDetails() {
-        DatabaseReference usersProfile = getUsersProfileRef();
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ProfileDetailsModel model = dataSnapshot.getValue(ProfileDetailsModel.class);
-                EventBus.getDefault().post(model);
+                postToBus(model);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //TODO create error message event
+                Log.e(TAG,"getDetails",databaseError.toException());
             }
         };
+        DatabaseReference usersProfile = getUsersProfileRef();
         usersProfile.addValueEventListener(postListener);
+    }
+
+    public void setDetails(Node child,String value){
+        DatabaseReference usersProfile = getUsersProfileRef();
+        usersProfile
+                .child(child.name())
+                .setValue(value)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(!task.isSuccessful()){
+                            Log.e(TAG,"setDetails",task.getException());
+                        }
+                        postToBus(task.isSuccessful());
+                    }
+                });
+    }
+
+    private void setNewUserDetails(){
+        DatabaseReference usersProfile = getUsersProfileRef();
+        usersProfile.setValue(new ProfileDetailsModel("Edit your name","Edit your address","Add your contact number",mAuth.getCurrentUser().getEmail()));
     }
 
     private DatabaseReference getRootRef(){
@@ -127,12 +164,12 @@ public class FirebaseHelper {
     }
 
     private DatabaseReference getUsersRef(){
-        String uId = mAuth.getCurrentUser().getUid();
+        String uId = getUid();
         return uId.isEmpty()? null:getRootRef().child("users").child(uId);
     }
 
     private DatabaseReference getOrdersRef(){
-        String uId = mAuth.getCurrentUser().getUid();
+        String uId = getUid();
         return uId.isEmpty()? null:getRootRef().child("orders").child(uId);
     }
 
@@ -142,5 +179,15 @@ public class FirebaseHelper {
 
     private DatabaseReference getUsersOrderRef(){
         return getUsersRef().child("Order");
+    }
+
+    private String getUid(){
+        String uid = "empty";
+        try {
+            uid = mAuth.getCurrentUser().getUid();
+        } catch (NullPointerException npe){
+            Log.e(TAG,"getUid",npe);
+        }
+        return uid;
     }
 }

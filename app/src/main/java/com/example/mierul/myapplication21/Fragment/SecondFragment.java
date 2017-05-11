@@ -69,6 +69,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void checkOut(){
+        //TODO pass numOfOrder to checkout fragment
         CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(title,imagePath);
         replaceFragment(checkoutFragment);
     }
