@@ -50,7 +50,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             view.findViewById(R.id.user_profile_edit).requestFocus();
         } else {
             view = inflater.inflate(R.layout.fragment_edit_profile_address,container,false);
-            //TODO stringbuffer address
         }
         view.findViewById(R.id.btn_user_ok).setOnClickListener(this);
         view.findViewById(R.id.btn_user_cancel).setOnClickListener(this);
