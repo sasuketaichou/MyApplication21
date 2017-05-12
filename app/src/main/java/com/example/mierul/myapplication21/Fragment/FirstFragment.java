@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -36,6 +37,8 @@ import com.example.mierul.myapplication21.ItemClickSupport;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.Adapter.ProductAdapter;
+import com.example.mierul.myapplication21.SimpleDividerItemDecoration;
+import com.example.mierul.myapplication21.SpacesItemDecoration;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -100,13 +103,18 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         setupDrawerContent(navigationView);
 
         int numColumns = 2;
-        Drawable horizontalDivider = ContextCompat.getDrawable(getContext(), R.drawable.divider_horizontal);
-        Drawable verticalDivider = ContextCompat.getDrawable(getContext(), R.drawable.divider_vertical);
+//        Drawable horizontalDivider = ContextCompat.getDrawable(getContext(), R.drawable.divider_horizontal);
+//        Drawable verticalDivider = ContextCompat.getDrawable(getContext(), R.drawable.divider_vertical);
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.productRecyclerView);
+//        StaggeredGridLayoutManager gridLayoutManager =
+//                new StaggeredGridLayoutManager(numColumns, StaggeredGridLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),numColumns));
-        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        recyclerView.addItemDecoration(new GridDividerItemDecoration(horizontalDivider, verticalDivider, numColumns));
+        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(numColumns, dpToPx(10), true));
+        //recyclerView.addItemDecoration(new GridDividerItemDecoration(horizontalDivider, verticalDivider, numColumns));
+        //recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        //recyclerView.addItemDecoration(new SpacesItemDecoration(numColumns));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         ProductAdapter adapter = new ProductAdapter(item);
         recyclerView.setAdapter(adapter);
