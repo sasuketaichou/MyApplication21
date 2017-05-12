@@ -1,18 +1,23 @@
 package com.example.mierul.myapplication21.Fragment;
 
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +29,8 @@ import android.widget.Toast;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
+import com.example.mierul.myapplication21.GridDividerItemDecoration;
+import com.example.mierul.myapplication21.GridSpacingItemDecoration;
 import com.example.mierul.myapplication21.Model.ProductModel;
 import com.example.mierul.myapplication21.ItemClickSupport;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
@@ -92,10 +99,18 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         NavigationView navigationView = (NavigationView)view.findViewById(R.id.nav_view);
         setupDrawerContent(navigationView);
 
+        int numColumns = 2;
+        Drawable horizontalDivider = ContextCompat.getDrawable(getContext(), R.drawable.divider_horizontal);
+        Drawable verticalDivider = ContextCompat.getDrawable(getContext(), R.drawable.divider_vertical);
+
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.productRecyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),numColumns));
+        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridDividerItemDecoration(horizontalDivider, verticalDivider, numColumns));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         ProductAdapter adapter = new ProductAdapter(item);
         recyclerView.setAdapter(adapter);
+
 
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(this);
 
@@ -208,5 +223,13 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
     public boolean isDrawerOpen(){
         return drawer.isDrawerOpen(Gravity.START);
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }
