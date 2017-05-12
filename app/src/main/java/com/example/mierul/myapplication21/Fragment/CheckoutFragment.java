@@ -19,10 +19,10 @@ import com.example.mierul.myapplication21.R;
  */
 
 public class CheckoutFragment extends BaseFragment implements View.OnClickListener {
-    TextView textView;
-    String title;
-    String imagePath;
-    Bitmap bitmap;
+    private TextView textView;
+    private String title;
+    private String imagePath;
+    private Bitmap bitmap;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,7 +30,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         title = getArguments().getString("title");
         imagePath = getArguments().getString("imgPath");
         bitmap = BitmapFactory.decodeStream(getImage(imagePath));
-        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -62,15 +61,5 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             case android.R.id.home:
                 break;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                //previousFragment();
-                break;
-        }
-        return true;
     }
 }
