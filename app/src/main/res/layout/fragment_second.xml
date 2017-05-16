@@ -19,6 +19,16 @@
         android:layout_below="@+id/toolbar"
         />
 
+    <android.support.v7.widget.AppCompatButton
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/btn_addToCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:text="Add to cart"/>
+
     <TableLayout
         android:id="@+id/tableTv"
         android:layout_below="@+id/iv"
@@ -178,14 +188,4 @@
         </TableRow>
 
     </TableLayout>
-
-    <android.support.v7.widget.AppCompatButton
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
-        android:id="@+id/btn_addToCart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:padding="12dp"
-        android:text="Add to cart"/>
 </RelativeLayout>

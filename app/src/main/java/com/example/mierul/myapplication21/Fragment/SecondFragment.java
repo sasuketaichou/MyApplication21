@@ -58,9 +58,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         ImageView imageView = (ImageView)view.findViewById(R.id.iv);
         imageView.setImageBitmap(bitmap);
         imageView.setOnClickListener(this);
-        Button button = (Button)view.findViewById(R.id.btn_addToCart);
-        button.setOnClickListener(this);
 
+        view.findViewById(R.id.btn_addToCart).setOnClickListener(this);
         view.findViewById(R.id.btn_plus).setOnClickListener(this);
         view.findViewById(R.id.btn_minus).setOnClickListener(this);
 
@@ -98,7 +97,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
     private void decreaseInteger() {
         if(mInteger == 1){
-            display(1);
             return;
         }
         display(--mInteger);
