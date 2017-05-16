@@ -54,6 +54,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_second,container,false);
 
         numberOfOrder = (TextView)view.findViewById(R.id.num_order);
+        numberOfOrder.setText(String.valueOf(mInteger));
         ImageView imageView = (ImageView)view.findViewById(R.id.iv);
         imageView.setImageBitmap(bitmap);
         imageView.setOnClickListener(this);
