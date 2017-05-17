@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,7 +32,6 @@ import org.greenrobot.eventbus.EventBus;
 public class FirebaseHelper {
     private final static String TAG = "FirebaseHelper";
     private Context context;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public enum Node {
         name,
@@ -47,7 +49,7 @@ public class FirebaseHelper {
 
     public void createUserWithEmailAndPassword(String email,String password){
         try {
-
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -69,6 +71,7 @@ public class FirebaseHelper {
 
     public void signInWithEmailAndPassword(String user,String pass){
         try{
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(user,pass)
                     .addOnCompleteListener((Activity)context, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -88,6 +91,7 @@ public class FirebaseHelper {
 
     public void sign_out(){
         try {
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signOut();
         } catch (Exception e ){
             Log.e(TAG,"sign out",e);
@@ -95,7 +99,7 @@ public class FirebaseHelper {
     }
 
     public boolean isLogin(){
-        return mAuth.getCurrentUser()!=null;
+        return FirebaseAuth.getInstance().getCurrentUser()!=null;
     }
 
     public void postToBus(boolean result) {
@@ -109,6 +113,7 @@ public class FirebaseHelper {
     public ProfileFirebaseModel getProfile(){
 
         ProfileFirebaseModel profile = null;
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         if(user != null){
             profile = new ProfileFirebaseModel();
@@ -155,6 +160,7 @@ public class FirebaseHelper {
     }
 
     private void setNewUserDetails(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference usersProfile = getUsersProfileRef();
         usersProfile.setValue(new ProfileDetailsModel("Edit your name","Edit your address","Add your contact number",mAuth.getCurrentUser().getEmail()));
     }
@@ -182,6 +188,7 @@ public class FirebaseHelper {
     }
 
     private String getUid(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String uid = "empty";
         try {
             uid = mAuth.getCurrentUser().getUid();
@@ -189,5 +196,15 @@ public class FirebaseHelper {
             Log.e(TAG,"getUid",npe);
         }
         return uid;
+    }
+
+    public void downloadProductPicture(View imageView){
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        //TODO get image to place on viewpager
+
+
+
     }
 }
