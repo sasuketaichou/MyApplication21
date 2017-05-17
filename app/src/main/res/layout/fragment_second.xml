@@ -7,17 +7,14 @@
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
-    <ImageView
-        android:paddingTop="5dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="300dp"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/product_pic_viewPager"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/iv"
         android:layout_below="@+id/toolbar"
-        />
+        android:layout_centerHorizontal="true" />
 
     <android.support.v7.widget.AppCompatButton
         android:layout_alignParentBottom="true"
@@ -31,7 +28,7 @@
 
     <TableLayout
         android:id="@+id/tableTv"
-        android:layout_below="@+id/iv"
+        android:layout_below="@+id/product_pic_viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

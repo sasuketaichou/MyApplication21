@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.R;
 
@@ -22,10 +24,9 @@ import com.example.mierul.myapplication21.R;
  */
 
 public class SecondFragment extends BaseFragment implements View.OnClickListener {
-    private static final String TAG = SecondFragment.class.getSimpleName();
+    private static final String TAG = "SecondFragment";
     private String title;
     private String imagePath;
-    private Bitmap bitmap;
     private TextView numberOfOrder;
     private int mInteger =1;
 
@@ -45,7 +46,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
         title = getArguments().getString("title");
         imagePath = getArguments().getString("imgPath");
-        bitmap = BitmapFactory.decodeStream(getImage(imagePath));
+        //bitmap = BitmapFactory.decodeStream(getImage(imagePath));
     }
 
     @Nullable
@@ -55,15 +56,15 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
         numberOfOrder = (TextView)view.findViewById(R.id.num_order);
         numberOfOrder.setText(String.valueOf(mInteger));
-        ImageView imageView = (ImageView)view.findViewById(R.id.iv);
-        imageView.setImageBitmap(bitmap);
-        imageView.setOnClickListener(this);
 
         view.findViewById(R.id.btn_addToCart).setOnClickListener(this);
         view.findViewById(R.id.btn_plus).setOnClickListener(this);
         view.findViewById(R.id.btn_minus).setOnClickListener(this);
 
         initToolbar(view,TAG,true);
+
+        ViewPager viewPager = (ViewPager)view.findViewById(R.id.product_pic_viewPager);
+        viewPager.setAdapter(new ProductPicturePagerAdapter(getContext()));
 
         return view;
     }
@@ -79,8 +80,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         switch(v.getId()){
             case R.id.btn_addToCart:
                 checkOut();
-                break;
-            case R.id.iv:
                 break;
             case R.id.btn_minus:
                 decreaseInteger();
