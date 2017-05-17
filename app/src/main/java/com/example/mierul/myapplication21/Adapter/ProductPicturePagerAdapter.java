@@ -13,10 +13,10 @@ import com.example.mierul.myapplication21.ProductPictureEnum;
  */
 
 public class ProductPicturePagerAdapter extends PagerAdapter {
-    private Context mContex;
+    private Context context;
 
     public ProductPicturePagerAdapter(Context context) {
-        mContex = context;
+        this.context = context;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ProductPicturePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ProductPictureEnum productPictureEnum = ProductPictureEnum.values()[position];
-        LayoutInflater inflater = LayoutInflater.from(mContex);
+        LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup layout = (ViewGroup) inflater.inflate(productPictureEnum.getLayoutResId(),container,false);
         container.addView(layout);
 
@@ -47,6 +47,6 @@ public class ProductPicturePagerAdapter extends PagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         ProductPictureEnum productPictureEnum = ProductPictureEnum.values()[position];
-        return mContex.getString(productPictureEnum.getTitleResId());
+        return context.getString(productPictureEnum.getTitleResId());
     }
 }
