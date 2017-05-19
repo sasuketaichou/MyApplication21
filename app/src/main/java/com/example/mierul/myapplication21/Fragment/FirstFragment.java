@@ -1,9 +1,6 @@
 package com.example.mierul.myapplication21.Fragment;
 
-import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,7 +26,6 @@ import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.FirebaseListEvent;
 import com.example.mierul.myapplication21.GridSpacingItemDecoration;
-import com.example.mierul.myapplication21.Model.ProductModel;
 import com.example.mierul.myapplication21.ItemClickSupport;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
@@ -39,8 +35,6 @@ import com.example.mierul.myapplication21.Adapter.ProductAdapter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,8 +94,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
         View headerLayout = navigationView.getHeaderView(0);
         setupHeaderLayout(headerLayout);
-
-        Log.v("naruto","onCreateView");
 
         return view;
     }
