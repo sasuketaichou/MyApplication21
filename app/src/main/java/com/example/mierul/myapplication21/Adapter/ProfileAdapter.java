@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.Fragment.ProfileFragment;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.ProfileAdapterEvent;
@@ -42,27 +43,27 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         TextView content = holder.content;
         //ImageView edit = holder.edit;
 
-        String mTitle ="";
+        Constant mTitle = null;
         String mContent="";
         switch(position){
             case 0:
-                mTitle = ProfileFragment.PROFILE_NAME;
+                mTitle = Constant.PROFILE_NAME;
                 mContent = item.name;
                 break;
             case 1:
-                mTitle = ProfileFragment.PROFILE_EMAIL;
+                mTitle = Constant.PROFILE_EMAIL;
                 mContent = item.email;
                 break;
             case 2:
-                mTitle = ProfileFragment.PROFILE_ADDRESS;
+                mTitle = Constant.PROFILE_ADDRESS;
                 mContent = item.address;
                 break;
             case 3:
-                mTitle = ProfileFragment.PROFILE_CONTACT;
+                mTitle = Constant.PROFILE_CONTACT;
                 mContent = item.contact;
                 break;
         }
-        title.setText(mTitle);
+        title.setText(mTitle.getTitle());
         content.setText(mContent);
 
     }

@@ -5,11 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +28,9 @@ import com.google.firebase.storage.StorageReference;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by mierul on 4/24/2017.
  */
@@ -32,13 +38,6 @@ import org.greenrobot.eventbus.EventBus;
 public class FirebaseHelper {
     private final static String TAG = "FirebaseHelper";
     private Context context;
-
-    public enum Node {
-        name,
-        address,
-        contact,
-        email
-    }
 
     public FirebaseHelper(Context context){
         this.context = context;
@@ -61,7 +60,7 @@ public class FirebaseHelper {
                         //for new user, create empty Profile branch
                         setNewUserDetails();
                     }
-                    postToBus(isLogin());
+                    postToBus(new FirebaseBooleanEvent(isLogin()));
                 }
             });
         } catch (NullPointerException npe ){
@@ -80,7 +79,7 @@ public class FirebaseHelper {
                         Log.e(TAG,"signInWithEmailAndPassword",task.getException());
                         Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
                     }
-                    postToBus(isLogin());
+                    postToBus(new FirebaseBooleanEvent(isLogin()));
                 }
             });
 
@@ -102,12 +101,8 @@ public class FirebaseHelper {
         return FirebaseAuth.getInstance().getCurrentUser()!=null;
     }
 
-    public void postToBus(boolean result) {
-        EventBus.getDefault().post(new FirebaseHelperEvent(result));
-    }
-
-    public void postToBus(ProfileDetailsModel model) {
-        EventBus.getDefault().post(model);
+    private void postToBus(Object result){
+        EventBus.getDefault().post(result);
     }
 
     public ProfileFirebaseModel getProfile(){
@@ -126,6 +121,7 @@ public class FirebaseHelper {
 
 
     public void getDetails() {
+        DatabaseReference usersProfile = getUsersProfileRef();
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -139,14 +135,13 @@ public class FirebaseHelper {
                 Log.e(TAG,"getDetails",databaseError.toException());
             }
         };
-        DatabaseReference usersProfile = getUsersProfileRef();
         usersProfile.addValueEventListener(postListener);
     }
 
-    public void setDetails(Node child,String value){
+    public void setDetails(String child,String value){
         DatabaseReference usersProfile = getUsersProfileRef();
         usersProfile
-                .child(child.name())
+                .child(child)
                 .setValue(value)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -154,7 +149,7 @@ public class FirebaseHelper {
                         if(!task.isSuccessful()){
                             Log.e(TAG,"setDetails",task.getException());
                         }
-                        postToBus(task.isSuccessful());
+                        postToBus(new FirebaseBooleanEvent(task.isSuccessful()));
                     }
                 });
     }
@@ -198,13 +193,64 @@ public class FirebaseHelper {
         return uid;
     }
 
-    public void downloadProductPicture(View imageView){
+    public void downloadProductPicture(ImageView imageView){
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        //TODO get image to place on viewpager
+        StorageReference imagesFolderRef = storageRef.child("image");
+        StorageReference productRef = imagesFolderRef.child("productOne");
+        StorageReference images = productRef.child("4.jpg");
 
+        Glide.with(context)
+                .using(new FirebaseImageLoader())
+                .load(images)
+                .into(imageView);
+    }
 
+    public void getProductPictureUrl(){
 
+        DatabaseReference productUrlRef = getRootRef().child("url")
+                .child("Image")
+                .child("Product");
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> productChild = dataSnapshot.getChildren();
+
+                List<ProductUrlPictureModel> productUrlPictureModels = new ArrayList<>();
+                for(DataSnapshot mSnapshot: productChild){
+                    ProductUrlPictureModel model = mSnapshot.getValue(ProductUrlPictureModel.class);
+                    productUrlPictureModels.add(model);
+
+                }
+                postToBus(new FirebaseListEvent(productUrlPictureModels));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG,"getProductPictureUrl",databaseError.toException());
+
+            }
+        };
+        productUrlRef.addValueEventListener(eventListener);
+    }
+
+    public void testing(){
+        DatabaseReference ref = getRootRef().child("url").child("Image").child("Product");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("naruto",String.valueOf(dataSnapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("naruto",databaseError.toString());
+            }
+        });
+
+        Log.v("naruto","runnning");
     }
 }

@@ -4,23 +4,11 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="left"/>
-
     <ImageView
         android:id="@+id/product_pic_iv"
         android:layout_height="match_parent"
         android:layout_width="wrap_content"
         android:scaleType="center"
         android:src="@mipmap/ic_launcher" />
-
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="right"/>
 
 </LinearLayout>

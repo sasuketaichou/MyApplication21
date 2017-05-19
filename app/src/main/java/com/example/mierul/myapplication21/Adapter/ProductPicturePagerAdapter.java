@@ -5,8 +5,10 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.example.mierul.myapplication21.ProductPictureEnum;
+import com.bumptech.glide.Glide;
+import com.example.mierul.myapplication21.R;
 
 /**
  * Created by Hexa-Amierul.Japri on 17/5/2017.
@@ -14,14 +16,17 @@ import com.example.mierul.myapplication21.ProductPictureEnum;
 
 public class ProductPicturePagerAdapter extends PagerAdapter {
     private Context context;
+    private String[] imageUrl;
 
-    public ProductPicturePagerAdapter(Context context) {
+    public ProductPicturePagerAdapter(Context context,String[] imageUrl) {
         this.context = context;
+        this.imageUrl = imageUrl;
+
     }
 
     @Override
     public int getCount() {
-        return ProductPictureEnum.values().length;
+        return imageUrl.length;
     }
 
     @Override
@@ -31,22 +36,20 @@ public class ProductPicturePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ProductPictureEnum productPictureEnum = ProductPictureEnum.values()[position];
         LayoutInflater inflater = LayoutInflater.from(context);
-        ViewGroup layout = (ViewGroup) inflater.inflate(productPictureEnum.getLayoutResId(),container,false);
-        container.addView(layout);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.product_picture,container,false);
+        ImageView imageView = (ImageView)rootView.findViewById(R.id.product_pic_iv);
 
-        return layout;
+        Glide.with(context)
+                .load(imageUrl[position])
+                .into(imageView);
+
+        container.addView(rootView);
+        return rootView;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        ProductPictureEnum productPictureEnum = ProductPictureEnum.values()[position];
-        return context.getString(productPictureEnum.getTitleResId());
     }
 }

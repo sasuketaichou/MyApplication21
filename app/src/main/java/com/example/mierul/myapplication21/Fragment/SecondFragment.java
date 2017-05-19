@@ -1,18 +1,11 @@
 package com.example.mierul.myapplication21.Fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
@@ -25,16 +18,14 @@ import com.example.mierul.myapplication21.R;
 
 public class SecondFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = "SecondFragment";
-    private String title;
-    private String imagePath;
+    private String[] url;
     private TextView numberOfOrder;
     private int mInteger =1;
 
-    public static SecondFragment newInstance(String title, String imagePath) {
+    public static SecondFragment newInstance(String[] url) {
 
         Bundle args = new Bundle();
-        args.putString("title",title);
-        args.putString("imgPath",imagePath);
+        args.putStringArray("url",url);
         SecondFragment fragment = new SecondFragment();
         fragment.setArguments(args);
 
@@ -44,9 +35,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        title = getArguments().getString("title");
-        imagePath = getArguments().getString("imgPath");
-        //bitmap = BitmapFactory.decodeStream(getImage(imagePath));
+        url = getArguments().getStringArray("url");
     }
 
     @Nullable
@@ -64,15 +53,16 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         initToolbar(view,TAG,true);
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.product_pic_viewPager);
-        viewPager.setAdapter(new ProductPicturePagerAdapter(getContext()));
+        //TODO url string array
+        viewPager.setAdapter(new ProductPicturePagerAdapter(getContext(),url));
 
         return view;
     }
 
     public void checkOut(){
         //TODO pass numOfOrder to checkout fragment
-        CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(title,imagePath);
-        replaceFragment(checkoutFragment);
+        //CheckoutFragment checkoutFragment = CheckoutFragment.newInstance(title,imagePath);
+        //replaceFragment(checkoutFragment);
     }
 
     @Override

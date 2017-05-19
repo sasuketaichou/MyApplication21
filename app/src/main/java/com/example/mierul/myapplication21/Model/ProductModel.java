@@ -1,6 +1,5 @@
 package com.example.mierul.myapplication21.Model;
 
-import android.graphics.Bitmap;
 
 /**
  * Created by mierul on 3/16/2017.
@@ -8,9 +7,9 @@ import android.graphics.Bitmap;
 
 public class ProductModel {
     private String name;
-    private Bitmap photo;
+    private String photo;
 
-    public ProductModel(String name, Bitmap photo) {
+    public ProductModel(String name, String photo) {
         this.name = name;
         this.photo = photo;
     }
@@ -23,11 +22,11 @@ public class ProductModel {
         this.name = name;
     }
 
-    public Bitmap getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Bitmap photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 }

@@ -30,12 +30,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private String name;
     private String email;
 
-    public static String PROFILE_NAME = "NAME";
-    public static String PROFILE_ADDRESS = "ADDRESS";
-    public static String PROFILE_EMAIL = "EMAIL";
-    public static String PROFILE_CONTACT = "CONTACT";
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 

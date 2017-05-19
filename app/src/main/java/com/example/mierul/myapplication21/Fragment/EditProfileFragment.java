@@ -2,15 +2,15 @@ package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.FirebaseHelper;
-import com.example.mierul.myapplication21.FirebaseHelperEvent;
+import com.example.mierul.myapplication21.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,7 +22,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
     private int position;
-    private FirebaseHelper.Node childNode;
+    private Constant childNode;
 
     public static EditProfileFragment newInstance(int position) {
 
@@ -62,27 +62,27 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     private String getTitle(int position){
-        String mTitle = "";
+        Constant mTitle = null;
 
         switch(position){
             case 0:
-                mTitle = ProfileFragment.PROFILE_NAME;
-                childNode = FirebaseHelper.Node.name;
+                mTitle = Constant.PROFILE_NAME;
+                childNode = Constant.NODE_NAME;
                 break;
             case 1:
-                mTitle = ProfileFragment.PROFILE_EMAIL;
-                childNode = FirebaseHelper.Node.email;
+                mTitle = Constant.PROFILE_EMAIL;
+                childNode = Constant.NODE_EMAIL;
                 break;
             case 2:
-                mTitle = ProfileFragment.PROFILE_ADDRESS;
-                childNode = FirebaseHelper.Node.address;
+                mTitle = Constant.PROFILE_ADDRESS;
+                childNode = Constant.NODE_ADDRESS;
                 break;
             case 3:
-                mTitle = ProfileFragment.PROFILE_CONTACT;
-                childNode = FirebaseHelper.Node.contact;
+                mTitle = Constant.PROFILE_CONTACT;
+                childNode = Constant.NODE_CONTACT;
                 break;
         }
-        return mTitle;
+        return mTitle.getTitle();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 FirebaseHelper helper = new FirebaseHelper();
                 if(position != 2 && getView() != null) {
                     EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
-                    helper.setDetails(childNode, editText.getText().toString());
+                    helper.setDetails(childNode.getNode(), editText.getText().toString());
                 } else if (getView()!= null){
                     View view = getView();
                     String address = ((EditText)view.findViewById(R.id.address_address)).getText().toString();
@@ -109,7 +109,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     String comma = ", ";
 
                     String userAddress = address.concat(comma).concat(city).concat(comma).concat(postcode).concat(comma).concat(country);
-                    helper.setDetails(childNode,userAddress);
+                    helper.setDetails(childNode.getNode(),userAddress);
                 }
                 break;
 
@@ -120,7 +120,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     @Subscribe
-    public void FirebaseHelperEditProfileListener(FirebaseHelperEvent event){
+    public void FirebaseHelperEditProfileListener(FirebaseBooleanEvent event){
         if(event.getResult()){
             previousFragment();
         }

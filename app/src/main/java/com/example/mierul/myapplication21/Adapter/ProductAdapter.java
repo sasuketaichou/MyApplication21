@@ -1,5 +1,6 @@
 package com.example.mierul.myapplication21.Adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.mierul.myapplication21.Model.ProductModel;
+import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.R;
 
 import java.util.List;
@@ -18,10 +21,12 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private List<ProductModel> item;
+    private List<ProductUrlPictureModel> item;
+    private Context context;
 
-    public ProductAdapter(List<ProductModel> item) {
+    public ProductAdapter(Context context,List<ProductUrlPictureModel> item) {
         this.item = item;
+        this.context = context;
     }
 
     @Override
@@ -36,12 +41,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(ProductAdapter.ViewHolder holder, int position) {
 
-        ProductModel model = item.get(position);
+        ProductUrlPictureModel model = item.get(position);
 
         TextView textView = holder.name_product;
-        textView.setText(model.getName());
+        textView.setText("empty");
         ImageView image = holder.pict_product;
-        image.setImageBitmap(model.getPhoto());
+
+        //Todo set Image
+        Glide.with(context)
+                .load(model.pushId1)
+                .into(image);
+
+        //image.setImageBitmap(model.getPhoto());
     }
 
     @Override
