@@ -13,7 +13,7 @@ public class FirebaseListEvent {
         this.list = list;
     }
 
-    public List<?> getList(){
+    public List<Object> getList(){
         return list;
     }
 
