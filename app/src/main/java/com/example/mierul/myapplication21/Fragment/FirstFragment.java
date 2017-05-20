@@ -57,7 +57,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
         helper = new FirebaseHelper();
         //get picture Url
-        helper.getProductPictureUrl();
+        helper.getProductDetails();
     }
 
     @Nullable

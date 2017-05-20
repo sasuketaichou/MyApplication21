@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.mierul.myapplication21.Model.ProductProfileModel;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
@@ -44,7 +45,7 @@ public class FirebaseHelper {
     private final String CHILD_URL = "url";
     private final String CHILD_ORDER = "Order";
     private final String CHILD_IMAGE = "Image";
-    private final String CHILD_PRODUCT = "Product";
+    private final String CHILD_PRODUCT = "product";
 
     public FirebaseHelper(Context context){
         this.context = context;
@@ -213,20 +214,24 @@ public class FirebaseHelper {
                 .into(imageView);
     }
 
-    public void getProductPictureUrl(){
+    public void getProductDetails(){
+        getProductPicture();
+        getProductProfile();
+    }
 
-        DatabaseReference productUrlRef = getRootRef().child(CHILD_URL)
-                .child(CHILD_IMAGE)
-                .child(CHILD_PRODUCT);
+    private void getProductPicture(){
+
+        DatabaseReference productImageRef = getRootRef().child(CHILD_PRODUCT)
+                .child(CHILD_IMAGE);
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Iterable<DataSnapshot> productChild = dataSnapshot.getChildren();
+                Iterable<DataSnapshot> productChildImage = dataSnapshot.getChildren();
 
                 List<ProductUrlPictureModel> productUrlPictureModels = new ArrayList<>();
-                for(DataSnapshot mSnapshot: productChild){
+                for(DataSnapshot mSnapshot: productChildImage){
                     ProductUrlPictureModel model = mSnapshot.getValue(ProductUrlPictureModel.class);
                     productUrlPictureModels.add(model);
 
@@ -236,11 +241,44 @@ public class FirebaseHelper {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e(TAG,"getProductPictureUrl",databaseError.toException());
+                Log.e(TAG,"getProductPicture",databaseError.toException());
 
             }
         };
-        productUrlRef.addValueEventListener(eventListener);
+        productImageRef.addValueEventListener(eventListener);
+
+    }
+
+    private void getProductProfile(){
+
+        DatabaseReference productProfileRef = getRootRef().child(CHILD_PRODUCT)
+                .child(CHILD_PROFILE);
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> productChildProfile = dataSnapshot.getChildren();
+
+                List<ProductProfileModel> productProfileModels = new ArrayList<>();
+                for(DataSnapshot mSnapshot: productChildProfile){
+                    ProductProfileModel model = mSnapshot.getValue(ProductProfileModel.class);
+                    productProfileModels.add(model);
+
+                }
+                postToBus(new FirebaseListEvent(productProfileModels));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG,"getProductProfile",databaseError.toException());
+
+            }
+        };
+        productProfileRef.addValueEventListener(eventListener);
+
+
+
     }
 
     public void testing(){

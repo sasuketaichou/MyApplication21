@@ -87,7 +87,7 @@
 
             <TextView
                 android:padding="10dp"
-                android:text="Product Brand"
+                android:text="Product Pieces"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

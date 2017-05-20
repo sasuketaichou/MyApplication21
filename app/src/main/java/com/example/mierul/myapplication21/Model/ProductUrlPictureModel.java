@@ -5,16 +5,16 @@ package com.example.mierul.myapplication21.Model;
  */
 
 public class ProductUrlPictureModel {
-    public String pushId1;
-    public String pushId2;
-    public String pushId3;
-    public String pushId4;
+    public String image_1;
+    public String image_2;
+    public String image_3;
+    public String image_4;
 
     public ProductUrlPictureModel(){
     }
 
     public String[] toArray(){
-        return new String[]{pushId1,pushId2,pushId3,pushId4};
+        return new String[]{image_1,image_2,image_3,image_4};
     }
 
 }
