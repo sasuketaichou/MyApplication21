@@ -53,7 +53,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         initToolbar(view,TAG,true);
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.product_pic_viewPager);
-        //TODO url string array
         viewPager.setAdapter(new ProductPicturePagerAdapter(getContext(),url));
 
         return view;

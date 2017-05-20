@@ -59,6 +59,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton
+                android:textColor="@color/white"
                 android:background="@color/colorPrimaryDark"
                 android:id="@+id/btn_login"
                 android:layout_width="fill_parent"
@@ -67,6 +68,7 @@
                 android:padding="12dp"/>
 
             <android.support.v7.widget.AppCompatButton
+                android:textColor="@color/white"
                 android:background="@color/colorPrimaryDark"
                 android:id="@+id/btn_register"
                 android:layout_width="fill_parent"

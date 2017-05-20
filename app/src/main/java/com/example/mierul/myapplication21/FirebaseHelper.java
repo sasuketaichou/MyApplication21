@@ -39,6 +39,13 @@ public class FirebaseHelper {
     private final static String TAG = "FirebaseHelper";
     private Context context;
 
+    private final String CHILD_USERS = "users";
+    private final String CHILD_PROFILE = "Profile";
+    private final String CHILD_URL = "url";
+    private final String CHILD_ORDER = "Order";
+    private final String CHILD_IMAGE = "Image";
+    private final String CHILD_PRODUCT = "Product";
+
     public FirebaseHelper(Context context){
         this.context = context;
     }
@@ -131,7 +138,6 @@ public class FirebaseHelper {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //TODO create error message event
                 Log.e(TAG,"getDetails",databaseError.toException());
             }
         };
@@ -166,7 +172,7 @@ public class FirebaseHelper {
 
     private DatabaseReference getUsersRef(){
         String uId = getUid();
-        return uId.isEmpty()? null:getRootRef().child("users").child(uId);
+        return uId.isEmpty()? null:getRootRef().child(CHILD_USERS).child(uId);
     }
 
     private DatabaseReference getOrdersRef(){
@@ -175,11 +181,11 @@ public class FirebaseHelper {
     }
 
     private DatabaseReference getUsersProfileRef(){
-        return getUsersRef().child("Profile");
+            return getUsersRef().child(CHILD_PROFILE);
     }
 
     private DatabaseReference getUsersOrderRef(){
-        return getUsersRef().child("Order");
+        return getUsersRef().child(CHILD_ORDER);
     }
 
     private String getUid(){
@@ -209,9 +215,9 @@ public class FirebaseHelper {
 
     public void getProductPictureUrl(){
 
-        DatabaseReference productUrlRef = getRootRef().child("url")
-                .child("Image")
-                .child("Product");
+        DatabaseReference productUrlRef = getRootRef().child(CHILD_URL)
+                .child(CHILD_IMAGE)
+                .child(CHILD_PRODUCT);
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -238,7 +244,7 @@ public class FirebaseHelper {
     }
 
     public void testing(){
-        DatabaseReference ref = getRootRef().child("url").child("Image").child("Product");
+        DatabaseReference ref = getRootRef().child(CHILD_URL).child(CHILD_IMAGE).child(CHILD_PRODUCT);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

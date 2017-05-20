@@ -57,10 +57,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
         helper = new FirebaseHelper();
         //get picture Url
-        //will be triggered everytime fragment is viewable
-        //TODO create a trigger method in helper to return changes of data
         helper.getProductPictureUrl();
-
     }
 
     @Nullable
@@ -145,7 +142,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
         switch (id){
             case R.id.nav_first_fragment:
-                //transact fragment here
                 fragmentClass = NavFirst.class;
                 break;
             case R.id.nav_second_fragment:
@@ -218,6 +214,11 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     }
 
     private void refreshData(FirebaseListEvent event){
+        //clear item to avoid duplication
+        if(!item.isEmpty()){
+            item.clear();
+        }
+
         for(ProductUrlPictureModel model : (List<ProductUrlPictureModel>)event.getList()){
             item.add(model);
         }

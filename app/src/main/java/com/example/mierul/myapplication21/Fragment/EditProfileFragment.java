@@ -108,7 +108,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     String postcode = ((EditText)view.findViewById(R.id.address_postcode)).getText().toString();
                     String comma = ", ";
 
-                    String userAddress = address.concat(comma).concat(city).concat(comma).concat(postcode).concat(comma).concat(country);
+
+                    String userAddress = address+comma+city+comma+postcode+comma+country;
                     helper.setDetails(childNode.getNode(),userAddress);
                 }
                 break;
@@ -123,6 +124,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void FirebaseHelperEditProfileListener(FirebaseBooleanEvent event){
         if(event.getResult()){
             previousFragment();
+        } else {
+            //Todo tell user the error
         }
     }
 

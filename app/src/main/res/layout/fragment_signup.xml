@@ -60,6 +60,7 @@
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
+            android:textColor="@color/white"
             android:id="@+id/btn_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

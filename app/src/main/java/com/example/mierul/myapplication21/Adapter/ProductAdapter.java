@@ -46,12 +46,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         textView.setText("empty");
         ImageView image = holder.pict_product;
 
-        //Todo set Image
+        //set default image
+        //image.setImageResource(R.drawable.default_thumbnail);
+
         Glide.with(context)
                 .load(model.pushId1)
                 .into(image);
-
-        //image.setImageBitmap(model.getPhoto());
     }
 
     @Override

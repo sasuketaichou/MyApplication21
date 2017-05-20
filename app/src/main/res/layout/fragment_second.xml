@@ -17,6 +17,7 @@
         android:layout_centerHorizontal="true" />
 
     <android.support.v7.widget.AppCompatButton
+        android:textColor="@color/white"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimaryDark"
         android:id="@+id/btn_addToCart"
@@ -144,42 +145,36 @@
                 />
 
             <LinearLayout
+                android:weightSum="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_above="@id/btn_addToCart">
 
                 <Button
+                    android:layout_weight="1"
                     android:id="@+id/btn_plus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="+"
-                    android:visibility="visible"
-                    android:textColor="@color/white"
-                    android:background="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+                    android:textColor="@color/white" />
 
                 <TextView
+                    android:layout_weight="1"
                     android:id="@+id/num_order"
                     android:gravity="center"
                     android:hint="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <Button
+                    android:layout_weight="1"
                     android:id="@+id/btn_minus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="-"
-                    android:textColor="@color/white"
-                    android:background="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+                    android:textColor="@color/white" />
             </LinearLayout>
 
         </TableRow>

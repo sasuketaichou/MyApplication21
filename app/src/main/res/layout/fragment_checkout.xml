@@ -7,7 +7,8 @@
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/include" />
 
     <ImageView
         android:src="@mipmap/ic_launcher"
@@ -15,11 +16,11 @@
         android:id="@+id/ivCh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/include"
+        android:layout_centerHorizontal="true" />
 
     <android.support.v7.widget.AppCompatButton
+        android:textColor="@color/white"
         android:background="@color/colorPrimaryDark"
         android:id="@+id/btn_checkout"
         android:layout_width="fill_parent"
