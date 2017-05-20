@@ -17,7 +17,7 @@ public class FirebaseListEvent {
         return list;
     }
 
-    public void add(String list){
+    public void add(List<Object> list){
         this.list.add(list);
     }
 }
