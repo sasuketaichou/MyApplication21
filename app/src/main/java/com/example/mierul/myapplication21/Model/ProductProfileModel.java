@@ -5,15 +5,32 @@ package com.example.mierul.myapplication21.Model;
  */
 
 public class ProductProfileModel {
-    public String cost;
+    public String key;
+    public long cost;
     public String name;
-    public String total_pieces;
+    public long total_pieces;
     public String type;
 
     public ProductProfileModel(){
     }
 
     public String[] toArray(){
-        return new String[]{name,cost,total_pieces,type};
+        return new String[]{name,getCost(),getPieces(),type};
+    }
+
+    public String getCost(){
+        return String.valueOf(cost);
+    }
+
+    public String getPieces(){
+        return String.valueOf(total_pieces);
+    }
+
+    public String getKey(){
+        return key;
+    }
+
+    public void addKey(String key) {
+        this.key = key;
     }
 }

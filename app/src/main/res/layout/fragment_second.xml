@@ -1,183 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/product_pic_viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_below="@+id/toolbar"
-        android:layout_centerHorizontal="true" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
-        android:id="@+id/btn_addToCart"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:padding="12dp"
-        android:text="Add to cart"/>
+        android:background="@color/white">
 
-    <TableLayout
-        android:id="@+id/tableTv"
-        android:layout_below="@+id/product_pic_viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <include
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <TableRow
+        <android.support.v4.view.ViewPager
+            android:id="@+id/product_pic_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_centerHorizontal="true" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:textColor="@color/white"
+            android:layout_below="@+id/rl_tv"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/btn_addToCart"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:text="Add to cart"/>
 
-            <TextView
-                android:padding="10dp"
-                android:text="Product Name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <TableLayout
+            android:id="@+id/tableTv"
+            android:layout_below="@+id/product_pic_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Product One"
-                android:layout_width="wrap_content"
+            <TableRow
                 android:layout_height="wrap_content"
-                android:id="@+id/tv1"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:padding="10dp"
-                android:text="Product Type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Product One"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv2"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:padding="10dp"
-                android:text="Product Pieces"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Product One"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv3"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:padding="10dp"
-                android:text="Product Cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="10$"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv4"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:padding="10dp"
-                android:text="Product Order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <LinearLayout
-                android:weightSum="3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_above="@id/btn_addToCart">
-
-                <Button
-                    android:layout_weight="1"
-                    android:id="@+id/btn_plus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="+"
-                    android:textColor="@color/white" />
+                android:layout_width="match_parent">
 
                 <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/num_order"
+                    android:padding="10dp"
+                    android:text="Product Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
+
+                <TextView
                     android:gravity="center"
-                    android:hint="1"
-                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:text="Product One"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+                    android:id="@+id/tv_product_name"/>
+            </TableRow>
 
-                <Button
-                    android:layout_weight="1"
-                    android:id="@+id/btn_minus"
-                    android:layout_width="0dp"
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:padding="10dp"
+                    android:text="Product Type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
+
+                <TextView
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Product One"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    android:id="@+id/tv_product_type"/>
+            </TableRow>
 
-        </TableRow>
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
 
-    </TableLayout>
-</RelativeLayout>
+                <TextView
+                    android:padding="10dp"
+                    android:text="Product Pieces"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
+
+                <TextView
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Product One"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_product_pieces"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:padding="10dp"
+                    android:text="Product Cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
+
+                <TextView
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="10$"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_product_cost"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:padding="10dp"
+                    android:text="Product Order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
+
+                <LinearLayout
+                    android:weightSum="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_above="@id/btn_addToCart">
+
+                    <Button
+                        android:layout_weight="1"
+                        android:id="@+id/btn_plus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/num_order"
+                        android:gravity="center"
+                        android:hint="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+                    <Button
+                        android:layout_weight="1"
+                        android:id="@+id/btn_minus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/tableTv"
+            android:id="@+id/linear_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="_________________________________________________"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tv"
+            android:layout_below="@+id/linear_line"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <TextView
+                android:id="@+id/tv_product_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="ADDRESS"
+                android:textStyle="bold"
+                android:layout_toLeftOf="@+id/iv_edit_address"
+                android:layout_toStartOf="@+id/iv_edit_address"/>
+
+            <TextView
+                android:id="@+id/tv_product_address_input"
+                android:layout_below="@id/tv_product_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Enter address to be deliver"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+
+            <ImageView
+                android:id="@+id/iv_edit_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pencil"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_below="@+id/tv_product_address_input"
+                android:id="@+id/tv_product_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="NOTE"
+                android:textStyle="bold"
+                android:layout_toLeftOf="@+id/iv_edit_note"
+                android:layout_toStartOf="@+id/iv_edit_note"/>
+
+            <TextView
+                android:id="@+id/tv_product_note_input"
+                android:layout_below="@id/tv_product_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Enter some note"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+
+            <ImageView
+                android:id="@+id/iv_edit_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pencil"
+                android:layout_alignTop="@+id/tv_product_note"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

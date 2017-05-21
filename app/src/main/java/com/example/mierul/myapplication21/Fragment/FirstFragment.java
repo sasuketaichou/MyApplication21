@@ -57,7 +57,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
         helper = new FirebaseHelper();
         //get picture Url
-        helper.getProductDetails();
+        helper.getProductPicture();
     }
 
     @Nullable
@@ -171,8 +171,11 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     @Override
     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-        String[] url = item.get(position).toArray();
-        replaceFragment(SecondFragment.newInstance(url));
+        ProductUrlPictureModel model = item.get(position);
+        String[] url = model.toArray();
+        String key = model.getKey();
+        Log.v("naruto","key is "+key);
+        replaceFragment(SecondFragment.newInstance(url,key));
     }
 
     @Override
@@ -223,17 +226,5 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             item.add(model);
         }
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 }

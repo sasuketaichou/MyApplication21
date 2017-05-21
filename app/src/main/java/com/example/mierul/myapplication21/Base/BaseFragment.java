@@ -13,6 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.mierul.myapplication21.FragmentStack;
 import com.example.mierul.myapplication21.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -161,5 +163,19 @@ public abstract class BaseFragment extends Fragment {
                     .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
 }
 

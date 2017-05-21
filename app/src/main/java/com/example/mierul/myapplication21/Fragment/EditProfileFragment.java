@@ -45,12 +45,19 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         View view = null;
 
-        if(position != 2 ){
-            view = inflater.inflate(R.layout.fragment_edit_profile,container,false);
-            view.findViewById(R.id.user_profile_edit).requestFocus();
-        } else {
-            view = inflater.inflate(R.layout.fragment_edit_profile_address,container,false);
+        switch (position){
+            case 0:
+            case 1:
+            case 3:
+                view = inflater.inflate(R.layout.fragment_edit_profile,container,false);
+                view.findViewById(R.id.user_profile_edit).requestFocus();
+                break;
+            case 2:
+            case 4:
+                view = inflater.inflate(R.layout.fragment_edit_profile_address,container,false);
+                break;
         }
+
         view.findViewById(R.id.btn_user_ok).setOnClickListener(this);
         view.findViewById(R.id.btn_user_cancel).setOnClickListener(this);
 
@@ -97,7 +104,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         switch (v.getId()){
             case R.id.btn_user_ok:
                 FirebaseHelper helper = new FirebaseHelper();
-                if(position != 2 && getView() != null) {
+                if(position != 2 && position!= 4 && getView() != null) {
                     EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
                     helper.setDetails(childNode.getNode(), editText.getText().toString());
                 } else if (getView()!= null){
@@ -110,7 +117,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
 
                     String userAddress = address+comma+city+comma+postcode+comma+country;
-                    helper.setDetails(childNode.getNode(),userAddress);
+                    if(position == 2){
+                        helper.setDetails(childNode.getNode(),userAddress);
+                    }
+
+                    //Todo for position 4, sent edited adress to db and show in SecondFragment
                 }
                 break;
 
@@ -127,17 +138,5 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         } else {
             //Todo tell user the error
         }
-    }
-
-    @Override
-    public void onStart() {
-        EventBus.getDefault().register(this);
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
     }
 }

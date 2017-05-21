@@ -5,6 +5,7 @@ package com.example.mierul.myapplication21.Model;
  */
 
 public class ProductUrlPictureModel {
+    public String key;
     public String image_1;
     public String image_2;
     public String image_3;
@@ -17,4 +18,11 @@ public class ProductUrlPictureModel {
         return new String[]{image_1,image_2,image_3,image_4};
     }
 
+    public String getKey(){
+        return key;
+    }
+
+    public void addKey(String key) {
+        this.key = key;
+    }
 }

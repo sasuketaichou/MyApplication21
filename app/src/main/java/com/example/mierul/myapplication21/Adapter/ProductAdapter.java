@@ -50,7 +50,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         //image.setImageResource(R.drawable.default_thumbnail);
 
         Glide.with(context)
-                .load(model.pushId1)
+                .load(model.image_1)
                 .into(image);
     }
 

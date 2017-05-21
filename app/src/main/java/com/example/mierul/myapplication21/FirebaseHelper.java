@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.mierul.myapplication21.Model.OrderKeyModel;
+import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
@@ -40,12 +42,13 @@ public class FirebaseHelper {
     private final static String TAG = "FirebaseHelper";
     private Context context;
 
-    private final String CHILD_USERS = "users";
+    private final String ROOT_USERS = "users";
+    private final String ROOT_PRODUCT = "product";
+    private final String ROOT_ORDERS = "orders";
     private final String CHILD_PROFILE = "Profile";
     private final String CHILD_URL = "url";
     private final String CHILD_ORDER = "Order";
     private final String CHILD_IMAGE = "Image";
-    private final String CHILD_PRODUCT = "product";
 
     public FirebaseHelper(Context context){
         this.context = context;
@@ -164,7 +167,10 @@ public class FirebaseHelper {
     private void setNewUserDetails(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference usersProfile = getUsersProfileRef();
-        usersProfile.setValue(new ProfileDetailsModel("Edit your name","Edit your address","Add your contact number",mAuth.getCurrentUser().getEmail()));
+        usersProfile.setValue(new ProfileDetailsModel("Edit your name",
+                "Edit your address",
+                "Add your contact number",
+                mAuth.getCurrentUser().getEmail()));
     }
 
     private DatabaseReference getRootRef(){
@@ -173,12 +179,12 @@ public class FirebaseHelper {
 
     private DatabaseReference getUsersRef(){
         String uId = getUid();
-        return uId.isEmpty()? null:getRootRef().child(CHILD_USERS).child(uId);
+        return uId.isEmpty()? null:getRootRef().child(ROOT_USERS).child(uId);
     }
 
     private DatabaseReference getOrdersRef(){
         String uId = getUid();
-        return uId.isEmpty()? null:getRootRef().child("orders").child(uId);
+        return uId.isEmpty()? null:getRootRef().child(ROOT_ORDERS).child(uId);
     }
 
     private DatabaseReference getUsersProfileRef(){
@@ -214,14 +220,9 @@ public class FirebaseHelper {
                 .into(imageView);
     }
 
-    public void getProductDetails(){
-        getProductPicture();
-        getProductProfile();
-    }
+    public void getProductPicture(){
 
-    private void getProductPicture(){
-
-        DatabaseReference productImageRef = getRootRef().child(CHILD_PRODUCT)
+        DatabaseReference productImageRef = getRootRef().child(ROOT_PRODUCT)
                 .child(CHILD_IMAGE);
 
         ValueEventListener eventListener = new ValueEventListener() {
@@ -233,6 +234,7 @@ public class FirebaseHelper {
                 List<ProductUrlPictureModel> productUrlPictureModels = new ArrayList<>();
                 for(DataSnapshot mSnapshot: productChildImage){
                     ProductUrlPictureModel model = mSnapshot.getValue(ProductUrlPictureModel.class);
+                    model.addKey(mSnapshot.getKey());
                     productUrlPictureModels.add(model);
 
                 }
@@ -249,24 +251,18 @@ public class FirebaseHelper {
 
     }
 
-    private void getProductProfile(){
+    public void getProductProfile(String key){
 
-        DatabaseReference productProfileRef = getRootRef().child(CHILD_PRODUCT)
-                .child(CHILD_PROFILE);
+        DatabaseReference productProfileRef = getRootRef().child(ROOT_PRODUCT)
+                .child(CHILD_PROFILE)
+                .child(key);
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Iterable<DataSnapshot> productChildProfile = dataSnapshot.getChildren();
-
-                List<ProductProfileModel> productProfileModels = new ArrayList<>();
-                for(DataSnapshot mSnapshot: productChildProfile){
-                    ProductProfileModel model = mSnapshot.getValue(ProductProfileModel.class);
-                    productProfileModels.add(model);
-
-                }
-                postToBus(new FirebaseListEvent(productProfileModels));
+                ProductProfileModel model = dataSnapshot.getValue(ProductProfileModel.class);
+                postToBus(model);
             }
 
             @Override
@@ -282,7 +278,8 @@ public class FirebaseHelper {
     }
 
     public void testing(){
-        DatabaseReference ref = getRootRef().child(CHILD_URL).child(CHILD_IMAGE).child(CHILD_PRODUCT);
+        //BROKEN
+        DatabaseReference ref = getRootRef().child(CHILD_URL).child(CHILD_IMAGE).child(ROOT_PRODUCT);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -296,5 +293,74 @@ public class FirebaseHelper {
         });
 
         Log.v("naruto","runnning");
+    }
+
+    public void addOrder(OrdersDetailsModel model) {
+
+        DatabaseReference orderRef = getOrdersRef();
+        String ordersId =orderRef.push().getKey();
+        DatabaseReference ordersUserKey = orderRef.child(ordersId);
+        ordersUserKey.setValue(model);
+
+        DatabaseReference userOrderRef = getUsersOrderRef();
+        userOrderRef.push().setValue(ordersId);
+
+    }
+
+    public void getOrder() {
+
+        DatabaseReference userOrderRef = getUsersOrderRef();
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> order = dataSnapshot.getChildren();
+
+                List<String> list = new ArrayList<>();
+                for (DataSnapshot mSnapshot: order){
+                    OrderKeyModel model = mSnapshot.getValue(OrderKeyModel.class);
+                    String key =model.key;
+                    list.add(key);
+                }
+                getOrderByKey(list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        userOrderRef.addValueEventListener(eventListener);
+    }
+
+    private void getOrderByKey(final List<String> key){
+
+        DatabaseReference orderRef = getOrdersRef();
+
+        final List<OrdersDetailsModel> list = new ArrayList<>();
+
+        for (int i=0;i<key.size();i++){
+
+            DatabaseReference orderKeyRef = orderRef.child(key.get(i));
+            final int end = i;
+            orderKeyRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    OrdersDetailsModel model = dataSnapshot.getValue(OrdersDetailsModel.class);
+                    list.add(model);
+
+                    if(end == key.size()-1){
+                        //postobus after reach end loop
+                        postToBus(new FirebaseListEvent(list));
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
     }
 }

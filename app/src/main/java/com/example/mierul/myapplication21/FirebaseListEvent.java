@@ -7,17 +7,14 @@ import java.util.List;
  */
 
 public class FirebaseListEvent {
-    public List<Object> list;
+    public List<?> list;
 
-    public FirebaseListEvent(List<Object> list){
+    public FirebaseListEvent(List<?> list){
         this.list = list;
     }
 
-    public List<Object> getList(){
+    public List<?> getList(){
         return list;
     }
 
-    public void add(List<Object> list){
-        this.list.add(list);
-    }
 }

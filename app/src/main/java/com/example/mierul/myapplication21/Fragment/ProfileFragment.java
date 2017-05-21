@@ -90,18 +90,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         replaceFragment(EditProfileFragment.newInstance(position));
     }
 
-    @Override
-    public void onStart() {
-        EventBus.getDefault().register(this);
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
     @Subscribe
     public void FirebaseHelperListener(ProfileDetailsModel model){
         //update ui after finish loading data

@@ -160,19 +160,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         return true;
     }
 
-    @Override
-    public void onStart() {
-        EventBus.getDefault().register(this);
-        super.onStart();
-
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
     @Subscribe
     public void FirebaseHelperListener(FirebaseBooleanEvent result){
         if(result.getResult()){
