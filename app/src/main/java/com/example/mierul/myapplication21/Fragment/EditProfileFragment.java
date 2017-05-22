@@ -2,6 +2,7 @@ package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,11 @@ import android.widget.EditText;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.FirebaseHelper;
-import com.example.mierul.myapplication21.FirebaseBooleanEvent;
+import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
+import com.example.mierul.myapplication21.OrderForm;
 import com.example.mierul.myapplication21.R;
+import com.example.mierul.myapplication21.RealmHelper;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 /**
@@ -23,6 +25,9 @@ import org.greenrobot.eventbus.Subscribe;
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
     private int position;
     private Constant childNode;
+    private RealmHelper rHelper;
+    private FirebaseHelper helper;
+    private OrderForm form;
 
     public static EditProfileFragment newInstance(int position) {
 
@@ -37,6 +42,15 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt("position");
+        rHelper = new RealmHelper(getContext());
+        helper = new FirebaseHelper();
+
+        form = rHelper.getOrder(helper.getId());
+        if(form == null){
+            Log.v("naruto","Form is null from EditProfileFragment");
+            form = new OrderForm();
+            form.setId(helper.getId());
+        }
     }
 
     @Nullable
@@ -49,6 +63,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             case 0:
             case 1:
             case 3:
+            case 5:
                 view = inflater.inflate(R.layout.fragment_edit_profile,container,false);
                 view.findViewById(R.id.user_profile_edit).requestFocus();
                 break;
@@ -88,6 +103,12 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 mTitle = Constant.PROFILE_CONTACT;
                 childNode = Constant.NODE_CONTACT;
                 break;
+            case 4:
+                mTitle = Constant.PRODUCT_ADDRESS;
+                break;
+            case 5:
+                mTitle = Constant.PRODUCT_NOTE;
+                break;
         }
         return mTitle.getTitle();
     }
@@ -103,25 +124,41 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         switch (v.getId()){
             case R.id.btn_user_ok:
-                FirebaseHelper helper = new FirebaseHelper();
-                if(position != 2 && position!= 4 && getView() != null) {
-                    EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
-                    helper.setDetails(childNode.getNode(), editText.getText().toString());
-                } else if (getView()!= null){
-                    View view = getView();
-                    String address = ((EditText)view.findViewById(R.id.address_address)).getText().toString();
-                    String city = ((EditText)view.findViewById(R.id.address_city)).getText().toString();
-                    String country = "Malaysia"; //((EditText)view.findViewById(R.id.address_country)).getText().toString();
-                    String postcode = ((EditText)view.findViewById(R.id.address_postcode)).getText().toString();
-                    String comma = ", ";
 
+                switch (position){
+                    case 0:
+                    case 1:
+                    case 3:
+                    case 5:
+                        EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
+                        if(position != 5){
+                            helper.setDetails(childNode.getNode(), editText.getText().toString());
+                        } else {
+                            form.setNote(editText.getText().toString());
+                            rHelper.saveOrder(form);
+                            Log.v("naruto","after click ok, note form is :"+form.getNote());
+                            previousFragment();
+                        }
+                        break;
+                    case 2:
+                    case 4:
+                        View view = getView();
+                        String address = ((EditText)view.findViewById(R.id.address_address)).getText().toString();
+                        String city = ((EditText)view.findViewById(R.id.address_city)).getText().toString();
+                        String country = "Malaysia"; //((EditText)view.findViewById(R.id.address_country)).getText().toString();
+                        String postcode = ((EditText)view.findViewById(R.id.address_postcode)).getText().toString();
+                        String comma = ", ";
 
-                    String userAddress = address+comma+city+comma+postcode+comma+country;
-                    if(position == 2){
-                        helper.setDetails(childNode.getNode(),userAddress);
-                    }
-
-                    //Todo for position 4, sent edited adress to db and show in SecondFragment
+                        String userAddress = address+comma+city+comma+postcode+comma+country;
+                        if(position == 2){
+                            helper.setDetails(childNode.getNode(),userAddress);
+                        } else {
+                            form.setAddress(userAddress);
+                            rHelper.saveOrder(form);
+                            Log.v("naruto","after click ok, address form is :"+form.getAddress());
+                            previousFragment();
+                        }
+                        break;
                 }
                 break;
 

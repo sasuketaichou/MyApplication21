@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
-import com.example.mierul.myapplication21.FirebaseListEvent;
+import com.example.mierul.myapplication21.Event.FirebaseListEvent;
 import com.example.mierul.myapplication21.GridSpacingItemDecoration;
 import com.example.mierul.myapplication21.ItemClickSupport;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
@@ -32,7 +32,6 @@ import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.Adapter.ProductAdapter;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -148,7 +147,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
                 fragmentClass = NavSecond.class;
                 break;
             case R.id.nav_third_fragment:
-                fragmentClass = NavThird.class;
+                fragmentClass = CheckoutFragment.class;
                 break;
         }
 
@@ -174,7 +173,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         ProductUrlPictureModel model = item.get(position);
         String[] url = model.toArray();
         String key = model.getKey();
-        Log.v("naruto","key is "+key);
         replaceFragment(SecondFragment.newInstance(url,key));
     }
 

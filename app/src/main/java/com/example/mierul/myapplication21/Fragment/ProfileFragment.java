@@ -14,10 +14,9 @@ import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
-import com.example.mierul.myapplication21.ProfileAdapterEvent;
+import com.example.mierul.myapplication21.Event.ProfileAdapterEvent;
 import com.example.mierul.myapplication21.R;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 /**

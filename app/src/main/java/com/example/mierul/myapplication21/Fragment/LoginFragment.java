@@ -14,10 +14,9 @@ import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
-import com.example.mierul.myapplication21.FirebaseBooleanEvent;
+import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.R;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 /**

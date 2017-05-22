@@ -48,11 +48,13 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
                 .into(imageView);
 
         TextView address = holder.address;
-        //Todo edit model to get address
         address.setText(model.address);
 
         TextView order = holder.order;
         order.setText(model.numOrder);
+
+        TextView title = holder.title;
+        title.setText(model.productName);
     }
 
     @Override
@@ -64,10 +66,12 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
         ImageView imageView;
         TextView order;
         TextView address;
+        TextView title;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            title = (TextView)itemView.findViewById(R.id.checkOut_tv_title);
             imageView = (ImageView)itemView.findViewById(R.id.checkOut_iv);
             order = (TextView)itemView.findViewById(R.id.checkOut_tv_numOrder);
             address = (TextView)itemView.findViewById(R.id.checkOut_tv_user_address);

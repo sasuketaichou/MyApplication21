@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Event;
 
 /**
  * Created by Hexa-Amierul.Japri on 26/4/2017.

@@ -8,9 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Constant;
-import com.example.mierul.myapplication21.Fragment.ProfileFragment;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
-import com.example.mierul.myapplication21.ProfileAdapterEvent;
+import com.example.mierul.myapplication21.Event.ProfileAdapterEvent;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.EventBus;

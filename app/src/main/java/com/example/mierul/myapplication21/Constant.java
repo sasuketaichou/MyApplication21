@@ -11,6 +11,8 @@ public enum Constant {
     PROFILE_ADDRESS,
     PROFILE_EMAIL,
     PROFILE_CONTACT,
+    PRODUCT_ADDRESS,
+    PRODUCT_NOTE,
 
     //child node
     NODE_NAME,
@@ -24,6 +26,8 @@ public enum Constant {
             case PROFILE_ADDRESS: return "ADDRESS";
             case PROFILE_CONTACT: return "CONTACT";
             case PROFILE_EMAIL: return "EMAIL";
+            case PRODUCT_NOTE: return "NOTE";
+            case PRODUCT_ADDRESS: return "ADDRESS";
 
             default: return "empty";
         }

@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21;
+package com.example.mierul.myapplication21.Event;
 
 import java.util.List;
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,7 @@ import android.view.ViewGroup;
 import com.example.mierul.myapplication21.Adapter.CheckoutAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
-import com.example.mierul.myapplication21.FirebaseListEvent;
+import com.example.mierul.myapplication21.Event.FirebaseListEvent;
 import com.example.mierul.myapplication21.Model.CheckoutModel;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
@@ -39,8 +40,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         helper = new FirebaseHelper();
         //trigger get order
         helper.getOrder();
-        //trigger get picture
-        helper.getProductPicture();
+
     }
 
     @Nullable
@@ -53,7 +53,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new CheckoutAdapter(getContext(),item);
         recyclerView.setAdapter(adapter);
-
 
         return view;
     }
@@ -85,20 +84,22 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             if (checkUpdate == 0 || needUpdate > checkUpdate) {
                 checkUpdate = needUpdate;
                 refreshData(event);
+                //trigger get picture
+                helper.getProductPicture();
             }
         } else if(obj instanceof ProductUrlPictureModel){
             List<ProductUrlPictureModel> list = (List<ProductUrlPictureModel>)event.getList();
 
-            for(ProductUrlPictureModel model : list ){
-                for(int i =0; i<item.size();i++){
-
-                    if(item.get(i).key.equals(model.key)){
-                        item.get(i).url = model.image_1;
+            for (CheckoutModel model : item){
+                for (int i =0; i<list.size();i++){
+                    if(list.get(i).key.equals(model.key)){
+                        model.url = list.get(i).image_1;
                         break;
                     }
                 }
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
     private void refreshData(FirebaseListEvent event){
@@ -112,11 +113,17 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             String productName = model.productName;
             String numOrder = model.numOrder;
             String key = model.key;
+            String address = model.productAddress;
+            String note = model.productNote;
 
-            CheckoutModel checkoutModel = new CheckoutModel(productName,numOrder,key,"");
+            CheckoutModel checkoutModel = new CheckoutModel(productName,
+                    numOrder,
+                    key,
+                    "",
+                    address,
+                    note);
 
             item.add(checkoutModel);
         }
-        adapter.notifyDataSetChanged();
     }
 }

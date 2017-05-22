@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
+import com.example.mierul.myapplication21.Event.FirebaseListEvent;
 import com.example.mierul.myapplication21.Model.OrderKeyModel;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
@@ -318,8 +320,7 @@ public class FirebaseHelper {
 
                 List<String> list = new ArrayList<>();
                 for (DataSnapshot mSnapshot: order){
-                    OrderKeyModel model = mSnapshot.getValue(OrderKeyModel.class);
-                    String key =model.key;
+                    String key = mSnapshot.getValue(String.class);
                     list.add(key);
                 }
                 getOrderByKey(list);
@@ -362,5 +363,10 @@ public class FirebaseHelper {
             });
 
         }
+    }
+
+    public String getId(){
+        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return id.isEmpty() ? "empty":id;
     }
 }
