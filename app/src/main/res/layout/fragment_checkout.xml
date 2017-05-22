@@ -10,9 +10,12 @@
         android:layout_height="wrap_content"/>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrView_checkout"
         android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/btn_checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/checkOutRecyclerView"
             android:layout_width="match_parent"
@@ -21,15 +24,17 @@
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.v7.widget.AppCompatButton
-        android:textColor="@color/white"
-        android:background="@color/colorPrimaryDark"
         android:id="@+id/btn_checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="Checkout"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimaryDark"
+        android:padding="12dp"
+        android:text="Checkout"
+        android:textColor="@color/white" />
+
 
 </RelativeLayout>

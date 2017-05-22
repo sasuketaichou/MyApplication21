@@ -136,7 +136,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         } else {
                             form.setNote(editText.getText().toString());
                             rHelper.saveOrder(form);
-                            Log.v("naruto","after click ok, note form is :"+form.getNote());
                             previousFragment();
                         }
                         break;
@@ -155,7 +154,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         } else {
                             form.setAddress(userAddress);
                             rHelper.saveOrder(form);
-                            Log.v("naruto","after click ok, address form is :"+form.getAddress());
                             previousFragment();
                         }
                         break;

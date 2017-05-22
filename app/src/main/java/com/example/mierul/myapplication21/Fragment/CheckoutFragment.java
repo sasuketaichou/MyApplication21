@@ -90,11 +90,10 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         } else if(obj instanceof ProductUrlPictureModel){
             List<ProductUrlPictureModel> list = (List<ProductUrlPictureModel>)event.getList();
 
-            for (CheckoutModel model : item){
-                for (int i =0; i<list.size();i++){
-                    if(list.get(i).key.equals(model.key)){
-                        model.url = list.get(i).image_1;
-                        break;
+            for(CheckoutModel model: item){
+                for (ProductUrlPictureModel pModel : list){
+                    if(pModel.key.equals(model.key)){
+                        model.url = pModel.image_1;
                     }
                 }
             }

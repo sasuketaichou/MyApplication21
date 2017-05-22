@@ -36,23 +36,22 @@
         android:layout_height="wrap_content">
 
         <TableRow
+            android:weightSum="3"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
             <TextView
-                android:padding="10dp"
                 android:text="Address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:layout_gravity="center"
+                android:layout_gravity="start"
                 android:text=" : "
                 />
 
             <TextView
-                android:gravity="center"
-                android:padding="10dp"
+                android:layout_weight="1"
                 android:text="Product One"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,10 +63,9 @@
             android:layout_width="match_parent">
 
             <TextView
-                android:padding="10dp"
-                android:text="Number of Order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="Order" />
 
             <TextView
                 android:layout_gravity="center"
@@ -75,8 +73,6 @@
                 />
 
             <TextView
-                android:gravity="center"
-                android:padding="10dp"
                 android:text="Product One"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

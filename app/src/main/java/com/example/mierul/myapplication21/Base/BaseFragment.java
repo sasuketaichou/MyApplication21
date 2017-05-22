@@ -14,6 +14,7 @@ import com.example.mierul.myapplication21.FragmentStack;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -167,13 +168,23 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        try{
+            EventBus.getDefault().register(this);
+        } catch (EventBusException ebEx){
+            Log.e(TAG,"this class : "+getClass()+" do not have Subscriber");
+        }
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+        try {
+            EventBus.getDefault().unregister(this);
+        } catch (EventBusException ebEx){
+
+        }
+
     }
 
 
