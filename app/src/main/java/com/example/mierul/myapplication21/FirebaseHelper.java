@@ -337,7 +337,6 @@ public class FirebaseHelper {
     private void getOrderByKey(final List<String> key){
 
         DatabaseReference orderRef = getOrdersRef();
-
         final List<OrdersDetailsModel> list = new ArrayList<>();
 
         for (int i=0;i<key.size();i++){
@@ -355,13 +354,10 @@ public class FirebaseHelper {
                         postToBus(new FirebaseListEvent(list));
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
                 }
             });
-
         }
     }
 

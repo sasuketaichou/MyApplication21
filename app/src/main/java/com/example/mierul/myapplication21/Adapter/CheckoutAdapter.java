@@ -34,6 +34,9 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
         View view = inflater.inflate(R.layout.checkout_view,parent,false);
         CheckoutAdapter.ViewHolder viewHolder = new CheckoutAdapter.ViewHolder(view);
 
+        //TODO make button place in bottom
+        //add onItemLongclick listener to remove order
+
         return viewHolder;
     }
 

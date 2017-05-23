@@ -25,9 +25,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
     private FirebaseHelper helper;
-    private RecyclerView recyclerView;
     private String name;
     private String email;
+    private ProfileAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,8 +37,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         initView(view);
 
-        recyclerView = (RecyclerView)view.findViewById(R.id.profileRecyclerView);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.profileRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new ProfileAdapter(new ProfileDetailsModel());
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -92,8 +94,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Subscribe
     public void FirebaseHelperListener(ProfileDetailsModel model){
         //update ui after finish loading data
-        ProfileAdapter adapter = new ProfileAdapter(model);
-        recyclerView.setAdapter(adapter);
+        adapter.refresh(model);
         hideProgressDialog();
     }
 }

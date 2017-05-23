@@ -93,6 +93,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.product_pic_viewPager);
         viewPager.setAdapter(new ProductPicturePagerAdapter(getContext(),url));
 
+        //TODO add pager indicator
+
         productName = (TextView)view.findViewById(R.id.tv_product_name);
         productCost = (TextView)view.findViewById(R.id.tv_product_cost);
         productType = (TextView)view.findViewById(R.id.tv_product_type);
@@ -116,6 +118,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void checkOut(){
+
+        //TODO a dialog to confirm order
 
         String order = numberOfOrder.getText().toString();
         String name = productName.getText().toString();

@@ -42,6 +42,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         ProductUrlPictureModel model = item.get(position);
 
+        //TODO give name
         TextView textView = holder.name_product;
         textView.setText("empty");
         ImageView image = holder.pict_product;

@@ -91,6 +91,10 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         View headerLayout = navigationView.getHeaderView(0);
         setupHeaderLayout(headerLayout);
 
+        //TODO to add icon in drawer
+        //change name, pic and email in drawer
+        //change background drawer
+
         return view;
     }
 
@@ -146,7 +150,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             case R.id.nav_second_fragment:
                 fragmentClass = NavSecond.class;
                 break;
-            case R.id.nav_third_fragment:
+            case R.id.nav_checkout_fragment:
                 fragmentClass = CheckoutFragment.class;
                 break;
         }
@@ -180,6 +184,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.firstfragment_menu,menu);
+        //TODO change to sign in if no user auth
     }
 
     @Override

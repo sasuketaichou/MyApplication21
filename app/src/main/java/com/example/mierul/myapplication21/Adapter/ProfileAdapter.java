@@ -73,6 +73,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         return 4;
     }
 
+    public void refresh(ProfileDetailsModel model){
+        //release previous item
+        item = null;
+        item = model;
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView title;
