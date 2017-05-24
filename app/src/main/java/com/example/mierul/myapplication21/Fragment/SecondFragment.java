@@ -2,11 +2,14 @@ package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
@@ -31,18 +34,18 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     private OrderForm form;
     private String[] url;
     private String key;
-    private TextView numberOfOrder;
     private int mInteger =1;
     private FirebaseHelper helper;
     private RealmHelper rHelper;
 
-    TextView productName;
-    TextView productCost;
-    TextView productType;
-    TextView productPieces;
+    private TextView numberOfOrder;
+    private TextView productName;
+    private TextView productCost;
+    private TextView productType;
+    private TextView productPieces;
 
-    TextView address_input;
-    TextView note_input;
+    private TextView address_input;
+    private TextView note_input;
 
     public static SecondFragment newInstance(String[] url,String key) {
 
@@ -68,11 +71,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
         //get address from db and display
         String id = helper.getId();
-        if(!id.equals("empty")){
+        if(!id.isEmpty()){
             form = rHelper.getOrder(id);
-        } else {
-            //Todo ask to login first
-            //then enable view
         }
     }
 
@@ -84,11 +84,18 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         numberOfOrder = (TextView)view.findViewById(R.id.num_order);
         numberOfOrder.setText(String.valueOf(mInteger));
 
-        view.findViewById(R.id.btn_addToCart).setOnClickListener(this);
+        Button checkOutButton =(Button) view.findViewById(R.id.btn_addToCart);
+        checkOutButton.setOnClickListener(this);
+
+        if(!helper.isLogin()){
+            checkOutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_hold));
+        }
+
         view.findViewById(R.id.btn_plus).setOnClickListener(this);
         view.findViewById(R.id.btn_minus).setOnClickListener(this);
 
         initToolbar(view,TAG,true);
+        initCoordinatorLayout(view,R.id.second_coordinator_layout);
 
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.product_pic_viewPager);
         viewPager.setAdapter(new ProductPicturePagerAdapter(getContext(),url));
@@ -108,7 +115,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         view.findViewById(R.id.tv_product_note).setOnClickListener(this);
         note_input.setOnClickListener(this);
 
-
         if(form != null){
             address_input.setText(form.getAddress());
             note_input.setText(form.getNote());
@@ -118,9 +124,14 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void checkOut(){
+        if(helper.isLogin()){
+            proceedOrder();
+        } else {
+            holdOrder();
+        }
+    }
 
-        //TODO a dialog to confirm order
-
+    private void proceedOrder() {
         String order = numberOfOrder.getText().toString();
         String name = productName.getText().toString();
 
@@ -133,14 +144,18 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                 address,
                 note);
 
+        //TODO a dialog to confirm order
         helper.addOrder(model);
-
         replaceFragment(new CheckoutFragment());
+    }
+
+    private void holdOrder(){
+        //ask to login
+        snackBarToLogin("Please login before order");
     }
 
     @Override
     public void onClick(View v) {
-        int type = 4;
         switch(v.getId()){
             case R.id.btn_addToCart:
                 checkOut();
@@ -153,14 +168,20 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.tv_product_address:
             case R.id.tv_product_address_input:
-                type = 4;
-                replaceFragment(EditProfileFragment.newInstance(type));
+                holdEdit(4);
                 break;
             case R.id.tv_product_note:
             case R.id.tv_product_note_input:
-                type = 5;
-                replaceFragment(EditProfileFragment.newInstance(type));
+                holdEdit(5);
                 break;
+        }
+    }
+
+    private void holdEdit(int type) {
+        if(helper.isLogin()){
+            replaceFragment(EditProfileFragment.newInstance(type));
+        } else {
+            snackBarToLogin("Plese login before edit");
         }
     }
 
@@ -191,6 +212,4 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         }
 
     }
-
-
 }

@@ -2,6 +2,8 @@ package com.example.mierul.myapplication21.Base;
 
 import android.app.ProgressDialog;
 import android.content.res.AssetManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.mierul.myapplication21.Fragment.LoginFragment;
 import com.example.mierul.myapplication21.FragmentStack;
 import com.example.mierul.myapplication21.R;
 
@@ -32,6 +35,7 @@ public abstract class BaseFragment extends Fragment {
     private Toolbar toolbar = null;
     public ProgressDialog mProgressDialog;
     private InputMethodManager inputMethodManager;
+    private CoordinatorLayout coordinatorLayout;
 
     public void initToolbar(View view,String title,Boolean displayUp){
         try{
@@ -41,9 +45,17 @@ public abstract class BaseFragment extends Fragment {
             ap.setSupportActionBar(toolbar);
             ap.getSupportActionBar().setDisplayHomeAsUpEnabled(displayUp);
 
-        } catch (Exception e){
-            Log.e(TAG,"initToolbar: ",e);
+        } catch (NullPointerException npe){
+            Log.e(TAG,"initToolbar: ",npe);
 
+        }
+    }
+
+    public void initCoordinatorLayout(View view,int id){
+        try{
+            coordinatorLayout = (CoordinatorLayout)view.findViewById(id);
+        } catch (NullPointerException npe){
+            Log.e(TAG,"initCoordinatorLayout: ",npe);
         }
     }
 
@@ -182,9 +194,28 @@ public abstract class BaseFragment extends Fragment {
         try {
             EventBus.getDefault().unregister(this);
         } catch (EventBusException ebEx){
-
         }
+    }
 
+    public void snackBarToLogin(String message){
+        if(coordinatorLayout != null){
+            Snackbar.make(coordinatorLayout,
+                    message,
+                    Snackbar.LENGTH_LONG)
+                    .setAction("Login",snackbarLoginListener())
+                    .show();
+        }
+    }
+
+    private View.OnClickListener snackbarLoginListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int type = 1;
+                replaceFragment(LoginFragment.newInstance(type));
+            }
+        };
+        return listener;
     }
 
 

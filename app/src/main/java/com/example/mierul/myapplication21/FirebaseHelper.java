@@ -362,7 +362,13 @@ public class FirebaseHelper {
     }
 
     public String getId(){
-        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        return id.isEmpty() ? "empty":id;
+        String id ="";
+        try{
+            id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        } catch (NullPointerException npe){
+            Log.e(TAG,"getId",npe);
+        }
+
+        return id;
     }
 }

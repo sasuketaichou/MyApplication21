@@ -114,11 +114,12 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             String key = model.key;
             String address = model.productAddress;
             String note = model.productNote;
+            String url = "";
 
             CheckoutModel checkoutModel = new CheckoutModel(productName,
                     numOrder,
                     key,
-                    "",
+                    url,
                     address,
                     note);
 

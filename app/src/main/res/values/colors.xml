@@ -3,5 +3,10 @@
     <color name="colorPrimary">#00AA8D</color>
     <color name="colorPrimaryDark">#008975</color>
     <color name="colorAccent">#00BF9A</color>
+
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="button_default">#008975</color>
+    <color name="button_hold">#A9A9A9</color>
 </resources>
