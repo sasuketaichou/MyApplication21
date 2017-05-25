@@ -54,7 +54,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         helper = new FirebaseHelper();
         //get picture Url
         helper.getProductPicture();
@@ -64,20 +63,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first,container,false);
-
-        initToolbar(view,getClass().getSimpleName(),false);
-        initCoordinatorLayout(view,R.id.first_coordinator_layout);
-
-        drawer = (DrawerLayout)view.findViewById(R.id.drawerLayout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(),drawer,getToolbar(),
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView)view.findViewById(R.id.nav_view);
-        setupDrawerContent(navigationView);
 
         int numColumns = 2;
 
@@ -90,14 +75,33 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(this);
 
-        View headerLayout = navigationView.getHeaderView(0);
-        setupHeaderLayout(headerLayout);
-
         //TODO to add icon in drawer
         //change name, pic and email in drawer
         //change background drawer
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initCoordinatorLayout(R.id.first_coordinator_layout);
+
+        drawer = (DrawerLayout)view.findViewById(R.id.drawerLayout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(),drawer,getToolbar(),
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView)view.findViewById(R.id.nav_view);
+        setupDrawerContent(navigationView);
+
+        View headerLayout = navigationView.getHeaderView(0);
+        setupHeaderLayout(headerLayout);
+
     }
 
     //Converting dp to pixel

@@ -33,6 +33,8 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     private CheckoutAdapter adapter;
     private int checkUpdate;
 
+    private final String TAG = CheckoutFragment.class.getSimpleName();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +42,12 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         helper = new FirebaseHelper();
         //trigger get order
         helper.getOrder();
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_checkout,container,false);
-        initToolbar(view,CheckoutFragment.class.getSimpleName(),true);
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.checkOutRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

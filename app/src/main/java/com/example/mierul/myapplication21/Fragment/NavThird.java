@@ -40,7 +40,6 @@ public class NavThird extends BaseFragment {
         tv = (TextView)view.findViewById(R.id.tv);
         tv.setText(title);
 
-        initToolbar(view,title,true);
         return view;
     }
 }

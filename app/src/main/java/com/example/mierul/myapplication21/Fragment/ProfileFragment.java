@@ -33,7 +33,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
-        initToolbar(view,getClass().getSimpleName(),true);
 
         initView(view);
 

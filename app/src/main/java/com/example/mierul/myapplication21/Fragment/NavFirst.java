@@ -44,9 +44,14 @@ public class NavFirst extends BaseFragment {
         tv = (TextView)view.findViewById(R.id.tv);
         tv.setText(title);
 
-        initToolbar(view,title,true);
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setDisplayHomeAsUpEnabled();
     }
 
     @Override

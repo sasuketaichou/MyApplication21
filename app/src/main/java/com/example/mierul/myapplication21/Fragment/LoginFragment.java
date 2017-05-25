@@ -55,8 +55,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
         View view = inflater.inflate(R.layout.fragment_login,container,false);
 
-        initToolbar(view,LoginFragment.class.getSimpleName(),true);
-
         username = (EditText)view.findViewById(R.id.input_username);
         password = (EditText)view.findViewById(R.id.input_password);
 

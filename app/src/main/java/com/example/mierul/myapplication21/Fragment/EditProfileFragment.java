@@ -51,6 +51,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             form = new OrderForm();
             form.setId(helper.getId());
         }
+
+        String title = getTitle(position);
+        setTitle(title);
     }
 
     @Nullable
@@ -60,24 +63,20 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         View view = null;
 
         switch (position){
-            case 0:
-            case 1:
-            case 3:
-            case 5:
-                view = inflater.inflate(R.layout.fragment_edit_profile,container,false);
-                view.findViewById(R.id.user_profile_edit).requestFocus();
-                break;
             case 2:
             case 4:
                 view = inflater.inflate(R.layout.fragment_edit_profile_address,container,false);
                 break;
+            default:
+                view = inflater.inflate(R.layout.fragment_edit_profile,container,false);
+                view.findViewById(R.id.user_profile_edit).requestFocus();
+                break;
+
         }
 
         view.findViewById(R.id.btn_user_ok).setOnClickListener(this);
         view.findViewById(R.id.btn_user_cancel).setOnClickListener(this);
 
-        String title = getTitle(position);
-        initToolbar(view,title,true);
         //TODO make auto show softkeyboard
         //without lagging ui
         return view;

@@ -94,9 +94,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         view.findViewById(R.id.btn_plus).setOnClickListener(this);
         view.findViewById(R.id.btn_minus).setOnClickListener(this);
 
-        initToolbar(view,TAG,true);
-        initCoordinatorLayout(view,R.id.second_coordinator_layout);
-
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.product_pic_viewPager);
         viewPager.setAdapter(new ProductPicturePagerAdapter(getContext(),url));
 
@@ -121,6 +118,13 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initCoordinatorLayout(R.id.second_coordinator_layout);
     }
 
     public void checkOut(){

@@ -2,6 +2,8 @@ package com.example.mierul.myapplication21.Base;
 
 import android.app.ProgressDialog;
 import android.content.res.AssetManager;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.mierul.myapplication21.Fragment.FirstFragment;
 import com.example.mierul.myapplication21.Fragment.LoginFragment;
 import com.example.mierul.myapplication21.FragmentStack;
 import com.example.mierul.myapplication21.R;
@@ -36,14 +39,27 @@ public abstract class BaseFragment extends Fragment {
     public ProgressDialog mProgressDialog;
     private InputMethodManager inputMethodManager;
     private CoordinatorLayout coordinatorLayout;
+    private String title = "";
 
-    public void initToolbar(View view,String title,Boolean displayUp){
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(title.isEmpty()){
+            title = getClass().getSimpleName();
+        }
+        initToolbar(title);
+
+        Class first = getClass();
+        if(!first.isInstance(FirstFragment.class)){
+            setDisplayHomeAsUpEnabled();
+        }
+    }
+
+    public void initToolbar(String title){
         try{
-            toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+            toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
             toolbar.setTitle(title);
-            AppCompatActivity ap = (AppCompatActivity)getActivity();
-            ap.setSupportActionBar(toolbar);
-            ap.getSupportActionBar().setDisplayHomeAsUpEnabled(displayUp);
 
         } catch (NullPointerException npe){
             Log.e(TAG,"initToolbar: ",npe);
@@ -51,9 +67,19 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public void initCoordinatorLayout(View view,int id){
+    public void setTitle(String title){
+        this.title = title;
+    }
+
+    public void setDisplayHomeAsUpEnabled(){
+        AppCompatActivity ap = (AppCompatActivity)getActivity();
+        ap.setSupportActionBar(toolbar);
+        ap.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void initCoordinatorLayout(int id){
         try{
-            coordinatorLayout = (CoordinatorLayout)view.findViewById(id);
+            coordinatorLayout = (CoordinatorLayout)getView().findViewById(id);
         } catch (NullPointerException npe){
             Log.e(TAG,"initCoordinatorLayout: ",npe);
         }
@@ -62,6 +88,7 @@ public abstract class BaseFragment extends Fragment {
     public Toolbar getToolbar(){
         if(toolbar == null){
             Log.e(TAG,"toolbar is null");
+            initToolbar(title);
         }
         return toolbar;
     }
