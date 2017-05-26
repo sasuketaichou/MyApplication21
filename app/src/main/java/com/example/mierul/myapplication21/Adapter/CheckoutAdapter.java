@@ -26,14 +26,14 @@ import java.util.Map;
  */
 
 public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHolder> {
-    List<CheckoutModel> item;
-    List<CheckoutModel> itemsPendingRemoval;
-    boolean undoOn;
+    private List<CheckoutModel> item;
+    private List<CheckoutModel> itemsPendingRemoval;
     private Handler handler = new Handler();
-    Map<CheckoutModel, Runnable> pendingRunnables = new HashMap<>();
-    Context context;
+    private Map<CheckoutModel, Runnable> pendingRunnables = new HashMap<>();
+    private Context context;
 
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
+    private boolean undoOn;
 
     public CheckoutAdapter(Context context, List<CheckoutModel> item) {
         this.item = item;
@@ -114,6 +114,49 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
     public int getItemCount() {
         return item.size();
     }
+
+    public void setUndoOn(boolean undoOn) {
+        this.undoOn = undoOn;
+    }
+
+    public boolean isUndoOn() {
+        return undoOn;
+    }
+
+    public void pendingRemoval(int position) {
+        final CheckoutModel model = item.get(position);
+        if (!itemsPendingRemoval.contains(model)) {
+            itemsPendingRemoval.add(model);
+            // this will redraw row in "undo" state
+            notifyItemChanged(position);
+            // let's create, store and post a runnable to remove the item
+            Runnable pendingRemovalRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    remove(item.indexOf(model));
+                }
+            };
+            handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT);
+            pendingRunnables.put(model, pendingRemovalRunnable);
+        }
+    }
+
+    public void remove(int position) {
+        CheckoutModel model = item.get(position);
+        if (itemsPendingRemoval.contains(model)) {
+            itemsPendingRemoval.remove(model);
+        }
+        if (item.contains(model)) {
+            item.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public boolean isPendingRemoval(int position) {
+        CheckoutModel model = item.get(position);
+        return itemsPendingRemoval.contains(model);
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
