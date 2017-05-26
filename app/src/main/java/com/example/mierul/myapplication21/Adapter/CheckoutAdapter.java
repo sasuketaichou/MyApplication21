@@ -28,8 +28,8 @@ import java.util.Map;
 public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHolder> {
     private List<CheckoutModel> item;
     private List<CheckoutModel> itemsPendingRemoval;
-    private Handler handler = new Handler();
-    private Map<CheckoutModel, Runnable> pendingRunnables = new HashMap<>();
+    private Handler handler;
+    private Map<CheckoutModel, Runnable> pendingRunnables;
     private Context context;
 
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
@@ -38,7 +38,9 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
     public CheckoutAdapter(Context context, List<CheckoutModel> item) {
         this.item = item;
         this.context = context;
-        this.itemsPendingRemoval = new ArrayList<>();
+        itemsPendingRemoval = new ArrayList<>();
+        handler  = new Handler();
+        pendingRunnables = new HashMap<>();
     }
 
     @Override

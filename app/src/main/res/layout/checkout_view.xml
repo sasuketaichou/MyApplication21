@@ -92,11 +92,11 @@
             android:layout_width="match_parent">
 
             <Button
-                android:visibility="gone"
                 android:text="Undo"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:id="@+id/btn_undo"/>
+                android:id="@+id/btn_undo"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"/>
         </TableRow>
 
 
