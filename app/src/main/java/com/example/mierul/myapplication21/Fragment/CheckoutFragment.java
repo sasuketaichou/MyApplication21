@@ -55,7 +55,9 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CheckoutAdapter(getContext(),item);
         recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),layoutManager.getOrientation()));
+
 
         return view;
     }
