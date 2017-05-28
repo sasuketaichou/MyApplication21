@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.ConfirmDialogFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
@@ -149,6 +150,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         //TODO a dialog to confirm order
         helper.addOrder(model);
         replaceFragment(new CheckoutFragment());
+        new ConfirmDialogFragment().show(getFragmentManager(),"");
     }
 
     private void holdOrder(){
