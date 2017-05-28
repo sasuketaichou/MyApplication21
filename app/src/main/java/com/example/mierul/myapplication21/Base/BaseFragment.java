@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.mierul.myapplication21.Fragment.FirstFragment;
 import com.example.mierul.myapplication21.Fragment.LoginFragment;
 import com.example.mierul.myapplication21.FragmentStack;
+import com.example.mierul.myapplication21.MainActivity;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,7 +39,6 @@ public abstract class BaseFragment extends Fragment {
     private Toolbar toolbar = null;
     public ProgressDialog mProgressDialog;
     private InputMethodManager inputMethodManager;
-    private CoordinatorLayout coordinatorLayout;
     private String title = "";
 
     @Override
@@ -77,12 +77,8 @@ public abstract class BaseFragment extends Fragment {
         ap.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void initCoordinatorLayout(int id){
-        try{
-            coordinatorLayout = (CoordinatorLayout)getView().findViewById(id);
-        } catch (NullPointerException npe){
-            Log.e(TAG,"initCoordinatorLayout: ",npe);
-        }
+    private CoordinatorLayout getCoordinatorLayout() {
+        return (CoordinatorLayout) getActivity().findViewById(R.id.main_coordinator_layout);
     }
 
     public Toolbar getToolbar(){
@@ -225,8 +221,9 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void snackBarToLogin(String message){
-        if(coordinatorLayout != null){
-            Snackbar.make(coordinatorLayout,
+        CoordinatorLayout layout = getCoordinatorLayout();
+        if(layout != null){
+            Snackbar.make(layout,
                     message,
                     Snackbar.LENGTH_LONG)
                     .setAction("Login",snackbarLoginListener())

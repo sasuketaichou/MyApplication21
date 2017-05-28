@@ -123,8 +123,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        initCoordinatorLayout(R.id.second_coordinator_layout);
     }
 
     public void checkOut(){

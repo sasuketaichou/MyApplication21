@@ -86,8 +86,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initCoordinatorLayout(R.id.first_coordinator_layout);
-
         drawer = (DrawerLayout)view.findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(),drawer,getToolbar(),
                 R.string.navigation_drawer_open,

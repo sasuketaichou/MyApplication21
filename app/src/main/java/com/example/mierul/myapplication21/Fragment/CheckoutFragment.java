@@ -83,7 +83,9 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT){
-                    adapter.removeItem(position);
+                    //adapter.removeItem(position);
+                    //show confirm dialog
+                    confirmDel(position);
                 }
             }
 
@@ -117,6 +119,10 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         };
 
         return simpleCallback;
+    }
+
+    private void confirmDel(int position) {
+
     }
 
     public static CheckoutFragment newInstance(String address) {
