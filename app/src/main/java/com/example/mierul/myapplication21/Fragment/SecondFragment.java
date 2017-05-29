@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.ConfirmDialogFragment;
+import com.example.mierul.myapplication21.Event.ConfirmDialogFragmentEvent;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
@@ -30,7 +31,7 @@ import org.w3c.dom.Text;
  * Created by mierul on 3/16/2017.
  */
 
-public class SecondFragment extends BaseFragment implements View.OnClickListener {
+public class SecondFragment extends BaseFragment implements View.OnClickListener{
     private static final String TAG = "SecondFragment";
     private OrderForm form;
     private String[] url;
@@ -38,6 +39,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     private int mInteger =1;
     private FirebaseHelper helper;
     private RealmHelper rHelper;
+    private OrdersDetailsModel model;
 
     private TextView numberOfOrder;
     private TextView productName;
@@ -141,16 +143,19 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         String address = address_input.getText().toString();
         String note = note_input.getText().toString();
 
-        OrdersDetailsModel model = new OrdersDetailsModel(name,
+        String total = getTotal();
+
+        model = new OrdersDetailsModel(name,
                 order,
                 key,
                 address,
-                note);
+                note,
+                total);
 
-        //TODO a dialog to confirm order
-        helper.addOrder(model);
-        replaceFragment(new CheckoutFragment());
-        new ConfirmDialogFragment().show(getFragmentManager(),"");
+        ConfirmDialogFragment dialogFragment = ConfirmDialogFragment.newInstance(model);
+        dialogFragment.show(getFragmentManager(),ConfirmDialogFragment.class.getSimpleName());
+
+        //switchFragment(ConfirmDialogFragment.newInstance(model));
     }
 
     private void holdOrder(){
@@ -208,11 +213,29 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     public void FirebaseHelperListener(ProductProfileModel event){
 
         if (event != null){
-            String cost = "RM "+event.getCost();
             productName.setText(event.name);
-            productCost.setText(cost);
+            productCost.setText(event.getCost());
             productPieces.setText(event.getPieces());
             productType.setText(event.type);
+        }
+
+    }
+
+    public String getTotal() {
+
+        String cost = productCost.getText().toString();
+        int integerCost = Integer.valueOf(cost);
+
+        int integerTotal = integerCost * mInteger;
+
+        return String.valueOf(integerTotal);
+    }
+
+    @Subscribe
+    public void onConfirmDialogFragmentListener(ConfirmDialogFragmentEvent result) {
+        if(result.getResult()){
+            helper.addOrder(model);
+            replaceFragment(new CheckoutFragment());
         }
 
     }
