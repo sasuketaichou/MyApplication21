@@ -27,6 +27,7 @@ public class ConfirmDialogFragment extends BottomSheetDialogFragment implements 
         super.onCreate(savedInstanceState);
         model = getArguments().getParcelable(modelTag);
         eventBus =EventBus.getDefault();
+
     }
 
     @Nullable
@@ -66,6 +67,8 @@ public class ConfirmDialogFragment extends BottomSheetDialogFragment implements 
                 postToBus(new ConfirmDialogFragmentEvent(false));
                 break;
         }
+
+        dismiss();
     }
 
     private void postToBus(Object event){

@@ -2,10 +2,8 @@ package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +21,7 @@ import com.example.mierul.myapplication21.OrderForm;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.RealmHelper;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.w3c.dom.Text;
 
 /**
  * Created by mierul on 3/16/2017.

@@ -1,171 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_confirm"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:behavior_hideable="true"
-    app:behavior_peekHeight="20dp"
-    app:layout_behavior="@string/bottom_sheet_behavior"
-    android:layout_height="300dp">
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
-    <TextView
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:padding="10dp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:id="@+id/title_dialog"
-        android:text="Confirm Order"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-
-    <TableLayout
-        android:layout_below="@+id/title_dialog"
-        android:id="@+id/confirm_dialog_table_layout"
-        android:padding="10dp"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TableRow
-            android:background="@color/grey"
+        <TextView
+            android:id="@+id/title_dialog"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:background="@color/colorPrimaryDark"
+            android:padding="15dp"
+            android:text="Confirm Order"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
-            <TextView
-                android:padding="10dp"
-                android:text="Product Name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:id="@+id/tv_product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Product One"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textAllCaps="true"/>
-        </TableRow>
-
-        <TableRow
+        <TableLayout
+            android:id="@+id/confirm_dialog_table_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_below="@+id/title_dialog"
+            android:padding="10dp">
 
-            <TextView
-                android:padding="10dp"
-                android:text="Address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:id="@+id/tv_product_address"
-                android:layout_width="wrap_content"
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="User address"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
-        </TableRow>
+                android:background="@color/grey">
 
-        <TableRow
-            android:background="@color/grey"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Product Name" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : " />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/tv_product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Product One"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Address" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : " />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/tv_product_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="User address"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Note" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : " />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/tv_product_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Note"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Order" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : " />
+
+                <TextView
+                    android:id="@+id/tv_product_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="0"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="TOTAL"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : " />
+
+                <TextView
+                    android:id="@+id/tv_product_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="0"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@color/red"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+
+        <include
+            layout="@layout/button_confirm"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/confirm_dialog_table_layout" />
 
-            <TextView
-                android:padding="10dp"
-                android:text="Note"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:id="@+id/tv_product_note"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Note"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
-        </TableRow>
-
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:padding="10dp"
-                android:text="Order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:id="@+id/tv_product_order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="0"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
-        </TableRow>
-
-        <TableRow
-            android:background="@color/grey"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <TextView
-                android:textStyle="bold"
-                android:padding="10dp"
-                android:text="TOTAL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
-
-            <TextView
-                android:textStyle="bold"
-                android:textColor="@color/red"
-                android:id="@+id/tv_product_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="0"
-                android:textAppearance="@style/TextAppearance.AppCompat" />
-        </TableRow>
-    </TableLayout>
-
-    <include
-        layout="@layout/button_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
