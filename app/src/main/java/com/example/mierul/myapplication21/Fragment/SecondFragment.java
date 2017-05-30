@@ -149,7 +149,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                 total);
 
         ConfirmDialogFragment dialogFragment = ConfirmDialogFragment.newInstance(model);
-        dialogFragment.show(getFragmentManager(),ConfirmDialogFragment.class.getSimpleName());
+        dialogFragment.show(getFragmentManager(),dialogFragment.getTag());
 
         //switchFragment(ConfirmDialogFragment.newInstance(model));
     }

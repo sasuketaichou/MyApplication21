@@ -58,6 +58,9 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
 
         TextView title = holder.title;
         title.setText(model.productName);
+
+        TextView total =holder.total;
+        total.setText(model.total);
     }
 
     @Override
@@ -76,6 +79,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
         TextView order;
         TextView address;
         TextView title;
+        TextView total;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -84,6 +88,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
             imageView = (ImageView)itemView.findViewById(R.id.checkOut_iv);
             order = (TextView)itemView.findViewById(R.id.checkOut_tv_numOrder);
             address = (TextView)itemView.findViewById(R.id.checkOut_tv_user_address);
+            total = (TextView)itemView.findViewById(R.id.checkOut_tv_total);
         }
     }
 }

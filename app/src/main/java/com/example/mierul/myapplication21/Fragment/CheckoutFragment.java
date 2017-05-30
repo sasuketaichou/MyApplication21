@@ -183,13 +183,15 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             String address = model.productAddress;
             String note = model.productNote;
             String url = "";
+            String total = model.total;
 
             CheckoutModel checkoutModel = new CheckoutModel(productName,
                     numOrder,
                     key,
                     url,
                     address,
-                    note);
+                    note,
+                    total);
 
             item.add(checkoutModel);
         }

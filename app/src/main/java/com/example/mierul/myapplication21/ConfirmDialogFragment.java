@@ -61,17 +61,13 @@ public class ConfirmDialogFragment extends BottomSheetDialogFragment implements 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_ok:
-                postToBus(new ConfirmDialogFragmentEvent(true));
+                eventBus.post(new ConfirmDialogFragmentEvent(true));
                 break;
             case R.id.btn_cancel:
-                postToBus(new ConfirmDialogFragmentEvent(false));
+                eventBus.post(new ConfirmDialogFragmentEvent(false));
                 break;
         }
 
         dismiss();
-    }
-
-    private void postToBus(Object event){
-        eventBus.post(event);
     }
 }
