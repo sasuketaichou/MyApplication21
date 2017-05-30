@@ -6,6 +6,4 @@
         android:title="Logout"
         android:orderInCategory="10"
         app:showAsAction="never" />
-
-
 </menu>

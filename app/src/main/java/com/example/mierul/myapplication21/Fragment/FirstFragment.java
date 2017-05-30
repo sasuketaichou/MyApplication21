@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -187,19 +186,40 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.firstfragment_menu,menu);
-        //TODO change to sign in if no user auth
+
+        int first_menu;
+
+        if(helper.isLogin()){
+            first_menu = R.menu.firstfragment_menu_logout;
+        } else {
+            first_menu = R.menu.firstfragment_menu_login;
+        }
+
+        inflater.inflate(first_menu,menu);
     }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (id){
+            case R.id.action_login:
+                int type = 1;
+                replaceFragment(LoginFragment.newInstance(type));
+                break;
             case R.id.action_logout:
                 helper.sign_out();
-                Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
-                return true;
+                //refresh menu
+                getActivity().invalidateOptionsMenu();
+                snackBarToToast("Logout");
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

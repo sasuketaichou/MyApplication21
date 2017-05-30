@@ -242,6 +242,13 @@ public abstract class BaseFragment extends Fragment {
         return listener;
     }
 
+    public void snackBarToToast(String message){
+        CoordinatorLayout layout = getCoordinatorLayout();
+        if(layout!=null){
+            Snackbar.make(layout,message,Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
 
