@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
@@ -109,23 +110,29 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
     private void setupHeaderLayout(View headerLayout) {
 
-        View imageHeader =headerLayout.findViewById(R.id.navigation_header_imageView);
-        imageHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean auth = helper.isLogin();
-                ProfileFirebaseModel model = helper.getProfile();
+        final boolean auth = helper.isLogin();
+        final ProfileFirebaseModel model = helper.getProfile();
 
-                if(auth){
-                    //profile fragment
-                    replaceFragment(ProfileFragment.newInstance(model));
-                } else {
-                    int type = 1;
-                    replaceFragment(LoginFragment.newInstance(type));
+        if(auth){
+            headerLayout.findViewById(R.id.navigation_header_iv).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(auth){
+                        //profile fragment
+                        replaceFragment(ProfileFragment.newInstance(model));
+                    } else {
+                        int type = 1;
+                        replaceFragment(LoginFragment.newInstance(type));
+                    }
+                    drawer.closeDrawer(Gravity.START);
                 }
-                drawer.closeDrawer(Gravity.START);
-            }
-        });
+            });
+
+            ((TextView)headerLayout.findViewById(R.id.navigation_header_username_tv)).setText(model.getDisplayName());
+            ((TextView)headerLayout.findViewById(R.id.navigation_header_email_tv)).setText(model.getEmail());
+        }
+
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {

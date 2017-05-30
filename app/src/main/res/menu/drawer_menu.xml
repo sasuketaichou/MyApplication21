@@ -8,7 +8,8 @@
             android:title="Second" />
         <item
             android:id="@+id/nav_checkout_fragment"
-                android:title="Checkout" />
+            android:title="Checkout"
+            android:icon="@drawable/cart_outline"/>
     </group>
 
     <item

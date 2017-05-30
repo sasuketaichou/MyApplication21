@@ -8,20 +8,22 @@
     android:gravity="bottom">
 
     <ImageView
-        android:id="@+id/navigation_header_imageView"
+        android:id="@+id/navigation_header_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/sym_def_app_icon"
         android:contentDescription="User image" />
 
     <TextView
+        android:textColor="@color/white"
+        android:id="@+id/navigation_header_username_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Android Studio"
+        android:text="User"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/navigation_header_textView"
+        android:id="@+id/navigation_header_email_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="android.studio@android.com" />
