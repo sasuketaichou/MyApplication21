@@ -123,6 +123,12 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
     private void confirmDel(int position) {
 
+        //Todo to be work with multiple position
+        List<String> key = new ArrayList<>();
+        key.add(item.get(position).ordKey);
+        adapter.removeItem(position);
+        helper.removeOrderByKey(key);
+
     }
 
     public static CheckoutFragment newInstance(String address) {
@@ -160,7 +166,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
             for(CheckoutModel model: item){
                 for (ProductUrlPictureModel pModel : list){
-                    if(pModel.key.equals(model.key)){
+                    if(pModel.key.equals(model.picKey)){
                         model.url = pModel.image_1;
                     }
                 }
@@ -179,11 +185,13 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
             String productName = model.productName;
             String numOrder = model.numOrder;
-            String key = model.key;
+            String key = model.picKey;
             String address = model.productAddress;
             String note = model.productNote;
             String url = "";
             String total = model.total;
+            String ordKey = model.ordKey;
+            Log.v("naruto","refreshData ordKey : "+ordKey);
 
             CheckoutModel checkoutModel = new CheckoutModel(productName,
                     numOrder,
@@ -192,6 +200,8 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                     address,
                     note,
                     total);
+
+            checkoutModel.ordKey = ordKey;
 
             item.add(checkoutModel);
         }

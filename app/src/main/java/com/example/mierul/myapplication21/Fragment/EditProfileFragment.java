@@ -74,8 +74,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         }
 
-        view.findViewById(R.id.btn_user_ok).setOnClickListener(this);
-        view.findViewById(R.id.btn_user_cancel).setOnClickListener(this);
+        view.findViewById(R.id.btn_ok).setOnClickListener(this);
+        view.findViewById(R.id.btn_cancel).setOnClickListener(this);
 
         //TODO make auto show softkeyboard
         //without lagging ui
@@ -122,7 +122,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onClick(View v) {
 
         switch (v.getId()){
-            case R.id.btn_user_ok:
+            case R.id.btn_ok:
 
                 switch (position){
                     case 0:
@@ -159,7 +159,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 }
                 break;
 
-            case R.id.btn_user_cancel:
+            case R.id.btn_cancel:
                 previousFragment();
                 break;
         }

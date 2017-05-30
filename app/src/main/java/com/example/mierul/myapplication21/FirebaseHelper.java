@@ -23,10 +23,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -302,6 +304,7 @@ public class FirebaseHelper {
         DatabaseReference orderRef = getOrdersRef();
         String ordersId =orderRef.push().getKey();
         DatabaseReference ordersUserKey = orderRef.child(ordersId);
+        model.setOrdKey(ordersId);
         ordersUserKey.setValue(model);
 
         DatabaseReference userOrderRef = getUsersOrderRef();
@@ -323,7 +326,10 @@ public class FirebaseHelper {
                     String key = mSnapshot.getValue(String.class);
                     list.add(key);
                 }
-                getOrderByKey(list);
+                if(list.size()>0){
+                    getOrderByKey(list);
+                }
+
             }
 
             @Override
@@ -347,9 +353,11 @@ public class FirebaseHelper {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     OrdersDetailsModel model = dataSnapshot.getValue(OrdersDetailsModel.class);
-                    list.add(model);
+                    if(model != null){
+                        list.add(model);
+                    }
 
-                    if(end == key.size()-1){
+                    if(end == key.size()-1 && list.size()>0){
                         //postobus after reach end loop
                         postToBus(new FirebaseListEvent(list));
                     }
@@ -359,6 +367,52 @@ public class FirebaseHelper {
                 }
             });
         }
+    }
+
+    public void removeOrderByKey(List<String> key){
+
+        DatabaseReference orderRef = getOrdersRef();
+
+        for(final String ordKey: key){
+
+            orderRef.child(ordKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                      //delete order id at branch "Order"
+                        removeOrderAtUsersOrder(ordKey);
+                        Log.v("naruto","removeOrderByKey : "+ordKey);
+                    }
+                }
+            });
+
+        }
+
+    }
+
+    private void removeOrderAtUsersOrder(final String ordKey) {
+        final DatabaseReference usersOrderRef = getUsersOrderRef();
+
+        usersOrderRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> order = dataSnapshot.getChildren();
+
+                for (DataSnapshot mSnapshot: order){
+                    String key = mSnapshot.getValue(String.class);
+                    if(key.equals(ordKey)){
+                        usersOrderRef.child(mSnapshot.getKey()).removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG,"removeOrderAtUsersOrder",databaseError.toException());
+
+            }
+        });
     }
 
     public String getId(){

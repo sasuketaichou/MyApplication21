@@ -11,15 +11,16 @@ public class CheckoutModel implements Parcelable{
 
     public String productName;
     public String numOrder;
-    public String key;
+    public String picKey;
+    public String ordKey;
     public String url;
     public String address;
     public String note;
     public String total;
 
-    public CheckoutModel(String productName,String numOrder,String key,String url,String address,String note,String total){
+    public CheckoutModel(String productName,String numOrder,String picKey,String url,String address,String note,String total){
         this.productName =productName;
-        this.key = key;
+        this.picKey = picKey;
         this.numOrder = numOrder;
         this.url = url;
         this.address = address;
@@ -30,11 +31,12 @@ public class CheckoutModel implements Parcelable{
     protected CheckoutModel(Parcel in) {
         productName = in.readString();
         numOrder = in.readString();
-        key = in.readString();
+        picKey = in.readString();
         url = in.readString();
         address = in.readString();
         note = in.readString();
         total = in.readString();
+        ordKey = in.readString();
     }
 
     public static final Creator<CheckoutModel> CREATOR = new Creator<CheckoutModel>() {
@@ -58,10 +60,11 @@ public class CheckoutModel implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(productName);
         dest.writeString(numOrder);
-        dest.writeString(key);
+        dest.writeString(picKey);
         dest.writeString(url);
         dest.writeString(address);
         dest.writeString(note);
         dest.writeString(total);
+        dest.writeString(ordKey);
     }
 }

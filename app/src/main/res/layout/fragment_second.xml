@@ -195,25 +195,9 @@
 
         </TableLayout>
 
-        <LinearLayout
-            android:padding="10dp"
-            android:layout_below="@+id/tableTv"
-            android:id="@+id/linear_line"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <View
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="?android:attr/dividerHorizontal"/>
-
-        </LinearLayout>
-
         <RelativeLayout
             android:id="@+id/rl_tv"
-            android:layout_below="@+id/linear_line"
+            android:layout_below="@+id/tableTv"
             android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

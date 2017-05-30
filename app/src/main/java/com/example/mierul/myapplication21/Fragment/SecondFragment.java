@@ -31,7 +31,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     private static final String TAG = "SecondFragment";
     private OrderForm form;
     private String[] url;
-    private String key;
+    private String picKey;
     private int mInteger =1;
     private FirebaseHelper helper;
     private RealmHelper rHelper;
@@ -50,7 +50,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
         Bundle args = new Bundle();
         args.putStringArray("url",url);
-        args.putString("key",key);
+        args.putString("picKey",key);
         SecondFragment fragment = new SecondFragment();
         fragment.setArguments(args);
 
@@ -61,12 +61,12 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getArguments().getStringArray("url");
-        key = getArguments().getString("key");
+        picKey = getArguments().getString("picKey");
         helper = new FirebaseHelper();
         rHelper = new RealmHelper(getContext());
 
         //trigger getDetails
-        helper.getProductProfile(key);
+        helper.getProductProfile(picKey);
 
         //get address from db and display
         String id = helper.getId();
@@ -143,7 +143,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
         model = new OrdersDetailsModel(name,
                 order,
-                key,
+                picKey,
                 address,
                 note,
                 total);
