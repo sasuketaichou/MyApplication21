@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class FirstFragment extends BaseFragment implements ItemClickSupport.OnItemClickListener {
     private DrawerLayout drawer;
-    private List<ProductUrlPictureModel> item = new ArrayList<>();
+    private List<ProductUrlPictureModel> item;
     private FirebaseHelper helper;
     private ProductAdapter adapter;
     private int checkUpdate;
@@ -54,6 +54,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        item = new ArrayList<>();
         helper = new FirebaseHelper();
         //get picture Url
         helper.getProductPicture();

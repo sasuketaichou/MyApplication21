@@ -157,7 +157,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                     public void onClick(View v) {
                         helper.removeOrderByKey(removeKey);
                         for(Integer remove: removePosition){
-                            Log.v("naruto",String.valueOf(remove));
                             adapter.removeItem(remove);
                         }
                         clearKey();

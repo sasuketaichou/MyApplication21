@@ -69,10 +69,4 @@ public class MainActivity extends BaseActivity {
     private boolean checkDrawer() {
         return ((FirstFragment)(FragmentStack.getFirstFragment())).isDrawerOpen();
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //TODO delete realm on close app
-    }
 }
