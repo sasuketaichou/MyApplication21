@@ -14,20 +14,8 @@ public class OrdersDetailsModel implements Parcelable {
     public String numOrder;
     public String picKey;
     public String total;
-    public String ordKey;
+    public String usrOrdKey;
 
-    public OrdersDetailsModel(String productName,String numOrder,String picKey,String productAddress,String productNote,String total){
-        this.productName =productName;
-        this.picKey = picKey;
-        this.numOrder = numOrder;
-        this.productAddress = productAddress;
-        this.productNote = productNote;
-        this.total = total;
-    }
-
-    public void setOrdKey(String ordKey) {
-        this.ordKey = ordKey;
-    }
     public OrdersDetailsModel(){
     }
 
@@ -39,7 +27,7 @@ public class OrdersDetailsModel implements Parcelable {
         numOrder = in.readString();
         picKey = in.readString();
         total = in.readString();
-        ordKey = in.readString();
+        usrOrdKey = in.readString();
     }
 
     public static final Creator<OrdersDetailsModel> CREATOR = new Creator<OrdersDetailsModel>() {
@@ -67,6 +55,6 @@ public class OrdersDetailsModel implements Parcelable {
         dest.writeString(numOrder);
         dest.writeString(picKey);
         dest.writeString(total);
-        dest.writeString(ordKey);
+        dest.writeString(usrOrdKey);
     }
 }

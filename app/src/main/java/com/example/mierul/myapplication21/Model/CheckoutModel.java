@@ -17,15 +17,9 @@ public class CheckoutModel implements Parcelable{
     public String address;
     public String note;
     public String total;
+    public String usrOrdKey;
 
-    public CheckoutModel(String productName,String numOrder,String picKey,String url,String address,String note,String total){
-        this.productName =productName;
-        this.picKey = picKey;
-        this.numOrder = numOrder;
-        this.url = url;
-        this.address = address;
-        this.note = note;
-        this.total = total;
+    public CheckoutModel(){
     }
 
     protected CheckoutModel(Parcel in) {
@@ -37,6 +31,7 @@ public class CheckoutModel implements Parcelable{
         note = in.readString();
         total = in.readString();
         ordKey = in.readString();
+        usrOrdKey = in.readString();
     }
 
     public static final Creator<CheckoutModel> CREATOR = new Creator<CheckoutModel>() {
@@ -66,5 +61,6 @@ public class CheckoutModel implements Parcelable{
         dest.writeString(note);
         dest.writeString(total);
         dest.writeString(ordKey);
+        dest.writeString(usrOrdKey);
     }
 }

@@ -69,9 +69,11 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
     }
 
     public void removeItem(int position){
-        item.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, item.size());
+        if(position< getItemCount()){
+            item.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, item.size());
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

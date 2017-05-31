@@ -141,12 +141,13 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
         String total = getTotal();
 
-        model = new OrdersDetailsModel(name,
-                order,
-                picKey,
-                address,
-                note,
-                total);
+        model = new OrdersDetailsModel();
+        model.productName = name;
+        model.numOrder = order;
+        model.picKey = picKey;
+        model.productAddress = address;
+        model.productNote = note;
+        model.total = total;
 
         ConfirmDialogFragment dialogFragment = ConfirmDialogFragment.newInstance(model);
         dialogFragment.show(getFragmentManager(),dialogFragment.getTag());
@@ -231,7 +232,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     public void onConfirmDialogFragmentListener(ConfirmDialogFragmentEvent result) {
         if(result.getResult()){
             helper.addOrder(model);
-            replaceFragment(new CheckoutFragment());
+            switchFragment(new CheckoutFragment());
         }
 
     }

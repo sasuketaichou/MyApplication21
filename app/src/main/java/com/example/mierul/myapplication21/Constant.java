@@ -18,7 +18,9 @@ public enum Constant {
     NODE_NAME,
     NODE_ADDRESS,
     NODE_EMAIL,
-    NODE_CONTACT;
+    NODE_CONTACT,
+    NODE_USRORDKEY,
+    NODE_ORDKEY;
 
     public String getTitle(){
         switch (this){
@@ -29,7 +31,7 @@ public enum Constant {
             case PRODUCT_NOTE: return "NOTE";
             case PRODUCT_ADDRESS: return "ADDRESS";
 
-            default: return "empty";
+            default: return "";
         }
     }
 
@@ -39,8 +41,10 @@ public enum Constant {
             case NODE_ADDRESS: return "address";
             case NODE_CONTACT: return "contact";
             case NODE_EMAIL: return "email";
+            case NODE_ORDKEY: return "ordKey";
+            case NODE_USRORDKEY: return "usrOrdKey";
 
-            default: return "empty";
+            default: return "";
         }
     }
 }

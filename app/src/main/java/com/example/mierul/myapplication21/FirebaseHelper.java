@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.Event.FirebaseListEvent;
+import com.example.mierul.myapplication21.Model.CheckoutModel;
 import com.example.mierul.myapplication21.Model.OrderKeyModel;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
@@ -37,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mierul on 4/24/2017.
@@ -303,12 +305,14 @@ public class FirebaseHelper {
 
         DatabaseReference orderRef = getOrdersRef();
         String ordersId =orderRef.push().getKey();
-        DatabaseReference ordersUserKey = orderRef.child(ordersId);
-        model.setOrdKey(ordersId);
-        ordersUserKey.setValue(model);
 
         DatabaseReference userOrderRef = getUsersOrderRef();
-        userOrderRef.push().setValue(ordersId);
+        String usrOrdKey = userOrderRef.push().getKey();
+        userOrderRef.child(usrOrdKey).setValue(ordersId);
+
+        DatabaseReference ordersUserKey = orderRef.child(ordersId);
+        model.usrOrdKey = usrOrdKey;
+        ordersUserKey.setValue(model);
 
     }
 
@@ -329,7 +333,6 @@ public class FirebaseHelper {
                 if(list.size()>0){
                     getOrderByKey(list);
                 }
-
             }
 
             @Override
@@ -343,18 +346,30 @@ public class FirebaseHelper {
     private void getOrderByKey(final List<String> key){
 
         DatabaseReference orderRef = getOrdersRef();
-        final List<OrdersDetailsModel> list = new ArrayList<>();
+        final List<CheckoutModel> list = new ArrayList<>();
 
         for (int i=0;i<key.size();i++){
 
-            DatabaseReference orderKeyRef = orderRef.child(key.get(i));
+            final String ordKey = key.get(i);
+            DatabaseReference orderKeyRef = orderRef.child(ordKey);
             final int end = i;
             orderKeyRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     OrdersDetailsModel model = dataSnapshot.getValue(OrdersDetailsModel.class);
                     if(model != null){
-                        list.add(model);
+                        CheckoutModel checkoutModel = new CheckoutModel();
+
+                        checkoutModel.productName =model.productName;
+                        checkoutModel.numOrder =model.numOrder;
+                        checkoutModel.picKey= model.picKey;
+                        checkoutModel.address =model.productAddress;
+                        checkoutModel.note=model.productNote;
+                        checkoutModel.total = model.total;
+                        checkoutModel.ordKey = ordKey;
+                        checkoutModel.usrOrdKey = model.usrOrdKey;
+
+                        list.add(checkoutModel);
                     }
 
                     if(end == key.size()-1 && list.size()>0){
@@ -369,50 +384,31 @@ public class FirebaseHelper {
         }
     }
 
-    public void removeOrderByKey(List<String> key){
+    public void removeOrderByKey(List<Map> mapKey){
 
-        DatabaseReference orderRef = getOrdersRef();
-
-        for(final String ordKey: key){
-
-            orderRef.child(ordKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                      //delete order id at branch "Order"
-                        removeOrderAtUsersOrder(ordKey);
-                        Log.v("naruto","removeOrderByKey : "+ordKey);
-                    }
-                }
-            });
-
+        if(mapKey!= null){
+            for(Map<String,String> key : mapKey){
+                removeOrderAtOrders(key.get(Constant.NODE_ORDKEY.getNode()));
+                removeOrderAtUsersOrder(key.get(Constant.NODE_USRORDKEY.getNode()));
+            }
         }
+
+
 
     }
 
-    private void removeOrderAtUsersOrder(final String ordKey) {
-        final DatabaseReference usersOrderRef = getUsersOrderRef();
+    private void removeOrderAtOrders(String ordKey){
 
-        usersOrderRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        DatabaseReference orderRef = getOrdersRef();
+        orderRef.child(ordKey).removeValue();
 
-                Iterable<DataSnapshot> order = dataSnapshot.getChildren();
+    }
 
-                for (DataSnapshot mSnapshot: order){
-                    String key = mSnapshot.getValue(String.class);
-                    if(key.equals(ordKey)){
-                        usersOrderRef.child(mSnapshot.getKey()).removeValue();
-                    }
-                }
-            }
+    private void removeOrderAtUsersOrder(String usrOrdKey) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e(TAG,"removeOrderAtUsersOrder",databaseError.toException());
+        DatabaseReference usersOrderRef = getUsersOrderRef();
+        usersOrderRef.child(usrOrdKey).removeValue();
 
-            }
-        });
     }
 
     public String getId(){

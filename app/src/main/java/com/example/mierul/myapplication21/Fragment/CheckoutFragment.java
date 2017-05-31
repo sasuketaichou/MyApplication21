@@ -16,11 +16,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mierul.myapplication21.Adapter.CheckoutAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Event.FirebaseListEvent;
 import com.example.mierul.myapplication21.Model.CheckoutModel;
@@ -31,7 +35,9 @@ import com.example.mierul.myapplication21.R;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Hexa-Amierul.Japri on 17/4/2017.
@@ -40,6 +46,8 @@ import java.util.List;
 public class CheckoutFragment extends BaseFragment implements View.OnClickListener {
     private FirebaseHelper helper;
     private List<CheckoutModel> item;
+    List<Map> removeKey;
+    List<Integer> removePosition;
     private CheckoutAdapter adapter;
     private int checkUpdate;
 
@@ -48,7 +56,19 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         item = new ArrayList<>();
+        if(removeKey == null){
+            removeKey = new ArrayList<>();
+        } else {
+            removeKey.clear();
+        }
+
+        if(removePosition == null){
+            removePosition = new ArrayList<>();
+        } else {
+            removePosition.clear();
+        }
         helper = new FirebaseHelper();
         //trigger get order
         helper.getOrder();
@@ -68,11 +88,12 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchBack());
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
         return view;
     }
 
     private ItemTouchHelper.Callback simpleItemTouchBack() {
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -83,7 +104,6 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT){
-                    //adapter.removeItem(position);
                     //show confirm dialog
                     confirmDel(position);
                 }
@@ -123,12 +143,32 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
     private void confirmDel(int position) {
 
-        //Todo to be work with multiple position
-        List<String> key = new ArrayList<>();
-        key.add(item.get(position).ordKey);
-        adapter.removeItem(position);
-        helper.removeOrderByKey(key);
+        Map<String,String> key = new HashMap<>();
+        key.put(Constant.NODE_ORDKEY.getNode(),item.get(position).ordKey);
+        key.put(Constant.NODE_USRORDKEY.getNode(),item.get(position).usrOrdKey);
+        removeKey.add(key);
+        removePosition.add(position);
 
+        //show dialog here
+        snackBarWithMessageAndListener("Confirm to delete " + removeKey.size() + " item?",
+                "delete",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        helper.removeOrderByKey(removeKey);
+                        for(Integer remove: removePosition){
+                            Log.v("naruto",String.valueOf(remove));
+                            adapter.removeItem(remove);
+                        }
+                        clearKey();
+                    }
+                });
+    }
+
+    private void clearKey() {
+        //for every success transaction/click
+        removeKey.clear();
+        removePosition.clear();
     }
 
     public static CheckoutFragment newInstance(String address) {
@@ -152,7 +192,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
 
         Object obj = event.getList().get(0);
 
-        if(obj instanceof OrdersDetailsModel) {
+        if(obj instanceof CheckoutModel) {
             int needUpdate = event.getList().size();
 
             if (checkUpdate == 0 || needUpdate > checkUpdate) {
@@ -181,29 +221,27 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
             item.clear();
         }
 
-        for(OrdersDetailsModel model : (List<OrdersDetailsModel>)event.getList()){
-
-            String productName = model.productName;
-            String numOrder = model.numOrder;
-            String key = model.picKey;
-            String address = model.productAddress;
-            String note = model.productNote;
-            String url = "";
-            String total = model.total;
-            String ordKey = model.ordKey;
-            Log.v("naruto","refreshData ordKey : "+ordKey);
-
-            CheckoutModel checkoutModel = new CheckoutModel(productName,
-                    numOrder,
-                    key,
-                    url,
-                    address,
-                    note,
-                    total);
-
-            checkoutModel.ordKey = ordKey;
-
-            item.add(checkoutModel);
+        for(CheckoutModel model : (List<CheckoutModel>)event.getList()){
+            item.add(model);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.checkoutfragment_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_refresh:
+                for(Integer remove: removePosition){
+                    adapter.notifyItemChanged(remove);
+                }
+                clearKey();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

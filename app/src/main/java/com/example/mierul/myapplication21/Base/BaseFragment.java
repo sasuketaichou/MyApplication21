@@ -249,6 +249,15 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public void snackBarWithMessageAndListener(String message,String action,View.OnClickListener listener){
+        CoordinatorLayout layout = getCoordinatorLayout();
+        if(layout!=null){
+            Snackbar.make(layout,message,Snackbar.LENGTH_LONG)
+                    .setAction(action,listener)
+                    .show();
+        }
+    }
+
 
 }
 
