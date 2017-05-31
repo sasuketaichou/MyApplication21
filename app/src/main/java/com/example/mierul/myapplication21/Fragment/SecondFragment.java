@@ -69,7 +69,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         helper.getProductProfile(picKey);
 
         //get address from db and display
-        String id = helper.getId();
+        String id = helper.getUid();
         if(!id.isEmpty()){
             form = rHelper.getOrder(id);
         }

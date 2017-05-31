@@ -46,7 +46,7 @@ import java.util.Map;
 public class CheckoutFragment extends BaseFragment implements View.OnClickListener {
     private FirebaseHelper helper;
     private List<CheckoutModel> item;
-    List<Map> removeKey;
+    List<Map<String,String>> removeKey;
     List<Integer> removePosition;
     private CheckoutAdapter adapter;
     private int checkUpdate;

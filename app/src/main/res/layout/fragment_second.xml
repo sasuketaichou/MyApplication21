@@ -125,7 +125,7 @@
 
                 <TextView
                     android:padding="10dp"
-                    android:text="Product Cost (RM)"
+                    android:text="Product Cost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -134,13 +134,25 @@
                     android:text=" : "
                     />
 
-                <TextView
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="10$"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_product_cost"/>
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RM"
+                        android:padding="10dp"/>
+                    <TextView
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_product_cost"/>
+
+                </LinearLayout>
             </TableRow>
 
             <TableRow

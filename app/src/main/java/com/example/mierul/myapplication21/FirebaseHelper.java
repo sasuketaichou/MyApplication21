@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -125,8 +126,7 @@ public class FirebaseHelper {
     public ProfileFirebaseModel getProfile(){
 
         ProfileFirebaseModel profile = null;
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             profile = new ProfileFirebaseModel();
             profile.setDisplayName(user.getDisplayName());
@@ -173,9 +173,9 @@ public class FirebaseHelper {
     private void setNewUserDetails(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference usersProfile = getUsersProfileRef();
-        usersProfile.setValue(new ProfileDetailsModel("Edit your name",
-                "Edit your address",
-                "Add your contact number",
+        usersProfile.setValue(new ProfileDetailsModel("",
+                "",
+                "",
                 mAuth.getCurrentUser().getEmail()));
     }
 
@@ -201,15 +201,17 @@ public class FirebaseHelper {
         return getUsersRef().child(CHILD_ORDER);
     }
 
-    private String getUid(){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String uid = "empty";
-        try {
-            uid = mAuth.getCurrentUser().getUid();
+    public String getUid(){
+        String id ="";
+        try{
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            if(mAuth.getCurrentUser() != null)
+                id = mAuth.getCurrentUser().getUid();
         } catch (NullPointerException npe){
             Log.e(TAG,"getUid",npe);
         }
-        return uid;
+
+        return id;
     }
 
     public void downloadProductPicture(ImageView imageView){
@@ -384,7 +386,7 @@ public class FirebaseHelper {
         }
     }
 
-    public void removeOrderByKey(List<Map> mapKey){
+    public void removeOrderByKey(List<Map<String,String>> mapKey){
 
         if(mapKey!= null){
             for(Map<String,String> key : mapKey){
@@ -392,9 +394,6 @@ public class FirebaseHelper {
                 removeOrderAtUsersOrder(key.get(Constant.NODE_USRORDKEY.getNode()));
             }
         }
-
-
-
     }
 
     private void removeOrderAtOrders(String ordKey){
@@ -411,16 +410,25 @@ public class FirebaseHelper {
 
     }
 
-    public String getId(){
-        String id ="";
-        try{
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            if(mAuth.getCurrentUser() != null)
-            id = mAuth.getCurrentUser().getUid();
-        } catch (NullPointerException npe){
-            Log.e(TAG,"getId",npe);
-        }
+    public void setDisplayName(String displayName) {
 
-        return id;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(displayName)
+                //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                .build();
+
+        if (user != null) {
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.v(TAG, "User profile updated.");
+                            }
+                        }
+                    });
+        }
     }
 }

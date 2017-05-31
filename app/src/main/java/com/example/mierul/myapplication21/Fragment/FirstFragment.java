@@ -54,8 +54,12 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        item = new ArrayList<>();
-        helper = new FirebaseHelper();
+        if(item == null){
+            item = new ArrayList<>();
+        }
+        if(helper == null){
+            helper = new FirebaseHelper();
+        }
         //get picture Url
         helper.getProductPicture();
     }
@@ -114,26 +118,25 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         final boolean auth = helper.isLogin();
         final ProfileFirebaseModel model = helper.getProfile();
 
-        if(auth){
-            headerLayout.findViewById(R.id.navigation_header_iv).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(auth){
-                        //profile fragment
-                        replaceFragment(ProfileFragment.newInstance(model));
-                    } else {
-                        int type = 1;
-                        replaceFragment(LoginFragment.newInstance(type));
-                    }
-                    drawer.closeDrawer(Gravity.START);
+        headerLayout.findViewById(R.id.navigation_header_iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(auth){
+                    //profile fragment
+                    replaceFragment(ProfileFragment.newInstance(model));
+                } else {
+                    int type = 1;
+                    replaceFragment(LoginFragment.newInstance(type));
                 }
-            });
+                drawer.closeDrawer(Gravity.START);
+            }
+        });
 
+        //tODO helper is not refreshing after user update names
+        if(auth){
             ((TextView)headerLayout.findViewById(R.id.navigation_header_username_tv)).setText(model.getDisplayName());
             ((TextView)headerLayout.findViewById(R.id.navigation_header_email_tv)).setText(model.getEmail());
         }
-
-
     }
 
     private void setupDrawerContent(NavigationView navigationView) {

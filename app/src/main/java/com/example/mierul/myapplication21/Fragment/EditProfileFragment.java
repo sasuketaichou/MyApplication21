@@ -45,11 +45,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         rHelper = new RealmHelper(getContext());
         helper = new FirebaseHelper();
 
-        form = rHelper.getOrder(helper.getId());
+        form = rHelper.getOrder(helper.getUid());
         if(form == null){
-            Log.v("naruto","Form is null from EditProfileFragment");
             form = new OrderForm();
-            form.setId(helper.getId());
+            form.setId(helper.getUid());
         }
 
         String title = getTitle(position);
@@ -132,6 +131,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
                         if(position != 5){
                             helper.setDetails(childNode.getNode(), editText.getText().toString());
+                            if(childNode.getNode().equals(Constant.NODE_NAME.getNode())){
+                                helper.setDisplayName(editText.getText().toString());
+                            }
                         } else {
                             form.setNote(editText.getText().toString());
                             rHelper.saveOrder(form);
