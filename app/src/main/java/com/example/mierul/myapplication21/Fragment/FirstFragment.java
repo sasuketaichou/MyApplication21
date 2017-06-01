@@ -78,6 +78,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         adapter = new ProductAdapter(getContext(),item);
         recyclerView.setAdapter(adapter);
 
+        //Todo create progres bar that ends when recyclerview finished
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(this);
 
         //TODO to add icon in drawer

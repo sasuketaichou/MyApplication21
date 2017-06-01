@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -72,9 +73,18 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void setDisplayHomeAsUpEnabled(){
-        AppCompatActivity ap = (AppCompatActivity)getActivity();
-        ap.setSupportActionBar(toolbar);
-        ap.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            AppCompatActivity ap = (AppCompatActivity)getActivity();
+            ap.setSupportActionBar(toolbar);
+
+            ActionBar actionBar = ap.getSupportActionBar();
+
+            if(actionBar != null){
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+        } catch (NullPointerException npe){
+            Log.e(TAG,"setDisplayHomeAsUpEnabled: ",npe);
+        }
     }
 
     private CoordinatorLayout getCoordinatorLayout() {

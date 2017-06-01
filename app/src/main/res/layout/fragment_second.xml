@@ -10,16 +10,7 @@
         <include
             layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/include2" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/product_pic_viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_below="@+id/include2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.AppCompatButton
             android:textColor="@color/white"
@@ -41,7 +32,12 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:orientation="vertical"
-            android:layout_below="@+id/product_pic_viewPager">
+            android:layout_below="@+id/toolbar">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/product_pic_viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="250dp" />
 
             <TextView
                 android:id="@+id/product_details"
@@ -54,7 +50,6 @@
             <TableLayout
                 android:background="@color/light_grey"
                 android:id="@+id/tableTv"
-                android:layout_below="@+id/product_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
