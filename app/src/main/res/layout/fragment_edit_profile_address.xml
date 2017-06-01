@@ -8,118 +8,133 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TableLayout
-        android:id="@+id/tableTv"
+    <RelativeLayout
+        android:paddingTop="20dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TableRow
-            android:minHeight="125dp"
+        <TableLayout
+            android:id="@+id/tableTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Address" />
-
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : " />
-
-            <EditText
-                android:maxLines="4"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:id="@+id/address_address"
+            <TableRow
+                android:minHeight="100dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ems="15"
-                android:hint="Address"
-                android:padding="10dp" />
-        </TableRow>
+                android:layout_height="wrap_content">
 
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Address" />
 
-            <TextView
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="City"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : " />
 
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
+                <EditText
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:id="@+id/address_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ems="15"
+                    android:hint="Address"
+                    android:padding="10dp" />
+            </TableRow>
 
-            <EditText
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:padding="10dp"
-                android:hint="City"
-                android:layout_width="wrap_content"
+            <TableRow
                 android:layout_height="wrap_content"
-                android:id="@+id/address_city"/>
-        </TableRow>
+                android:layout_width="match_parent">
 
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                <TextView
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="City"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Poscode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
 
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
+                <EditText
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:padding="10dp"
+                    android:hint="City"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/address_city"/>
+            </TableRow>
 
-            <EditText
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:id="@+id/address_postcode"
-                android:layout_width="wrap_content"
+            <TableRow
                 android:layout_height="wrap_content"
-                android:hint="Postcode"
-                android:padding="10dp" />
-        </TableRow>
+                android:layout_width="match_parent">
 
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                <TextView
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Poscode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
 
-            <TextView
-                android:layout_gravity="center"
-                android:text=" : "
-                />
+                <EditText
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:id="@+id/address_postcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Postcode"
+                    android:padding="10dp" />
+            </TableRow>
 
-            <EditText
-                android:enabled="false"
-                android:padding="10dp"
-                android:hint="Malaysia"
-                android:layout_width="wrap_content"
+            <TableRow
                 android:layout_height="wrap_content"
-                android:id="@+id/address_country"/>
-        </TableRow>
+                android:layout_width="match_parent">
 
-    </TableLayout>
+                <TextView
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text=" : "
+                    />
+
+                <EditText
+                    android:enabled="false"
+                    android:padding="10dp"
+                    android:hint="Malaysia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/address_country"/>
+            </TableRow>
+
+        </TableLayout>
+
+        <CheckBox
+            android:layout_below="@+id/tableTv"
+            android:id="@+id/checkbox_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Same as default address" />
+    </RelativeLayout>
 
     <include
         layout="@layout/button_confirm"

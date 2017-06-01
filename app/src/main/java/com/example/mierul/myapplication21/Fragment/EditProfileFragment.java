@@ -143,6 +143,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         break;
                     case 2:
                     case 4:
+
+                        //TODO if checkbox is ticked get default adress, but how do u separate them?
                         View view = getView();
                         String address = ((EditText)view.findViewById(R.id.address_address)).getText().toString();
                         String city = ((EditText)view.findViewById(R.id.address_city)).getText().toString();
