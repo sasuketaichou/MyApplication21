@@ -69,9 +69,14 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         } else {
             removePosition.clear();
         }
-        helper = new FirebaseHelper();
-        //trigger get order
-        helper.getOrder();
+        if(helper == null){
+            helper = new FirebaseHelper();
+        }
+
+        if(helper.isLogin()) {
+            //trigger get order
+            helper.getOrder();
+        }
     }
 
     @Nullable

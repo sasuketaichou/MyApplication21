@@ -6,6 +6,7 @@ package com.example.mierul.myapplication21.Event;
 
 public class FirebaseBooleanEvent {
     private boolean result;
+    private String message;
 
     public FirebaseBooleanEvent(boolean result){
         this.result = result;
@@ -13,6 +14,13 @@ public class FirebaseBooleanEvent {
 
     public boolean getResult() {
         return result;
+    }
+
+    public void setMessage(String message){
+        this.message = message;
+    }
+    public String getMessage(){
+        return message;
     }
 
 

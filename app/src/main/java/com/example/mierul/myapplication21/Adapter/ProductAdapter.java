@@ -6,9 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.R;
 
@@ -47,11 +51,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         textView.setText("empty");
         ImageView image = holder.pict_product;
 
+        final ProgressBar progressBar = holder.progressBar;
+
         //set default image
         //image.setImageResource(R.drawable.default_thumbnail);
 
         Glide.with(context)
                 .load(model.image_1)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(image);
     }
 
@@ -64,10 +83,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         TextView name_product;
         ImageView pict_product;
+        ProgressBar progressBar;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_pic);
             name_product = (TextView) itemView.findViewById(R.id.product_name);
             pict_product = (ImageView) itemView.findViewById(R.id.product_pic);
         }

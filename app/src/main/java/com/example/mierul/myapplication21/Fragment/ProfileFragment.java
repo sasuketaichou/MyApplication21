@@ -55,13 +55,21 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        name = getArguments().getString("username");
-        email = getArguments().getString("email");
+        if(helper == null){
+            helper = new FirebaseHelper();
+        }
 
-        helper = new FirebaseHelper();
-        //trigger getDetails to get data
-        helper.getDetails();
-        showProgressDialog();
+        if(helper.isLogin()){
+            //trigger getDetails to get data
+            helper.getDetails();
+
+            showProgressDialog();
+
+            //get display name and email
+            ProfileFirebaseModel model =helper.getProfile();
+            name = model.getDisplayName();
+            email = model.getEmail();
+        }
     }
 
     public static ProfileFragment newInstance(ProfileFirebaseModel model) {

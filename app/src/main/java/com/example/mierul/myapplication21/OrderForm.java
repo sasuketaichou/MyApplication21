@@ -14,7 +14,7 @@ public class OrderForm extends RealmObject {
     String note;
 
     public String getAddress() {
-        return address;
+        return address == null ? "": address;
     }
 
     public void setAddress(String address) {

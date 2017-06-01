@@ -49,6 +49,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if(form == null){
             form = new OrderForm();
             form.setId(helper.getUid());
+            form.setAddress("");
         }
 
         String title = getTitle(position);
@@ -59,7 +60,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = null;
+        View view;
 
         switch (position){
             case 2:
@@ -147,11 +148,30 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         String city = ((EditText)view.findViewById(R.id.address_city)).getText().toString();
                         String country = "Malaysia"; //((EditText)view.findViewById(R.id.address_country)).getText().toString();
                         String postcode = ((EditText)view.findViewById(R.id.address_postcode)).getText().toString();
-                        String comma = ", ";
+                        String space = " ";
 
-                        String userAddress = address+comma+city+comma+postcode+comma+country;
+                        if(address.isEmpty()){
+                            snackBarToToast("Please enter address");
+                            break;
+                        }
+
+                        if(city.isEmpty()){
+                            snackBarToToast("Please enter city");
+                            break;
+                        }
+
+                        if(postcode.isEmpty()){
+                            snackBarToToast("Please enter postcode");
+                            break;
+                        }
+
+                        String userAddress = address+space+city+space+postcode+space+country;
                         if(position == 2){
                             helper.setDetails(childNode.getNode(),userAddress);
+                            if(form.getAddress().isEmpty()) {
+                                form.setAddress(userAddress);
+                                rHelper.saveOrder(form);
+                            }
                         } else {
                             form.setAddress(userAddress);
                             rHelper.saveOrder(form);
@@ -172,7 +192,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if(event.getResult()){
             previousFragment();
         } else {
-            //Todo tell user the error
+            snackBarToToast("Edit is fail. Please try again");
         }
     }
 }

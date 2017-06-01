@@ -116,6 +116,10 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
             note_input.setText(form.getNote());
         }
 
+        //imageview pencil
+        view.findViewById(R.id.iv_edit_address).setOnClickListener(this);
+        view.findViewById(R.id.iv_edit_note).setOnClickListener(this);
+
         return view;
     }
 
@@ -174,10 +178,12 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.tv_product_address:
             case R.id.tv_product_address_input:
+            case R.id.iv_edit_address:
                 holdEdit(4);
                 break;
             case R.id.tv_product_note:
             case R.id.tv_product_note_input:
+            case R.id.iv_edit_note:
                 holdEdit(5);
                 break;
         }

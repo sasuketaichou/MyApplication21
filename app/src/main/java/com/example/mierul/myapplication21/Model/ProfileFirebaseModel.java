@@ -16,7 +16,7 @@ public class ProfileFirebaseModel {
     private Uri photo;
 
     public String getEmail() {
-        return email;
+        return email == null ? "":email;
     }
 
     public void setEmail(String email) {
@@ -24,7 +24,7 @@ public class ProfileFirebaseModel {
     }
 
     public String getDisplayName() {
-        return displayName;
+        return displayName == null ? "":displayName;
     }
 
     public void setDisplayName(String displayName) {

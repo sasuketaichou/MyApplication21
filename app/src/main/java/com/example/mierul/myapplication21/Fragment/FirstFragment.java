@@ -123,7 +123,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             public void onClick(View view) {
                 if(auth){
                     //profile fragment
-                    replaceFragment(ProfileFragment.newInstance(model));
+                    replaceFragment(new ProfileFragment());
                 } else {
                     int type = 1;
                     replaceFragment(LoginFragment.newInstance(type));
@@ -132,7 +132,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             }
         });
 
-        //tODO helper is not refreshing after user update names
         if(auth){
             ((TextView)headerLayout.findViewById(R.id.navigation_header_username_tv)).setText(model.getDisplayName());
             ((TextView)headerLayout.findViewById(R.id.navigation_header_email_tv)).setText(model.getEmail());
@@ -151,31 +150,25 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
 
     private void selectDrawerItem(MenuItem item) {
 
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass = null;
-
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.nav_first_fragment:
-                fragmentClass = NavFirst.class;
+        switch (item.getItemId()){
+            case R.id.nav_profile_fragment:
+                if(helper.isLogin()){
+                    replaceFragment(new ProfileFragment());
+                } else {
+                    replaceFragment(LoginFragment.newInstance(1));
+                }
                 break;
             case R.id.nav_second_fragment:
-                fragmentClass = NavSecond.class;
+                replaceFragment(new NavSecond());
                 break;
             case R.id.nav_checkout_fragment:
-                fragmentClass = CheckoutFragment.class;
+                replaceFragment(new CheckoutFragment());
+                break;
+            case R.id.nav_contact_fragment:
+                break;
+            case R.id.nav_setting_fragment:
                 break;
         }
-
-        try {
-            fragment = (Fragment) (fragmentClass != null ? fragmentClass.newInstance() : null);
-        } catch (Exception e) {
-            Log.e(TAG,"selectDrawerItem",e);
-        }
-
-        replaceFragment(fragment);
 
         // Highlight the selected item has been done by NavigationView
         item.setChecked(false);
@@ -229,7 +222,7 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
                 helper.sign_out();
                 //refresh menu
                 getActivity().invalidateOptionsMenu();
-                snackBarToToast("Logout");
+                replaceFragment(new LogoutFragment());
                 break;
         }
         return super.onOptionsItemSelected(item);

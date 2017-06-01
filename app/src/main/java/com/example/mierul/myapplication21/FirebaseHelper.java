@@ -164,6 +164,7 @@ public class FirebaseHelper {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(!task.isSuccessful()){
                             Log.e(TAG,"setDetails",task.getException());
+
                         }
                         postToBus(new FirebaseBooleanEvent(task.isSuccessful()));
                     }
@@ -210,7 +211,6 @@ public class FirebaseHelper {
         } catch (NullPointerException npe){
             Log.e(TAG,"getUid",npe);
         }
-
         return id;
     }
 
@@ -399,14 +399,32 @@ public class FirebaseHelper {
     private void removeOrderAtOrders(String ordKey){
 
         DatabaseReference orderRef = getOrdersRef();
-        orderRef.child(ordKey).removeValue();
+        orderRef.child(ordKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG,"removeOrderAtOrders is success");
+                } else {
+                    Log.e(TAG,"removeOrderAtOrders",task.getException());
+                }
+            }
+        });
 
     }
 
     private void removeOrderAtUsersOrder(String usrOrdKey) {
 
         DatabaseReference usersOrderRef = getUsersOrderRef();
-        usersOrderRef.child(usrOrdKey).removeValue();
+        usersOrderRef.child(usrOrdKey).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG,"removeOrderAtUsersOrder is success");
+                } else {
+                    Log.e(TAG,"removeOrderAtUsersOrder",task.getException());
+                }
+            }
+        });
 
     }
 
