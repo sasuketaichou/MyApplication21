@@ -12,11 +12,11 @@ import com.bumptech.glide.Glide;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.Event.FirebaseListEvent;
 import com.example.mierul.myapplication21.Model.CheckoutModel;
-import com.example.mierul.myapplication21.Model.OrderKeyModel;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
-import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
+import com.example.mierul.myapplication21.Model.UserDetails.ProfileAddressModel;
+import com.example.mierul.myapplication21.Model.UserDetails.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,12 +25,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -38,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +55,7 @@ public class FirebaseHelper {
     private final String CHILD_URL = "url";
     private final String CHILD_ORDER = "Order";
     private final String CHILD_IMAGE = "Image";
+    private final String CHILD_ADDRESS = "address";
 
     public FirebaseHelper(Context context){
         this.context = context;
@@ -136,7 +136,6 @@ public class FirebaseHelper {
         return profile;
     }
 
-
     public void getDetails() {
         DatabaseReference usersProfile = getUsersProfileRef();
         ValueEventListener postListener = new ValueEventListener() {
@@ -171,13 +170,48 @@ public class FirebaseHelper {
                 });
     }
 
+    public void setAddress(Map<String,Object> map) {
+
+        DatabaseReference usersAddress = getUsersAddressRef();
+        usersAddress.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
+
+    }
+
     private void setNewUserDetails(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference usersProfile = getUsersProfileRef();
-        usersProfile.setValue(new ProfileDetailsModel("",
-                "",
-                "",
-                mAuth.getCurrentUser().getEmail()));
+        DatabaseReference usersAddress = getUsersAddressRef();
+
+        String empty = "";
+
+        ProfileDetailsModel detailsModel = new ProfileDetailsModel();
+        detailsModel.name = empty;
+        detailsModel.contact = empty;
+        detailsModel.email = mAuth.getCurrentUser().getEmail();
+
+        ProfileAddressModel addressModel = new ProfileAddressModel();
+        addressModel.address = empty;
+        addressModel.city = empty;
+        addressModel.postcode = empty;
+        addressModel.country = empty;
+
+        usersProfile.setValue(detailsModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
+        usersAddress.setValue(addressModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
     }
 
     private DatabaseReference getRootRef(){
@@ -196,6 +230,10 @@ public class FirebaseHelper {
 
     private DatabaseReference getUsersProfileRef(){
             return getUsersRef().child(CHILD_PROFILE);
+    }
+
+    private DatabaseReference getUsersAddressRef(){
+        return getUsersProfileRef().child(CHILD_ADDRESS);
     }
 
     private DatabaseReference getUsersOrderRef(){

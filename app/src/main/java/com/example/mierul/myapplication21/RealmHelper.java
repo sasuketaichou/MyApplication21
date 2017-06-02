@@ -23,6 +23,7 @@ public class RealmHelper {
             Realm.init(context);
             realmConfig = new RealmConfiguration.Builder()
                     .schemaVersion(0)
+                    .deleteRealmIfMigrationNeeded()
                     .build();
 
         return realmConfig;
@@ -55,7 +56,7 @@ public class RealmHelper {
 
         if(resultForm != null){
             form.setId(resultForm.getId());
-            form.setAddress(resultForm.getAddress());
+            form.setAddress(resultForm.getMapAddress());
             form.setNote(resultForm.getNote());
         } else {
             form.setId(id);

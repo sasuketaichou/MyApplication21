@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.mierul.myapplication21.Adapter.ProfileAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
-import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
+import com.example.mierul.myapplication21.Model.UserDetails.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.example.mierul.myapplication21.Event.ProfileAdapterEvent;
 import com.example.mierul.myapplication21.R;

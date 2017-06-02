@@ -92,13 +92,13 @@
                     />
 
                 <EditText
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:id="@+id/address_postcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Postcode"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:inputType="number"
+                    android:maxLength="5"/>
             </TableRow>
 
             <TableRow

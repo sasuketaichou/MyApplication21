@@ -23,6 +23,8 @@ import com.example.mierul.myapplication21.RealmHelper;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Map;
+
 /**
  * Created by mierul on 3/16/2017.
  */
@@ -112,6 +114,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         note_input.setOnClickListener(this);
 
         if(form != null){
+
             address_input.setText(form.getAddress());
             note_input.setText(form.getNote());
         }

@@ -2,21 +2,26 @@ package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
+import com.example.mierul.myapplication21.Model.UserDetails.ProfileDetailsModel;
 import com.example.mierul.myapplication21.OrderForm;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.RealmHelper;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Hexa-Amierul.Japri on 8/5/2017.
@@ -28,6 +33,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private RealmHelper rHelper;
     private FirebaseHelper helper;
     private OrderForm form;
+    private ProfileDetailsModel model;
 
     public static EditProfileFragment newInstance(int position) {
 
@@ -42,18 +48,38 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt("position");
-        rHelper = new RealmHelper(getContext());
-        helper = new FirebaseHelper();
+
+        if(rHelper == null){
+            rHelper = new RealmHelper(getContext());
+        }
+
+        if(helper == null){
+            helper = new FirebaseHelper();
+        }
 
         form = rHelper.getOrder(helper.getUid());
         if(form == null){
             form = new OrderForm();
             form.setId(helper.getUid());
-            form.setAddress("");
+            String empty = "";
+            form.setAddress(addressToMap(empty,empty,empty,empty));
         }
 
         String title = getTitle(position);
         setTitle(title);
+
+        if(position == 4){
+            helper.getDetails();
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(position == 4){
+            ((CheckBox)view.findViewById(R.id.checkbox_address)).setOnCheckedChangeListener(checkListener());
+        }
     }
 
     @Nullable
@@ -80,6 +106,27 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         //TODO make auto show softkeyboard
         //without lagging ui
         return view;
+
+
+    }
+
+    private CompoundButton.OnCheckedChangeListener checkListener() {
+        CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    if(model != null){
+                        ((EditText)getView().findViewById(R.id.address_address)).setText(model.address.get("address"));
+                        ((EditText)getView().findViewById(R.id.address_city)).setText(model.city.get("city"));
+                        ((EditText)getView().findViewById(R.id.address_country)).setText("Malaysia");
+                        ((EditText)getView().findViewById(R.id.address_postcode)).setText(model.postcode.get("postcode"));
+                    }
+                }
+            }
+        };
+
+        return listener;
     }
 
     private String getTitle(int position){
@@ -150,7 +197,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         String city = ((EditText)view.findViewById(R.id.address_city)).getText().toString();
                         String country = "Malaysia"; //((EditText)view.findViewById(R.id.address_country)).getText().toString();
                         String postcode = ((EditText)view.findViewById(R.id.address_postcode)).getText().toString();
-                        String space = " ";
 
                         if(address.isEmpty()){
                             snackBarToToast("Please enter address");
@@ -167,10 +213,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             break;
                         }
 
-                        String userAddress = address+space+city+space+postcode+space+country;
+                        Map<String,Object> userAddress = addressToMap(address,city,postcode,country);
+
                         if(position == 2){
-                            helper.setDetails(childNode.getNode(),userAddress);
-                            if(form.getAddress().isEmpty()) {
+                            helper.setAddress(userAddress);
+                            if(form.getMapAddress().isEmpty()) {
                                 form.setAddress(userAddress);
                                 rHelper.saveOrder(form);
                             }
@@ -196,5 +243,24 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         } else {
             snackBarToToast("Edit is fail. Please try again");
         }
+    }
+
+    @Subscribe
+    public void FirebaseHelperGetProfileListener(ProfileDetailsModel model){
+
+        //to get address
+        this.model = model;
+    }
+
+    public Map<String,Object> addressToMap(String address,String city,String postcode,String country){
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("address",address);
+        map.put("city",city);
+        map.put("postcode",postcode);
+        map.put("country",country);
+
+        return map;
+
     }
 }

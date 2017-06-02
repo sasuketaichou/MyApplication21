@@ -8,11 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Constant;
-import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
+import com.example.mierul.myapplication21.Model.UserDetails.ProfileAddressModel;
+import com.example.mierul.myapplication21.Model.UserDetails.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Event.ProfileAdapterEvent;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Map;
 
 
 /**
@@ -55,7 +58,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                 break;
             case 2:
                 mTitle = Constant.PROFILE_ADDRESS;
-                mContent = item.address;
+
+                String address = item.address.get("address");
+                String city =item.city.get("city");
+                String postcode = item.postcode.get("postcode");
+                String country =  item.country.get("country");
+                String space = " ";
+
+                mContent = address+space+city+space+postcode+space+country;
                 break;
             case 3:
                 mTitle = Constant.PROFILE_CONTACT;
