@@ -64,7 +64,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
                     String space = " ";
 
                     mContent = address+space+city+space+postcode+space+country;
-            }
+                }
                 break;
             case 3:
                 mTitle = Constant.PROFILE_CONTACT;

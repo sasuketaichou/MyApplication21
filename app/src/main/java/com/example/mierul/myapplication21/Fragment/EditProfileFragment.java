@@ -61,8 +61,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         if(form == null){
             form = new OrderForm();
             form.setId(helper.getUid());
-            String empty = "";
-            form.setAddress(addressToMap(empty,empty,empty,empty));
         }
 
         String title = getTitle(position);
@@ -81,7 +79,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             CheckBox checkBox =(CheckBox)view.findViewById(R.id.checkbox_address);
 
             if(position == 4){
-                checkBox.setOnCheckedChangeListener(checkListener());
+                if(form.getAddress().isEmpty()){
+                    checkBox.setVisibility(View.INVISIBLE);
+                } else {
+                    checkBox.setOnCheckedChangeListener(checkListener());
+                }
             } else {
                 checkBox.setVisibility(View.INVISIBLE);
             }
@@ -122,7 +124,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(isChecked){
-                    if(model != null){
+                    if(model != null && getView() != null){
                         ((EditText)getView().findViewById(R.id.address_address)).setText(model.address.get("address"));
                         ((EditText)getView().findViewById(R.id.address_city)).setText(model.address.get("city"));
                         ((EditText)getView().findViewById(R.id.address_country)).setText("Malaysia");
@@ -222,7 +224,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
                         if(position == 2){
                             helper.setAddress(userAddress);
-                            if(form.getMapAddress().isEmpty()) {
+                            if(form.getAddress().isEmpty()) {
                                 form.setAddress(userAddress);
                                 rHelper.saveOrder(form);
                             }

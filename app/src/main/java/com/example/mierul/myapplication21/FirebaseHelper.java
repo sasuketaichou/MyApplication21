@@ -314,9 +314,6 @@ public class FirebaseHelper {
             }
         };
         productProfileRef.addValueEventListener(eventListener);
-
-
-
     }
 
     public void addOrder(OrdersDetailsModel model) {
@@ -425,7 +422,6 @@ public class FirebaseHelper {
                 }
             }
         });
-
     }
 
     private void removeOrderAtUsersOrder(String usrOrdKey) {
@@ -441,7 +437,6 @@ public class FirebaseHelper {
                 }
             }
         });
-
     }
 
     public void setDisplayName(String displayName) {
