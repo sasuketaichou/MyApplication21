@@ -13,7 +13,7 @@ import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
-import com.example.mierul.myapplication21.Model.UserDetails.ProfileDetailsModel;
+import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.OrderForm;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.RealmHelper;
@@ -77,8 +77,18 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(position == 4){
-            ((CheckBox)view.findViewById(R.id.checkbox_address)).setOnCheckedChangeListener(checkListener());
+        if(position == 4 || position == 2){
+            CheckBox checkBox =(CheckBox)view.findViewById(R.id.checkbox_address);
+
+            if(position == 4){
+                checkBox.setOnCheckedChangeListener(checkListener());
+            } else {
+                checkBox.setVisibility(View.INVISIBLE);
+            }
+
+
+
+
         }
     }
 
@@ -118,9 +128,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 if(isChecked){
                     if(model != null){
                         ((EditText)getView().findViewById(R.id.address_address)).setText(model.address.get("address"));
-                        ((EditText)getView().findViewById(R.id.address_city)).setText(model.city.get("city"));
+                        ((EditText)getView().findViewById(R.id.address_city)).setText(model.address.get("city"));
                         ((EditText)getView().findViewById(R.id.address_country)).setText("Malaysia");
-                        ((EditText)getView().findViewById(R.id.address_postcode)).setText(model.postcode.get("postcode"));
+                        ((EditText)getView().findViewById(R.id.address_postcode)).setText(model.address.get("postcode"));
                     }
                 }
             }
@@ -191,7 +201,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     case 2:
                     case 4:
 
-                        //TODO if checkbox is ticked get default adress, but how do u separate them?
                         View view = getView();
                         String address = ((EditText)view.findViewById(R.id.address_address)).getText().toString();
                         String city = ((EditText)view.findViewById(R.id.address_city)).getText().toString();

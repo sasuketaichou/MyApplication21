@@ -33,7 +33,7 @@ public class OrderForm extends RealmObject {
     public String getAddress(){
         String space = " ";
         String fullAddress = address+space+city+space+postcode+space+country;
-        return fullAddress;
+        return address == null? "": fullAddress;
     }
 
     public void setAddress(Map<String,Object> map) {

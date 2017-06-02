@@ -16,7 +16,7 @@ import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.Model.UserDetails.ProfileAddressModel;
-import com.example.mierul.myapplication21.Model.UserDetails.ProfileDetailsModel;
+import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +36,6 @@ import com.google.firebase.storage.StorageReference;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -163,7 +162,6 @@ public class FirebaseHelper {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(!task.isSuccessful()){
                             Log.e(TAG,"setDetails",task.getException());
-
                         }
                         postToBus(new FirebaseBooleanEvent(task.isSuccessful()));
                     }
@@ -176,7 +174,11 @@ public class FirebaseHelper {
         usersAddress.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                if(!task.isSuccessful()){
+                    Log.e(TAG,"setAddress",task.getException());
 
+                }
+                postToBus(new FirebaseBooleanEvent(task.isSuccessful()));
             }
         });
 
@@ -321,24 +323,6 @@ public class FirebaseHelper {
 
 
 
-    }
-
-    public void testing(){
-        //BROKEN
-        DatabaseReference ref = getRootRef().child(CHILD_URL).child(CHILD_IMAGE).child(ROOT_PRODUCT);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.v("naruto",String.valueOf(dataSnapshot.getChildrenCount()));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("naruto",databaseError.toString());
-            }
-        });
-
-        Log.v("naruto","runnning");
     }
 
     public void addOrder(OrdersDetailsModel model) {

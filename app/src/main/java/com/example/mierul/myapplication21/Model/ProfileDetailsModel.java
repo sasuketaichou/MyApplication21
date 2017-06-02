@@ -1,4 +1,4 @@
-package com.example.mierul.myapplication21.Model.UserDetails;
+package com.example.mierul.myapplication21.Model;
 
 import java.util.Map;
 
@@ -11,9 +11,6 @@ public class ProfileDetailsModel {
     public String contact;
     public String email;
     public Map<String,String> address;
-    public Map<String,String> city;
-    public Map<String,String> postcode;
-    public Map<String,String> country;
 
     public ProfileDetailsModel(){
     }
