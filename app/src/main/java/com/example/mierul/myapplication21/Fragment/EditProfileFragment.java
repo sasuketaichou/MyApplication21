@@ -85,10 +85,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             } else {
                 checkBox.setVisibility(View.INVISIBLE);
             }
-
-
-
-
         }
     }
 

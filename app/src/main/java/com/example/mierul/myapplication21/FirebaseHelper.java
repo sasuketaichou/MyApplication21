@@ -15,7 +15,6 @@ import com.example.mierul.myapplication21.Model.CheckoutModel;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
-import com.example.mierul.myapplication21.Model.UserDetails.ProfileAddressModel;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -36,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,7 +187,6 @@ public class FirebaseHelper {
     private void setNewUserDetails(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference usersProfile = getUsersProfileRef();
-        DatabaseReference usersAddress = getUsersAddressRef();
 
         String empty = "";
 
@@ -196,11 +195,11 @@ public class FirebaseHelper {
         detailsModel.contact = empty;
         detailsModel.email = mAuth.getCurrentUser().getEmail();
 
-        ProfileAddressModel addressModel = new ProfileAddressModel();
-        addressModel.address = empty;
-        addressModel.city = empty;
-        addressModel.postcode = empty;
-        addressModel.country = empty;
+        detailsModel.address = new HashMap<>();
+        detailsModel.address.put("address",empty);
+        detailsModel.address.put("city",empty);
+        detailsModel.address.put("postcode",empty);
+        detailsModel.address.put("country",empty);
 
         usersProfile.setValue(detailsModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -208,12 +207,7 @@ public class FirebaseHelper {
 
             }
         });
-        usersAddress.setValue(addressModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
 
-            }
-        });
     }
 
     private DatabaseReference getRootRef(){
