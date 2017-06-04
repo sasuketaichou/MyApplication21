@@ -103,7 +103,10 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 break;
             default:
                 view = inflater.inflate(R.layout.fragment_edit_profile,container,false);
-                view.findViewById(R.id.user_profile_edit).requestFocus();
+                EditText edit = (EditText) view.findViewById(R.id.user_profile_edit);
+                edit.requestFocus();
+                String hint = getTitle(position);
+                edit.setHint(hint);
                 break;
 
         }
@@ -123,13 +126,28 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+                EditText address = (EditText)getView().findViewById(R.id.address_address);
+                EditText city = (EditText)getView().findViewById(R.id.address_city);
+                EditText postcode = (EditText)getView().findViewById(R.id.address_postcode);
+                ((EditText)getView().findViewById(R.id.address_country)).setText("Malaysia");
+
                 if(isChecked){
-                    if(model != null && getView() != null){
-                        ((EditText)getView().findViewById(R.id.address_address)).setText(model.address.get("address"));
-                        ((EditText)getView().findViewById(R.id.address_city)).setText(model.address.get("city"));
-                        ((EditText)getView().findViewById(R.id.address_country)).setText("Malaysia");
-                        ((EditText)getView().findViewById(R.id.address_postcode)).setText(model.address.get("postcode"));
+                    if(model != null){
+
+                        address.setText(model.address.get("address"));
+                        address.setEnabled(false);
+
+                        city.setText(model.address.get("city"));
+                        city.setEnabled(false);
+
+                        postcode.setText(model.address.get("postcode"));
+                        postcode.setEnabled(false);
                     }
+                } else{
+
+                    address.setEnabled(true);
+                    city.setEnabled(true);
+                    postcode.setEnabled(true);
                 }
             }
         };

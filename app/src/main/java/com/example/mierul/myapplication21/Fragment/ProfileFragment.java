@@ -41,6 +41,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         adapter = new ProfileAdapter(new ProfileDetailsModel());
         recyclerView.setAdapter(adapter);
 
+        //Todo add upload picture
+
         return view;
     }
 
