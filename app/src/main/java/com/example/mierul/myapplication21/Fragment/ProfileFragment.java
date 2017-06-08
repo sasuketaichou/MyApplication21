@@ -51,6 +51,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         ((TextView)view.findViewById(R.id.user_profile_name)).setText(name);
         ((TextView)view.findViewById(R.id.user_profile_email)).setText(email);
+
+        view.findViewById(R.id.user_profile_photo).setOnClickListener(this);
     }
 
     @Override
@@ -90,6 +92,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.btn_signout:
                 helper.sign_out();
                 previousFragment();
+                break;
+            case R.id.user_profile_photo:
+               //open camera
                 break;
         }
     }
