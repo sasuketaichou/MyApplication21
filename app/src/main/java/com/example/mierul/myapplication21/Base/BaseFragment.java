@@ -1,6 +1,7 @@
 package com.example.mierul.myapplication21.Base;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -266,6 +268,18 @@ public abstract class BaseFragment extends Fragment {
                     .setAction(action,listener)
                     .show();
         }
+    }
+
+    public void alertUserDialog(String title,String message,DialogInterface.OnDismissListener dismiss){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(android.R.string.ok,null);
+        builder.setOnDismissListener(dismiss);
+
+        builder.show();
     }
 }
 

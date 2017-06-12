@@ -95,6 +95,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.user_profile_photo:
                //open camera
+                replaceFragment(new CameraFragment());
                 break;
         }
     }
