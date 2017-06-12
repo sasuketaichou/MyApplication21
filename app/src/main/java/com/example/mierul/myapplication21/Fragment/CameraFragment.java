@@ -21,6 +21,8 @@ import com.example.mierul.myapplication21.Base.BaseFragment;
 
 import java.util.Arrays;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Hexa-Amierul.Japri on 8/6/2017.
  */
@@ -58,6 +60,7 @@ public class CameraFragment extends BaseFragment {
         AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
         ad.setTitle("Photo");
         CharSequence[] list = {"Camera", "Gallery"};
+        //set icon
         ad.setSingleChoiceItems(list, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -174,24 +177,30 @@ public class CameraFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_PERMISSION_SETTING) {
-            boolean finish = false;
+            if(resultCode == RESULT_OK){
+                boolean finish = false;
 
-            for(String permission : permissionType){
-                if (ContextCompat.checkSelfPermission(getContext(),permission) == PackageManager.PERMISSION_GRANTED) {
-                    //Got Permission
-                    finish = true;
-                } else {
-                    //didnt get all permission
-                    finish = false;
-                    break;
+                for(String permission : permissionType){
+                    if (ContextCompat.checkSelfPermission(getContext(),permission) == PackageManager.PERMISSION_GRANTED) {
+                        //Got Permission
+                        finish = true;
+                    } else {
+                        //didnt get all permission
+                        finish = false;
+                        break;
+                    }
                 }
-            }
 
-            if(finish){
-                showOptionCameraGallery();
+                if(finish){
+                    showOptionCameraGallery();
+                } else {
+                    //show ask permission
+                    showAskToSetting();
+                }
             } else {
-                //show ask permission
-                showAskToSetting();
+
+                Log.v("naruto","isFailed");
+
             }
         }
     }
