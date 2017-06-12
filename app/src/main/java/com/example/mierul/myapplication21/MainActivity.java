@@ -11,17 +11,21 @@ import com.example.mierul.myapplication21.Fragment.FirstFragment;
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private FirstFragment firstFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(firstFragment == null){
+            firstFragment = new FirstFragment();
+        }
+
         initFragment();
     }
 
     private void initFragment() {
-        FirstFragment firstFragment = new FirstFragment();
         //add to custom stack
         FragmentStack.addStack(firstFragment);
         //set a container
@@ -58,7 +62,7 @@ public class MainActivity extends BaseActivity {
     public void onBackPressed() {
 
         if (checkDrawer()){
-            ((FirstFragment)(FragmentStack.getFirstFragment())).closedDrawer();
+            firstFragment.closedDrawer();
         }else if(!FragmentStack.isEmpty()) {
             previousFragment();
         }else{
@@ -67,6 +71,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private boolean checkDrawer() {
-        return ((FirstFragment)(FragmentStack.getFirstFragment())).isDrawerOpen();
+        return firstFragment.isDrawerOpen();
     }
 }

@@ -93,18 +93,34 @@ public class CameraFragment extends BaseFragment {
             showAskPermission();
         } else {
             //go setting
-            goToSetting();
+           showAskToSetting();
 
         }
     }
 
     private void showAskPermission() {
-        alertUserDialog("Permission", "Need user permission to continue.", new DialogInterface.OnDismissListener() {
+        alertUserDialog("Permission", "Need user permission to continue.",null, new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 requestPermissions(permissionType, PERMISSION_GRANTED);
             }
         });
+    }
+
+    private void showAskToSetting(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Permission");
+        builder.setMessage("Need user permission to continue.");
+
+        builder.setPositiveButton("SETTINGS", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                goToSetting();
+            }
+        });
+
+        builder.show();
     }
 
     public void goToSetting(){
@@ -149,7 +165,7 @@ public class CameraFragment extends BaseFragment {
         } else {
             //show dialog warning
             //or back
-            previousFragment();
+            //previousFragment();
         }
     }
 
@@ -175,7 +191,7 @@ public class CameraFragment extends BaseFragment {
                 showOptionCameraGallery();
             } else {
                 //show ask permission
-                goToSetting();
+                showAskToSetting();
             }
         }
     }

@@ -270,13 +270,13 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public void alertUserDialog(String title,String message,DialogInterface.OnDismissListener dismiss){
+    public void alertUserDialog(String title, String message, DialogInterface.OnClickListener click, DialogInterface.OnDismissListener dismiss){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(title);
         builder.setMessage(message);
 
-        builder.setPositiveButton(android.R.string.ok,null);
+        builder.setPositiveButton(android.R.string.ok,click);
         builder.setOnDismissListener(dismiss);
 
         builder.show();
