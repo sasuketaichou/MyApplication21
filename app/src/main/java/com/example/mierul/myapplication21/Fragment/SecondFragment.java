@@ -144,6 +144,11 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         String name = productName.getText().toString();
 
         String address = address_input.getText().toString();
+
+        if(address.isEmpty()){
+            snackBarToToast("Please fill in your address.");
+            return;
+        }
         String note = note_input.getText().toString();
 
         String total = getTotal();

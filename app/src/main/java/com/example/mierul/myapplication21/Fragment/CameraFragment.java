@@ -4,22 +4,29 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.R;
 
-import java.util.Arrays;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -37,41 +44,56 @@ public class CameraFragment extends BaseFragment {
     private int REQUEST_PERMISSION_SETTING = 1002;
     private int PERMISSION_GRANTED = 2000;
 
+    private ImageView profilePhoto;
+    private Button saveButton;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.fragment_camera,container,false);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        if(isPermissionGranted()){
-            //choose camera or gallery
-            showOptionCameraGallery();
-        } else {
-            checkPermission();
-        }
+        view.findViewById(R.id.camera_layout).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(isPermissionGranted()){
+                    //choose camera or gallery
+                    showOptionCameraGallery();
+                } else {
+                    checkPermission();
+                }
+                return false;
+            }
+        });
 
+        profilePhoto = (ImageView) view.findViewById(R.id.profile_photo);
+        saveButton = (Button)view.findViewById(R.id.btn_save);
+        saveButton.setEnabled(false);
+        saveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_hold));
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void showOptionCameraGallery() {
-        AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-        ad.setTitle("Photo");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         CharSequence[] list = {"Camera", "Gallery"};
-        //set icon
-        ad.setSingleChoiceItems(list, -1, new DialogInterface.OnClickListener() {
+        builder.setItems(list, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
+            public void onClick(DialogInterface dialog, int which) {
                 Intent intent;
 
-                switch (i){
+                switch (which){
                     case 0:
                         intent = new Intent("android.media.action.IMAGE_CAPTURE");
                         startActivityForResult(intent, REQUEST_CAMERA);
-                        dialogInterface.dismiss();
                         break;
                     case 1:
                         intent = new Intent(
@@ -81,11 +103,15 @@ public class CameraFragment extends BaseFragment {
                         startActivityForResult(
                                 Intent.createChooser(intent, "Select Image"),
                                 REQUEST_GALLERY);
-                        dialogInterface.dismiss();
                         break;
                 }
+                dialog.dismiss();
             }
-        }).show();
+        });
+
+        //Todo build adapter to attach icon with item
+        //builder.setAdapter(new DialogImageAdapter(),);
+        builder.show();
     }
 
     private void checkPermission() {
@@ -97,14 +123,13 @@ public class CameraFragment extends BaseFragment {
         } else {
             //go setting
            showAskToSetting();
-
         }
     }
 
     private void showAskPermission() {
-        alertUserDialog("Permission", "Need user permission to continue.",null, new DialogInterface.OnDismissListener() {
+        alertUserDialog("Permission", "Need user permission to continue.", new DialogInterface.OnClickListener() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
+            public void onClick(DialogInterface dialog, int which) {
                 requestPermissions(permissionType, PERMISSION_GRANTED);
             }
         });
@@ -122,6 +147,14 @@ public class CameraFragment extends BaseFragment {
                 goToSetting();
             }
         });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setCancelable(false);
 
         builder.show();
     }
@@ -167,8 +200,6 @@ public class CameraFragment extends BaseFragment {
             showOptionCameraGallery();
         } else {
             //show dialog warning
-            //or back
-            //previousFragment();
         }
     }
 
@@ -177,31 +208,51 @@ public class CameraFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_PERMISSION_SETTING) {
-            if(resultCode == RESULT_OK){
-                boolean finish = false;
+            boolean finish = false;
 
-                for(String permission : permissionType){
-                    if (ContextCompat.checkSelfPermission(getContext(),permission) == PackageManager.PERMISSION_GRANTED) {
-                        //Got Permission
-                        finish = true;
-                    } else {
-                        //didnt get all permission
-                        finish = false;
-                        break;
-                    }
-                }
-
-                if(finish){
-                    showOptionCameraGallery();
+            for(String permission : permissionType){
+                if (ContextCompat.checkSelfPermission(getContext(),permission) == PackageManager.PERMISSION_GRANTED) {
+                    //Got Permission
+                    finish = true;
                 } else {
-                    //show ask permission
-                    showAskToSetting();
+                    //didnt get all permission
+                    finish = false;
+                    break;
                 }
+            }
+
+            if(finish){
+                showOptionCameraGallery();
             } else {
+                //show ask permission
+                showAskToSetting();
+            }
+        } else if(requestCode == REQUEST_CAMERA && data != null){
+            if(resultCode == RESULT_OK){
 
-                Log.v("naruto","isFailed");
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                profilePhoto.setImageBitmap(photo);
 
+                saveButton.setEnabled(true);
+
+            }
+        } else if (requestCode == REQUEST_GALLERY && data != null){
+            if(resultCode==RESULT_OK){
+
+                Uri imageUri = data.getData();
+                InputStream imageStream = null;
+                try {
+                    imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                profilePhoto.setImageBitmap(selectedImage);
+
+                saveButton.setEnabled(true);
             }
         }
     }
+
+
 }

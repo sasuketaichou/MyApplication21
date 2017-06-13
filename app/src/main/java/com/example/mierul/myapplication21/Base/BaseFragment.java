@@ -270,14 +270,20 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public void alertUserDialog(String title, String message, DialogInterface.OnClickListener click, DialogInterface.OnDismissListener dismiss){
+    public void alertUserDialog(String title, String message, DialogInterface.OnClickListener positiveListener){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(title);
         builder.setMessage(message);
 
-        builder.setPositiveButton(android.R.string.ok,click);
-        builder.setOnDismissListener(dismiss);
+        builder.setPositiveButton(android.R.string.ok,positiveListener);
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setCancelable(false);
 
         builder.show();
     }
