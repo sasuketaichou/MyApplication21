@@ -10,6 +10,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,22 +48,22 @@ public class CameraFragment extends BaseFragment {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private String fileProvider = "com.example.mierul.myapplication21.fileprovider";
+    private String FILEPROVIDER = "com.example.mierul.myapplication21.fileprovider";
+    private static String TAG = "CameraFragment";
 
     private int REQUEST_CAMERA = 1000;
     private int REQUEST_GALLERY= 1001;
     private int REQUEST_PERMISSION_SETTING = 1002;
     private int PERMISSION_GRANTED = 2000;
+    private int isCamera;
+    private int USE_CAMERA = 1;
+    private int USE_GALLERY = 2;
 
     private ImageView profilePhoto;
     private Button saveButton;
 
     private FirebaseHelper fHelper;
 
-    private static String TAG = "CameraFragment";
-    private int isCamera;
-    private int USE_CAMERA = 1;
-    private int USE_GALLERY = 2;
     private Uri takePhotoUri;
 
     @Override
@@ -71,7 +72,6 @@ public class CameraFragment extends BaseFragment {
         if(fHelper == null){
             fHelper = new FirebaseHelper();
         }
-
     }
 
     @Nullable
@@ -98,26 +98,39 @@ public class CameraFragment extends BaseFragment {
 
         profilePhoto = (ImageView) view.findViewById(R.id.profile_photo);
         saveButton = (Button)view.findViewById(R.id.btn_save);
-        saveButton.setEnabled(false);
-        saveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_hold));
+        disableButton();
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                showProgressDialog();
                 if(isCamera == USE_CAMERA){
                     if(takePhotoUri != null){
-                        Log.v("naruto","takephotouri : "+takePhotoUri.getPath());
-                        fHelper.setUserProfileImage(takePhotoUri);
+                        fHelper.setUserProfileImage(takePhotoUri,getProgressDialog());
+                        takePhotoUri = null;
                     }
 
                 } else if (isCamera == USE_GALLERY) {
+                    if(takePhotoUri != null){
+                        fHelper.setUserProfileImage(takePhotoUri,getProgressDialog());
+                        takePhotoUri = null;
+                    }
 
                 } else {
-
+                    //not gallery or camera
                 }
-
             }
         });
+    }
+
+    private void disableButton(){
+        saveButton.setEnabled(false);
+        saveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_hold));
+    }
+
+    private void enableButton(){
+        saveButton.setEnabled(true);
+        saveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_default));
     }
 
     private void showOptionCameraGallery() {
@@ -130,7 +143,9 @@ public class CameraFragment extends BaseFragment {
 
                 switch (which){
                     case 0:
+                        takePhotoUri = getPhotoFileUri(photoFileName());
                         intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, takePhotoUri);
                         startActivityForResult(intent, REQUEST_CAMERA);
                         break;
                     case 1:
@@ -150,6 +165,10 @@ public class CameraFragment extends BaseFragment {
         //Todo build adapter to attach icon with item
         //builder.setAdapter(new DialogImageAdapter(),);
         builder.show();
+    }
+
+    private String photoFileName() {
+        return new SimpleDateFormat("yyyyMMdd_HHmmss", new Locale("ms","MY","MY")).format(new Date())+".jpg";
     }
 
     private void checkPermission() {
@@ -244,7 +263,6 @@ public class CameraFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == REQUEST_PERMISSION_SETTING) {
             boolean finish = false;
 
@@ -265,38 +283,29 @@ public class CameraFragment extends BaseFragment {
                 //show ask permission
                 showAskToSetting();
             }
-        } else if(requestCode == REQUEST_CAMERA && data != null){
+        } else if(requestCode == REQUEST_CAMERA){
             if(resultCode == RESULT_OK){
 
                 isCamera = USE_CAMERA;
 
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                profilePhoto.setImageBitmap(photo);
-
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", new Locale("ms","MY","MY")).format(new Date());
-                takePhotoUri = getPhotoFileUri(timeStamp);
-
-                saveButton.setEnabled(true);
-                saveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_default));
-
+                if(takePhotoUri != null){
+                    profilePhoto.setImageURI(takePhotoUri);
+                }
+                enableButton();
+            } else {
+                disableButton();
             }
         } else if (requestCode == REQUEST_GALLERY && data != null){
             if(resultCode==RESULT_OK){
-
                 isCamera = USE_GALLERY;
+                takePhotoUri = data.getData();
 
-                Uri imageUri = data.getData();
-                InputStream imageStream = null;
-                try {
-                    imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if(takePhotoUri != null ){
+                    profilePhoto.setImageURI(takePhotoUri);
                 }
-                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                profilePhoto.setImageBitmap(selectedImage);
-
-                saveButton.setEnabled(true);
-                saveButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_default));
+                enableButton();
+            } else {
+                disableButton();
             }
         }
     }
@@ -316,7 +325,7 @@ public class CameraFragment extends BaseFragment {
             // wrap File object into a content provider
             // required for API >= 24
             // See https://guides.codepath.com/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-            return FileProvider.getUriForFile(getActivity(), fileProvider, file);
+            return FileProvider.getUriForFile(getActivity(), FILEPROVIDER, file);
         }
         return null;
     }
@@ -325,6 +334,4 @@ public class CameraFragment extends BaseFragment {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
     }
-
-
 }

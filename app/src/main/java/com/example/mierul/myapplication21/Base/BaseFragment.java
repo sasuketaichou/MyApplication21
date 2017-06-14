@@ -189,6 +189,10 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public ProgressDialog getProgressDialog(){
+        return mProgressDialog;
+    }
+
     private InputMethodManager getInputMethodManager(){
         if(inputMethodManager == null){
             inputMethodManager =(InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);

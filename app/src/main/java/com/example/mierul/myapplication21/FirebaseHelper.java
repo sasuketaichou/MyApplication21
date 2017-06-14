@@ -2,6 +2,7 @@ package com.example.mierul.myapplication21;
 
 import android.app.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -466,25 +467,33 @@ public class FirebaseHelper {
         }
     }
 
-    public void setUserProfileImage(Uri file){
+    public void setUserProfileImage(Uri file,final ProgressDialog progressDialog){
 
-        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("image").child("User").child(getUid()).child("user");
+        StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("image").child("User").child(getUid()+"/user.jpg");
 
         UploadTask uploadTask =imageRef.putFile(file);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
 
             }
-        });
-
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.dismiss();
 
             }
-        });
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                //calculating progress percentage
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
+                //displaying percentage in progress dialog
+                progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+            }
+        });
     }
 }
