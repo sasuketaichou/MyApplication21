@@ -55,9 +55,6 @@ public class CameraFragment extends BaseFragment {
     private int REQUEST_GALLERY= 1001;
     private int REQUEST_PERMISSION_SETTING = 1002;
     private int PERMISSION_GRANTED = 2000;
-    private int isCamera;
-    private int USE_CAMERA = 1;
-    private int USE_GALLERY = 2;
 
     private ImageView profilePhoto;
     private Button saveButton;
@@ -104,20 +101,9 @@ public class CameraFragment extends BaseFragment {
             public void onClick(View v) {
 
                 showProgressDialog();
-                if(isCamera == USE_CAMERA){
-                    if(takePhotoUri != null){
-                        fHelper.setUserProfileImage(takePhotoUri,getProgressDialog());
-                        takePhotoUri = null;
-                    }
-
-                } else if (isCamera == USE_GALLERY) {
-                    if(takePhotoUri != null){
-                        fHelper.setUserProfileImage(takePhotoUri,getProgressDialog());
-                        takePhotoUri = null;
-                    }
-
-                } else {
-                    //not gallery or camera
+                if(takePhotoUri != null){
+                    fHelper.setUserProfileImage(takePhotoUri,getProgressDialog());
+                    takePhotoUri = null;
                 }
             }
         });
@@ -286,8 +272,6 @@ public class CameraFragment extends BaseFragment {
         } else if(requestCode == REQUEST_CAMERA){
             if(resultCode == RESULT_OK){
 
-                isCamera = USE_CAMERA;
-
                 if(takePhotoUri != null){
                     profilePhoto.setImageURI(takePhotoUri);
                 }
@@ -297,7 +281,7 @@ public class CameraFragment extends BaseFragment {
             }
         } else if (requestCode == REQUEST_GALLERY && data != null){
             if(resultCode==RESULT_OK){
-                isCamera = USE_GALLERY;
+
                 takePhotoUri = data.getData();
 
                 if(takePhotoUri != null ){
