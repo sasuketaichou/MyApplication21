@@ -101,18 +101,6 @@ public abstract class BaseFragment extends Fragment {
         return toolbar;
     }
 
-    public InputStream getImage(String imagePath){
-        AssetManager ass = getActivity().getAssets();
-        InputStream is = null;
-        try {
-            is = ass.open("img/"+imagePath);
-        } catch (IOException e) {
-            Log.e(TAG,"getImage",e);
-        }
-
-        return is;
-    }
-
     public void previousFragment(){
         try{
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -187,10 +175,6 @@ public abstract class BaseFragment extends Fragment {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-    }
-
-    public ProgressDialog getProgressDialog(){
-        return mProgressDialog;
     }
 
     private InputMethodManager getInputMethodManager(){

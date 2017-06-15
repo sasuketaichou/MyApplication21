@@ -1,12 +1,19 @@
 package com.example.mierul.myapplication21.Fragment;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Adapter.ProfileAdapter;
@@ -18,6 +25,8 @@ import com.example.mierul.myapplication21.Event.ProfileAdapterEvent;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
 
 /**
  * Created by Hexa-Amierul.Japri on 4/5/2017.
@@ -41,8 +50,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         adapter = new ProfileAdapter(new ProfileDetailsModel());
         recyclerView.setAdapter(adapter);
 
-        //Todo add upload picture
-
         return view;
     }
 
@@ -52,7 +59,29 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         ((TextView)view.findViewById(R.id.user_profile_name)).setText(name);
         ((TextView)view.findViewById(R.id.user_profile_email)).setText(email);
 
-        view.findViewById(R.id.user_profile_photo).setOnClickListener(this);
+        ImageView userPhoto = (ImageView)view.findViewById(R.id.user_profile_photo);
+        userPhoto.setOnClickListener(this);
+
+        Uri uri = helper.getProfile().getPhoto();
+
+        Bitmap bitmap= getBitmapFromUri(uri);
+        if(uri != null){
+            RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+            roundDrawable.setCircular(true);
+            
+            userPhoto.setImageDrawable(roundDrawable);
+        }
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) {
+        Bitmap bitmap =null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
     }
 
     @Override

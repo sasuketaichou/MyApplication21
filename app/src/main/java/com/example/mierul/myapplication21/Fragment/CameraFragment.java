@@ -67,7 +67,7 @@ public class CameraFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(fHelper == null){
-            fHelper = new FirebaseHelper();
+            fHelper = new FirebaseHelper(getContext());
         }
     }
 
@@ -102,7 +102,7 @@ public class CameraFragment extends BaseFragment {
 
                 showProgressDialog();
                 if(takePhotoUri != null){
-                    fHelper.setUserProfileImage(takePhotoUri,getProgressDialog());
+                    fHelper.setUserProfileImage(takePhotoUri);
                     takePhotoUri = null;
                 }
             }
@@ -160,7 +160,8 @@ public class CameraFragment extends BaseFragment {
     private void checkPermission() {
 
         if(shouldShowRequestPermissionRationale(permissionType[0])
-                ||shouldShowRequestPermissionRationale(permissionType[1])){
+                ||shouldShowRequestPermissionRationale(permissionType[1])
+                ||shouldShowRequestPermissionRationale(permissionType[2])){
 
             showAskPermission();
         } else {
@@ -184,7 +185,7 @@ public class CameraFragment extends BaseFragment {
         builder.setTitle("Permission");
         builder.setMessage("Need user permission to continue.");
 
-        builder.setPositiveButton("SETTINGS", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("SETTING", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 goToSetting();

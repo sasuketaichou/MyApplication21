@@ -254,20 +254,6 @@ public class FirebaseHelper {
         return id;
     }
 
-    public void downloadProductPicture(ImageView imageView){
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference imagesFolderRef = storageRef.child("image");
-        StorageReference productRef = imagesFolderRef.child("productOne");
-        StorageReference images = productRef.child("4.jpg");
-
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
-                .load(images)
-                .into(imageView);
-    }
-
     public void getProductPicture(){
 
         DatabaseReference productImageRef = getRootRef().child(ROOT_PRODUCT)
@@ -467,9 +453,34 @@ public class FirebaseHelper {
         }
     }
 
-    public void setUserProfileImage(Uri file,final ProgressDialog progressDialog){
+    private void setProfileImage(Uri image){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(image)
+                .build();
+
+        if (user != null) {
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.v(TAG, "User profile updated.");
+                            }
+                        }
+                    });
+        }
+
+    }
+
+    public void setUserProfileImage(final Uri file){
 
         StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("image").child("User").child(getUid()+"/user.jpg");
+
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(context.getString(R.string.loading));
+        progressDialog.setIndeterminate(true);
 
         UploadTask uploadTask =imageRef.putFile(file);
 
@@ -482,6 +493,8 @@ public class FirebaseHelper {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //upload the same image to firebase user profile
+                setProfileImage(file);
                 progressDialog.dismiss();
 
             }
