@@ -68,7 +68,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         if(uri != null){
             RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
             roundDrawable.setCircular(true);
-            
+
             userPhoto.setImageDrawable(roundDrawable);
         }
     }
