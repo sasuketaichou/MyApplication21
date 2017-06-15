@@ -50,6 +50,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         adapter = new ProfileAdapter(new ProfileDetailsModel());
         recyclerView.setAdapter(adapter);
 
+        //Todo name is not shown after edit
+        //progressbar never stop after upload
+
         return view;
     }
 
@@ -64,8 +67,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         Uri uri = helper.getProfile().getPhoto();
 
-        Bitmap bitmap= getBitmapFromUri(uri);
         if(uri != null){
+            Bitmap bitmap= getBitmapFromUri(uri);
             RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
             roundDrawable.setCircular(true);
 
