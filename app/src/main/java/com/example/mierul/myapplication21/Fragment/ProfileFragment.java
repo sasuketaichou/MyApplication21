@@ -142,6 +142,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void FirebaseHelperListener(ProfileDetailsModel model){
         //update ui after finish loading data
         adapter.refresh(model);
+
+        ProfileFirebaseModel profileFirebaseModel = helper.getProfile();
+
+        //Todo data discrepancy
+        Log.v("naruto","detailsmodel name:"+model.name+"\nfirebasemodel name:"+profileFirebaseModel.getDisplayName());
         hideProgressDialog();
     }
 }
