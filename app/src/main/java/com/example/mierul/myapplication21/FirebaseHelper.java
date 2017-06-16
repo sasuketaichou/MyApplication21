@@ -481,6 +481,7 @@ public class FirebaseHelper {
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(context.getString(R.string.loading));
         progressDialog.setIndeterminate(true);
+        progressDialog.show();
 
         UploadTask uploadTask =imageRef.putFile(file);
 
@@ -488,6 +489,7 @@ public class FirebaseHelper {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
+                postToBus(new FirebaseBooleanEvent(false));
 
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -496,6 +498,7 @@ public class FirebaseHelper {
                 //upload the same image to firebase user profile
                 setProfileImage(file);
                 progressDialog.dismiss();
+                postToBus(new FirebaseBooleanEvent(true));
 
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

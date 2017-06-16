@@ -26,8 +26,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.R;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -100,7 +103,6 @@ public class CameraFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                showProgressDialog();
                 if(takePhotoUri != null){
                     fHelper.setUserProfileImage(takePhotoUri);
                     takePhotoUri = null;
@@ -318,5 +320,12 @@ public class CameraFragment extends BaseFragment {
     private boolean isExternalStorageAvailable() {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
+    }
+
+    @Subscribe
+    public void FirebaseListener(FirebaseBooleanEvent event){
+        if(event.getResult()){
+            previousFragment();
+        }
     }
 }

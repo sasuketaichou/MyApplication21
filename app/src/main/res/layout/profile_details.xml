@@ -12,9 +12,16 @@
         android:layout_margin="5dp"
         android:clickable="true"
         android:text="TITLE"
-        android:textStyle="bold"
-        android:layout_toLeftOf="@+id/iv_edit"
-        android:layout_toStartOf="@+id/iv_edit"/>
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pencil"
+        android:layout_alignBottom="@+id/tv_profile_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:background="@color/light_grey"
@@ -25,7 +32,6 @@
         android:layout_below="@id/tv_profile_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:clickable="true"
         android:hint="Edit"
         android:text="USER INPUT"
@@ -36,16 +42,10 @@
         android:paddingStart="5dp"
         android:paddingLeft="5dp"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_toLeftOf="@+id/iv_edit"
-        android:layout_toStartOf="@+id/iv_edit"/>
-
-    <ImageView
-        android:id="@+id/iv_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/pencil"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toStartOf="@+id/iv_edit" />
 
 </RelativeLayout>

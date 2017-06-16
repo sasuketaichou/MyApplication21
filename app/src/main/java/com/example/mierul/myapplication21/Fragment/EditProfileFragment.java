@@ -117,8 +117,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         //TODO make auto show softkeyboard
         //without lagging ui
         return view;
-
-
     }
 
     private CompoundButton.OnCheckedChangeListener checkListener() {
