@@ -38,6 +38,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private String email;
     private ProfileAdapter adapter;
 
+    private TextView userDisplayName;
+    private TextView userEmail;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -50,17 +53,18 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         adapter = new ProfileAdapter(new ProfileDetailsModel());
         recyclerView.setAdapter(adapter);
 
-        //Todo name is not shown after edit
-        //progressbar never stop after upload
-
         return view;
     }
 
     private void initView(View view) {
         view.findViewById(R.id.btn_signout).setOnClickListener(this);
 
-        ((TextView)view.findViewById(R.id.user_profile_name)).setText(name);
-        ((TextView)view.findViewById(R.id.user_profile_email)).setText(email);
+        userDisplayName =(TextView)view.findViewById(R.id.user_profile_name);
+        userEmail = (TextView)view.findViewById(R.id.user_profile_email);
+
+        //Testing
+        userDisplayName.setText(name);
+        userEmail.setText(email);
 
         ImageView userPhoto = (ImageView)view.findViewById(R.id.user_profile_photo);
         userPhoto.setOnClickListener(this);
@@ -143,10 +147,19 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         //update ui after finish loading data
         adapter.refresh(model);
 
-        ProfileFirebaseModel profileFirebaseModel = helper.getProfile();
+        //Testing
+//        if(!name.equals(model.name)){
+//            userDisplayName.setText(model.name);
+//        } else {
+//            userDisplayName.setText(name);
+//        }
+//
+//        if(!email.equals(model.email)){
+//            userEmail.setText(model.email);
+//        } else {
+//            userEmail.setText(email);
+//        }
 
-        //Todo data discrepancy
-        Log.v("naruto","detailsmodel name:"+model.name+"\nfirebasemodel name:"+profileFirebaseModel.getDisplayName());
         hideProgressDialog();
     }
 }

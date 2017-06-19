@@ -94,21 +94,27 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view;
+        View view = null;
 
         switch (position){
-            case 2:
-            case 4:
-                view = inflater.inflate(R.layout.fragment_edit_profile_address,container,false);
+            case 1:
+                view = inflater.inflate(R.layout.fragment_edit_profile_password,container,false);
                 break;
-            default:
+            case 0:
+            case 3:
+            case 5:
                 view = inflater.inflate(R.layout.fragment_edit_profile,container,false);
                 EditText edit = (EditText) view.findViewById(R.id.user_profile_edit);
                 edit.requestFocus();
                 String hint = getTitle(position);
                 edit.setHint(hint);
                 break;
-
+            case 2:
+            case 4:
+                view = inflater.inflate(R.layout.fragment_edit_profile_address,container,false);
+                break;
+            default:
+                break;
         }
 
         view.findViewById(R.id.btn_ok).setOnClickListener(this);
@@ -154,33 +160,36 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     private String getTitle(int position){
-        Constant mTitle = null;
+        String mTitle;
 
         switch(position){
             case 0:
-                mTitle = Constant.PROFILE_NAME;
+                mTitle = Constant.PROFILE_NAME.getTitle();
                 childNode = Constant.NODE_NAME;
                 break;
             case 1:
-                mTitle = Constant.PROFILE_EMAIL;
+                mTitle = "CHANGE PASSWORD";
                 childNode = Constant.NODE_EMAIL;
                 break;
             case 2:
-                mTitle = Constant.PROFILE_ADDRESS;
+                mTitle = Constant.PROFILE_ADDRESS.getTitle();
                 childNode = Constant.NODE_ADDRESS;
                 break;
             case 3:
-                mTitle = Constant.PROFILE_CONTACT;
+                mTitle = Constant.PROFILE_CONTACT.getTitle();
                 childNode = Constant.NODE_CONTACT;
                 break;
             case 4:
-                mTitle = Constant.PRODUCT_ADDRESS;
+                mTitle = Constant.PRODUCT_ADDRESS.getTitle();
                 break;
             case 5:
-                mTitle = Constant.PRODUCT_NOTE;
+                mTitle = Constant.PRODUCT_NOTE.getTitle();
+                break;
+            default:
+                mTitle = "NO TITLE";
                 break;
         }
-        return mTitle.getTitle();
+        return mTitle;
     }
 
     @Override
@@ -196,20 +205,30 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             case R.id.btn_ok:
 
                 switch (position){
-                    case 0:
+
                     case 1:
-                    case 3:
-                    case 5:
-                        EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
-                        if(position != 5){
-                            helper.setDetails(childNode.getNode(), editText.getText().toString());
-                            if(childNode.getNode().equals(Constant.NODE_NAME.getNode())){
-                                helper.setDisplayName(editText.getText().toString());
-                            }
+
+                        EditText newPasswordInput = (EditText)getView().findViewById(R.id.user_profile_password);
+                        EditText confirmPasswordInput = (EditText)getView().findViewById(R.id.user_profile_password_confirm);
+
+                        String newPassword = newPasswordInput.getText().toString();
+                        String confirmPassword = confirmPasswordInput.getText().toString();
+
+                        if(newPassword.equals(confirmPassword)){
+                            //proceed
+                            helper.setPassword(newPassword);
+
                         } else {
-                            form.setNote(editText.getText().toString());
-                            rHelper.saveOrder(form);
-                            previousFragment();
+                            snackBarToToast("Password did not match.");
+                        }
+                        break;
+                    case 0:
+                    case 3:
+
+                        EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
+                        helper.setDetails(childNode.getNode(), editText.getText().toString());
+                        if(position == 0){
+                            helper.setDisplayName(editText.getText().toString());
                         }
                         break;
                     case 2:
@@ -249,6 +268,14 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             rHelper.saveOrder(form);
                             previousFragment();
                         }
+                        break;
+
+                    case 5:
+
+                        EditText noteEditText =(EditText)getView().findViewById(R.id.user_profile_edit);
+                        form.setNote(noteEditText.getText().toString());
+                        rHelper.saveOrder(form);
+                        previousFragment();
                         break;
                 }
                 break;

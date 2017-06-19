@@ -76,7 +76,7 @@
                 android:padding="12dp"
                 android:layout_marginTop="24dp"/>
 
-            <TextView android:id="@+id/link_login"
+            <TextView android:id="@+id/link_forgot_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

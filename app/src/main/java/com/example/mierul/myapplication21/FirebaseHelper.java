@@ -133,6 +133,7 @@ public class FirebaseHelper {
         ProfileFirebaseModel profile = null;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
+            user.reload();
             profile = new ProfileFirebaseModel();
             profile.setDisplayName(user.getDisplayName());
             profile.setEmail(user.getEmail());
@@ -510,5 +511,24 @@ public class FirebaseHelper {
                 progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
             }
         });
+    }
+
+    public void setPassword(String password){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(!password.isEmpty() && user != null){
+            user.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        postToBus(new FirebaseBooleanEvent(true));
+                    } else {
+                        postToBus(new FirebaseBooleanEvent(false));
+                    }
+                }
+            });
+        }
+
     }
 }

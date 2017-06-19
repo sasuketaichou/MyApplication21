@@ -58,6 +58,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         username = (EditText)view.findViewById(R.id.input_username);
         password = (EditText)view.findViewById(R.id.input_password);
 
+        view.findViewById(R.id.link_forgot_password).setOnClickListener(this);
+
         initView(view);
 
         return view;
@@ -121,6 +123,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
             case R.id.btn_register:
                 int type = 2;
                 switchFragment(LoginFragment.newInstance(type));
+                break;
+
+            case R.id.link_forgot_password:
+                //show dialog send reset password
                 break;
         }
 
