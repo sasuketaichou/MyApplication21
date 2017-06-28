@@ -237,12 +237,14 @@
                     android:layout_below="@id/tv_product_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:layout_margin="5dp"
                     android:hint="Enter address to be deliver"
                     android:layout_toLeftOf="@+id/iv_edit_address"
                     android:layout_toStartOf="@+id/iv_edit_address"/>
 
                 <ImageView
+                    android:layout_marginTop="5dp"
                     android:layout_below="@id/tv_product_address"
                     android:id="@+id/iv_edit_address"
                     android:layout_width="wrap_content"
@@ -266,12 +268,14 @@
                     android:layout_below="@id/tv_product_note"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:layout_margin="5dp"
                     android:hint="Enter some note"
                     android:layout_toLeftOf="@+id/iv_edit_note"
                     android:layout_toStartOf="@+id/iv_edit_note"/>
 
                 <ImageView
+                    android:layout_marginTop="5dp"
                     android:layout_below="@id/tv_product_note"
                     android:id="@+id/iv_edit_note"
                     android:layout_width="wrap_content"

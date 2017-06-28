@@ -16,9 +16,14 @@ public class FirebaseBooleanEvent {
         return result;
     }
 
+    public void setResult(boolean result){
+        this.result = result;
+    }
+
     public void setMessage(String message){
         this.message = message;
     }
+
     public String getMessage(){
         return message;
     }

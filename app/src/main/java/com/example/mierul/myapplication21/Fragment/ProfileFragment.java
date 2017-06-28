@@ -38,9 +38,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private String email;
     private ProfileAdapter adapter;
 
-    private TextView userDisplayName;
-    private TextView userEmail;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -59,10 +56,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void initView(View view) {
         view.findViewById(R.id.btn_signout).setOnClickListener(this);
 
-        userDisplayName =(TextView)view.findViewById(R.id.user_profile_name);
-        userEmail = (TextView)view.findViewById(R.id.user_profile_email);
+        //for future use
+        TextView userDisplayName = (TextView) view.findViewById(R.id.user_profile_name);
+        TextView userEmail = (TextView) view.findViewById(R.id.user_profile_email);
 
-        //Testing
         userDisplayName.setText(name);
         userEmail.setText(email);
 
@@ -146,20 +143,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void FirebaseHelperListener(ProfileDetailsModel model){
         //update ui after finish loading data
         adapter.refresh(model);
-
-        //Testing
-//        if(!name.equals(model.name)){
-//            userDisplayName.setText(model.name);
-//        } else {
-//            userDisplayName.setText(name);
-//        }
-//
-//        if(!email.equals(model.email)){
-//            userEmail.setText(model.email);
-//        } else {
-//            userEmail.setText(email);
-//        }
-
         hideProgressDialog();
     }
 }

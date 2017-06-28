@@ -24,8 +24,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
@@ -133,7 +137,6 @@ public class FirebaseHelper {
         ProfileFirebaseModel profile = null;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
-            user.reload();
             profile = new ProfileFirebaseModel();
             profile.setDisplayName(user.getDisplayName());
             profile.setEmail(user.getEmail());
@@ -513,22 +516,80 @@ public class FirebaseHelper {
         });
     }
 
-    public void setPassword(String password){
+    public void setPassword(final String password, String currentPassword){
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseBooleanEvent event = new FirebaseBooleanEvent(false);
 
-        if(!password.isEmpty() && user != null){
-            user.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+        if(!password.isEmpty() && user != null && !currentPassword.isEmpty()){
+
+            AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(),currentPassword);
+
+            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
-                        postToBus(new FirebaseBooleanEvent(true));
+                        user.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(!task.isSuccessful()){
+                                    Log.e(TAG,task.getException().toString());
+
+                                    try{
+                                        throw task.getException();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        if(e instanceof FirebaseAuthRecentLoginRequiredException){
+
+                                        }
+                                        event.setMessage(e.toString());
+                                    }
+                                }
+                                event.setResult(task.isSuccessful());
+                                postToBus(event);
+                            }
+                        });
                     } else {
-                        postToBus(new FirebaseBooleanEvent(false));
+
+                        try{
+                            throw task.getException();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            event.setMessage(e.toString());
+                        }
+                        event.setResult(task.isSuccessful());
+                        postToBus(event);
                     }
                 }
             });
         }
+
+    }
+
+    public void resetPassword() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String email = "";
+        if(auth.getCurrentUser() != null){
+            email = auth.getCurrentUser().getEmail();
+        }
+
+        if (email != null && !email.isEmpty()){
+            auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    FirebaseBooleanEvent result = new FirebaseBooleanEvent(task.isSuccessful());
+
+                    if(task.isSuccessful()){
+                        result.setMessage("A reset password has been sent to your email");
+                    }
+
+                    postToBus(result);
+
+                }
+            });
+        }
+
 
     }
 }

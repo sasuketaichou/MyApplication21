@@ -1,7 +1,9 @@
 package com.example.mierul.myapplication21.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -186,7 +188,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 mTitle = Constant.PRODUCT_NOTE.getTitle();
                 break;
             default:
-                mTitle = "NO TITLE";
+                mTitle = "EDIT";
                 break;
         }
         return mTitle;
@@ -208,21 +210,28 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
                     case 1:
 
-                        EditText newPasswordInput = (EditText)getView().findViewById(R.id.user_profile_password);
+                        EditText newPasswordInput = (EditText)getView().findViewById(R.id.user_profile_password_new);
                         EditText confirmPasswordInput = (EditText)getView().findViewById(R.id.user_profile_password_confirm);
+                        EditText currentPasswordInput = (EditText)getView().findViewById(R.id.user_profile_password_current);
 
                         String newPassword = newPasswordInput.getText().toString();
                         String confirmPassword = confirmPasswordInput.getText().toString();
+                        String currentPassword = currentPasswordInput.getText().toString();
 
                         if(newPassword.equals(confirmPassword)){
-                            //proceed
-                            helper.setPassword(newPassword);
-
+                            if(!currentPassword.isEmpty()){
+                                //proceed
+                                showProgressDialog();
+                                helper.setPassword(newPassword,currentPassword);
+                            } else {
+                                snackBarToToast("Please fill in current password.");
+                            }
                         } else {
                             snackBarToToast("Password did not match.");
                         }
                         break;
                     case 0:
+                        showProgressDialog();
                     case 3:
 
                         EditText editText =(EditText)getView().findViewById(R.id.user_profile_edit);
@@ -287,11 +296,34 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     @Subscribe
-    public void FirebaseHelperEditProfileListener(FirebaseBooleanEvent event){
-        if(event.getResult()){
+    public void FirebaseHelperEditProfileListener(final FirebaseBooleanEvent event){
+
+        if(position == 0){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgressDialog();
+
+                    if(event.getResult()){
+                        previousFragment();
+                    } else {
+                        if(event.getMessage() != null){
+                            snackBarToToast(event.getMessage());
+                        }
+                    }
+                }
+            }, 5000);
+        } else if(event.getResult()){
+            hideProgressDialog();
             previousFragment();
         } else {
-            snackBarToToast("Edit is fail. Please try again");
+            if(event.getMessage() != null){
+                hideProgressDialog();
+                snackBarToToast(event.getMessage());
+            } else {
+                hideProgressDialog();
+                snackBarToToast("Edit failed. Please try again.");
+            }
         }
     }
 
@@ -312,5 +344,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         return map;
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideProgressDialog();
     }
 }

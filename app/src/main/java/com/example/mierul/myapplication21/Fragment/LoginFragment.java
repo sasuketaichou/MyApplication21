@@ -1,5 +1,8 @@
 package com.example.mierul.myapplication21.Fragment;
 
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -127,9 +130,23 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
             case R.id.link_forgot_password:
                 //show dialog send reset password
+                showPasswordResetDialog();
                 break;
         }
 
+    }
+
+    private void showPasswordResetDialog() {
+        String title = "Reset Password";
+        String message = "Press RESET to send a reset password to your email." +
+                "\nChange your password immediately after you have retrieve it.";
+        alertUserDialog(title, message, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                helper.resetPassword();
+                dialog.dismiss();
+            }
+        });
     }
 
     private boolean validateForm() {
@@ -165,7 +182,12 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     @Subscribe
     public void FirebaseHelperListener(FirebaseBooleanEvent result){
+
         if(result.getResult()){
+            if(result.getMessage() != null){
+                showLaunchEmailApp(result.getMessage());
+                return;
+            }
             previousFragment();
         }
         hideProgressDialog();
@@ -183,5 +205,24 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
     public void onDestroyView() {
         hideSoftKeyboard();
         super.onDestroyView();
+    }
+
+    public void showLaunchEmailApp(String message){
+
+        snackBarWithMessageAndListener(message, "EMAIL", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //testing
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setType("message/rfc822");
+                try {
+                    startActivity(Intent.createChooser(intent,"Launch email."));
+                } catch (ActivityNotFoundException anfe){
+                    anfe.printStackTrace();
+                }
+
+            }
+        });
+
     }
 }
