@@ -17,6 +17,7 @@ import com.example.mierul.myapplication21.Event.ConfirmDialogFragmentEvent;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
+import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.OrderForm;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.RealmHelper;
@@ -48,6 +49,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     private TextView address_input;
     private TextView note_input;
 
+    private boolean isLogin;
+
     public static SecondFragment newInstance(String[] url,String key) {
 
         Bundle args = new Bundle();
@@ -64,16 +67,28 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
         url = getArguments().getStringArray("url");
         picKey = getArguments().getString("picKey");
-        helper = new FirebaseHelper();
-        rHelper = new RealmHelper(getContext());
+
+        if(helper == null){
+            helper = new FirebaseHelper();
+        }
+
+        if(rHelper == null){
+            rHelper = new RealmHelper(getContext());
+        }
 
         //trigger getDetails
         helper.getProductProfile(picKey);
 
-        //get address from db and display
-        String id = helper.getUid();
-        if(!id.isEmpty()){
+        //get address from server and store in realm and update address view
+        isLogin = helper.isLogin();
+        if(isLogin){
+            String id = helper.getUid();
             form = rHelper.getOrder(id);
+
+            //triggered get address to save address to form
+            if(form.getAddress().isEmpty()){
+                helper.getDetails();
+            }
         }
     }
 
@@ -88,7 +103,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         Button checkOutButton =(Button) view.findViewById(R.id.btn_addToCart);
         checkOutButton.setOnClickListener(this);
 
-        if(!helper.isLogin()){
+        if(!isLogin){
             checkOutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.button_hold));
         }
 
@@ -113,10 +128,14 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         view.findViewById(R.id.tv_product_note).setOnClickListener(this);
         note_input.setOnClickListener(this);
 
-        if(form != null){
+        if(isLogin){
+            if(!form.getAddress().isEmpty()){
+                address_input.setText(form.getAddress());
+            }
 
-            address_input.setText(form.getAddress());
-            note_input.setText(form.getNote());
+            if(!form.getNote().isEmpty()){
+                note_input.setText(form.getNote());
+            }
         }
 
         //imageview pencil
@@ -132,7 +151,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     public void checkOut(){
-        if(helper.isLogin()){
+        if(isLogin){
             proceedOrder();
         } else {
             holdOrder();
@@ -198,10 +217,10 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void holdEdit(int type) {
-        if(helper.isLogin()){
+        if(isLogin){
             replaceFragment(EditProfileFragment.newInstance(type));
         } else {
-            snackBarToLogin("Plese login before edit");
+            snackBarToLogin("Please login before edit");
         }
     }
 
@@ -248,6 +267,20 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
             helper.addOrder(model);
             switchFragment(new CheckoutFragment());
         }
+    }
 
+    @Subscribe
+    public void FirebaseHelperGetProfileListener(ProfileDetailsModel model){
+
+        //new device
+        if(model.address != null){
+
+            form.setAddress(model.address);
+            //default address is save
+            rHelper.saveOrder(form);
+
+            //show default address
+            address_input.setText(form.getAddress());
+        }
     }
 }

@@ -16,8 +16,16 @@
     <EditText
         android:padding="16dp"
         android:layout_marginTop="10dp"
-        android:id="@+id/userInputDialog"
+        android:id="@+id/userInputEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter your email add" />
+        android:hint="Enter your email address" />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/dialogDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note: "
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 </LinearLayout>

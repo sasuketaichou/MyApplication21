@@ -15,7 +15,6 @@ import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
-import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
 import com.example.mierul.myapplication21.OrderForm;
 import com.example.mierul.myapplication21.R;
 import com.example.mierul.myapplication21.RealmHelper;
@@ -35,7 +34,6 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     private RealmHelper rHelper;
     private FirebaseHelper helper;
     private OrderForm form;
-    private ProfileDetailsModel model;
 
     public static EditProfileFragment newInstance(int position) {
 
@@ -59,18 +57,12 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             helper = new FirebaseHelper();
         }
 
-        form = rHelper.getOrder(helper.getUid());
-        if(form == null){
-            form = new OrderForm();
-            form.setId(helper.getUid());
+        if(position == 2 || position == 4 || position == 5){
+            form = rHelper.getOrder(helper.getUid());
         }
 
         String title = getTitle(position);
         setTitle(title);
-
-        if(position == 4){
-            helper.getDetails();
-        }
     }
 
     @Override
@@ -138,15 +130,15 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                 ((EditText)getView().findViewById(R.id.address_country)).setText("Malaysia");
 
                 if(isChecked){
-                    if(model != null){
+                    if(form.getAddress() != null){
 
-                        address.setText(model.address.get("address"));
+                        address.setText(form.address);
                         address.setEnabled(false);
 
-                        city.setText(model.address.get("city"));
+                        city.setText(form.city);
                         city.setEnabled(false);
 
-                        postcode.setText(model.address.get("postcode"));
+                        postcode.setText(form.postcode);
                         postcode.setEnabled(false);
                     }
                 } else{
@@ -264,7 +256,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             break;
                         }
 
-                        Map<String,Object> userAddress = addressToMap(address,city,postcode,country);
+                        Map<String,String> userAddress = addressToMap(address,city,postcode,country);
 
                         if(position == 2){
                             helper.setAddress(userAddress);
@@ -312,7 +304,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                         }
                     }
                 }
-            }, 5000);
+            }, 3000);
         } else if(event.getResult()){
             hideProgressDialog();
             previousFragment();
@@ -327,23 +319,15 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         }
     }
 
-    @Subscribe
-    public void FirebaseHelperGetProfileListener(ProfileDetailsModel model){
+    public Map<String,String> addressToMap(String address,String city,String postcode,String country){
 
-        //to get address
-        this.model = model;
-    }
-
-    public Map<String,Object> addressToMap(String address,String city,String postcode,String country){
-
-        Map<String,Object> map = new HashMap<>();
+        Map<String,String> map = new HashMap<>();
         map.put("address",address);
         map.put("city",city);
         map.put("postcode",postcode);
         map.put("country",country);
 
         return map;
-
     }
 
     @Override

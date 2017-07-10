@@ -81,7 +81,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         Bitmap bitmap =null;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             e.printStackTrace();
         }
 
@@ -142,6 +142,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Subscribe
     public void FirebaseHelperListener(ProfileDetailsModel model){
         //update ui after finish loading data
+
+        //TODO diminish model
         adapter.refresh(model);
         hideProgressDialog();
     }

@@ -178,7 +178,7 @@ public class FirebaseHelper {
                 });
     }
 
-    public void setAddress(Map<String,Object> map) {
+    public void setAddress(Map<String,String> map) {
 
         DatabaseReference usersAddress = getUsersAddressRef();
         usersAddress.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -566,15 +566,10 @@ public class FirebaseHelper {
 
     }
 
-    public void resetPassword() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String email = "";
-        if(auth.getCurrentUser() != null){
-            email = auth.getCurrentUser().getEmail();
-        }
+    public void resetPassword(String email) {
 
         if (email != null && !email.isEmpty()){
-            auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 

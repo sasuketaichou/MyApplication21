@@ -12,16 +12,16 @@ import io.realm.annotations.PrimaryKey;
 
 public class OrderForm extends RealmObject {
     @PrimaryKey
-    String id;
-    String address;
-    String city;
-    String postcode;
-    String country;
-    String note;
+    public String id;
+    public String address;
+    public String city;
+    public String postcode;
+    public String country;
+    public String note;
 
-    public Map<String,Object> getMapAddress() {
+    public Map<String,String> getMapAddress() {
 
-        Map<String,Object> map = new HashMap<>();
+        Map<String,String> map = new HashMap<>();
         map.put("address",address);
         map.put("city",city);
         map.put("postcode",postcode);
@@ -36,11 +36,11 @@ public class OrderForm extends RealmObject {
         return address == null? "": fullAddress;
     }
 
-    public void setAddress(Map<String,Object> map) {
-        address = (String)map.get("address");
-        city = (String)map.get("city");
-        postcode = (String)map.get("postcode");
-        country = (String)map.get("country");
+    public void setAddress(Map<String,String> map) {
+        address = map.get("address");
+        city = map.get("city");
+        postcode = map.get("postcode");
+        country = map.get("country");
     }
 
     public String getNote() {

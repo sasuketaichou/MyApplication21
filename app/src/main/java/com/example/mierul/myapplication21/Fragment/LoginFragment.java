@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,7 +34,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     private FirebaseHelper helper;
     private EditText username,password;
-    private int type;
+    private int type = -1;
+
+    private final static int LOGIN_PAGE = 1;
+    private final static int SIGNUP_PAGE = 2;
 
     public static LoginFragment newInstance(int type){
 
@@ -83,7 +88,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
         Button buttonLogin = (Button)view.findViewById(R.id.btn_login);
         Button buttonRegister = (Button)view.findViewById(R.id.btn_register);
-        TextView link_login = (TextView)view.findViewById(R.id.link_login);
 
         switch(type){
             case 1:
@@ -97,7 +101,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                 buttonLogin.setOnClickListener(this);
                 buttonLogin.setText("Create Account");
                 buttonRegister.setVisibility(View.GONE);
-                link_login.setVisibility(View.GONE);
+
+                view.findViewById(R.id.link_forgot_password).setOnClickListener(this);
                 break;
         }
     }
@@ -114,39 +119,86 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                     showProgressDialog();
 
                     switch(type){
-                        case 1:
+                        case LOGIN_PAGE:
                             helper.signInWithEmailAndPassword(email,pass);
                             break;
-                        case 2:
+                        case SIGNUP_PAGE:
                             helper.createUserWithEmailAndPassword(email,pass);
                             break;
                     }
                 }
                 break;
             case R.id.btn_register:
-                int type = 2;
-                switchFragment(LoginFragment.newInstance(type));
+                switchFragment(LoginFragment.newInstance(SIGNUP_PAGE));
                 break;
 
             case R.id.link_forgot_password:
-                //show dialog send reset password
-                showPasswordResetDialog();
+
+                switch (type){
+                    case LOGIN_PAGE:
+                        //show dialog send reset password
+                        showPasswordResetDialog();
+                        break;
+                    case SIGNUP_PAGE:
+                        //go to login page
+                        switchFragment(LoginFragment.newInstance(LOGIN_PAGE));
+                        break;
+                }
+
+                break;
+
+            case R.id.link_login:
+                switchFragment(LoginFragment.newInstance(LOGIN_PAGE));
                 break;
         }
 
     }
 
     private void showPasswordResetDialog() {
-        String title = "Reset Password";
+        String mTitle = "Reset Password";
         String message = "Press RESET to send a reset password to your email." +
                 "\nChange your password immediately after you have retrieve it.";
-        alertUserDialog(title, message, new DialogInterface.OnClickListener() {
+//        alertUserDialog(title, message, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                helper.resetPassword();
+//                dialog.dismiss();
+//            }
+//        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.input_dialog,null);
+        builder.setView(dialogView);
+
+        TextView title = (TextView)dialogView.findViewById(R.id.dialogTitle);
+        title.setText(mTitle);
+
+        TextView description = (TextView)dialogView.findViewById(R.id.dialogDescription);
+        description.setText(message);
+
+        builder.setPositiveButton("RESET", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                helper.resetPassword();
+                EditText emailInput = (EditText)dialogView.findViewById(R.id.userInputEmail);
+                String email = emailInput.getText().toString();
+
+                if(!email.isEmpty()){
+                    showProgressDialog();
+                    helper.resetPassword(email);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
+
+        builder.setCancelable(false);
+        builder.create().show();
     }
 
     private boolean validateForm() {
@@ -182,9 +234,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     @Subscribe
     public void FirebaseHelperListener(FirebaseBooleanEvent result){
-
+        Log.v("naruto","boolean event "+result.getResult());
         if(result.getResult()){
             if(result.getMessage() != null){
+                Log.v("naruto","showLaunchEmailApp");
+                hideProgressDialog();
                 showLaunchEmailApp(result.getMessage());
                 return;
             }

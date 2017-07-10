@@ -40,7 +40,6 @@ public class RealmHelper {
         realm.beginTransaction();
 
         realm.copyToRealmOrUpdate(orderForm);
-
         realm.commitTransaction();
 
     }
@@ -61,8 +60,6 @@ public class RealmHelper {
         } else {
             form.setId(id);
         }
-
-
 
         return form;
     }
