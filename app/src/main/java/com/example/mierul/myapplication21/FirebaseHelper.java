@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -66,6 +67,10 @@ public class FirebaseHelper {
     private final String CHILD_IMAGE = "Image";
     private final String CHILD_ADDRESS = "address";
 
+    public final static int SIGNINEMAILPASSWORD = 1;
+    public final static int CREATEUSEREMAILPASSWORD = 2;
+    public final static int RESETPASSWORD = 3;
+
     public FirebaseHelper(Context context){
         this.context = context;
     }
@@ -74,6 +79,8 @@ public class FirebaseHelper {
     }
 
     public void createUserWithEmailAndPassword(String email,String password){
+        final String[] errorMessage = new String[1];
+
         try {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(email,password)
@@ -81,13 +88,21 @@ public class FirebaseHelper {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()){
-                        Log.e(TAG,"createUserWithEmailAndPassword",task.getException());
-                        Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
+                        if(task.getException()!= null){
+                            Log.e(TAG,"createUserWithEmailAndPassword",task.getException());
+                            errorMessage[0]= task.getException().getMessage();
+                        }
                     } else {
                         //for new user, create empty Profile branch
                         setNewUserDetails();
                     }
-                    postToBus(new FirebaseBooleanEvent(isLogin()));
+                    FirebaseBooleanEvent event = new FirebaseBooleanEvent(isLogin());
+                    event.setId(CREATEUSEREMAILPASSWORD);
+                    if(errorMessage[0] != null){
+                        event.setMessage(errorMessage[0]);
+                    }
+                    postToBus(event);
+                    postToBus(event);
                 }
             });
         } catch (NullPointerException npe ){
@@ -96,6 +111,8 @@ public class FirebaseHelper {
     }
 
     public void signInWithEmailAndPassword(String user,String pass){
+        final String[] errorMessage = new String[1];
+
         try{
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(user,pass)
@@ -103,10 +120,17 @@ public class FirebaseHelper {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(!task.isSuccessful()){
-                        Log.e(TAG,"signInWithEmailAndPassword",task.getException());
-                        Toast.makeText(context,"Error : "+task.getException(),Toast.LENGTH_SHORT).show();
+                        if(task.getException() != null){
+                            Log.e(TAG,"signInWithEmailAndPassword",task.getException());
+                            errorMessage[0] = task.getException().getMessage();
+                        }
                     }
-                    postToBus(new FirebaseBooleanEvent(isLogin()));
+                    FirebaseBooleanEvent event = new FirebaseBooleanEvent(isLogin());
+                    event.setId(SIGNINEMAILPASSWORD);
+                    if(errorMessage[0] != null){
+                        event.setMessage(errorMessage[0]);
+                    }
+                    postToBus(event);
                 }
             });
 
@@ -150,8 +174,12 @@ public class FirebaseHelper {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ProfileDetailsModel model = dataSnapshot.getValue(ProfileDetailsModel.class);
-                postToBus(model);
+                try{
+                    ProfileDetailsModel model = dataSnapshot.getValue(ProfileDetailsModel.class);
+                    postToBus(model);
+                }catch (DatabaseException dbe){
+                    Log.e(TAG,"getDetails",dbe);
+                }
             }
 
             @Override
@@ -159,7 +187,7 @@ public class FirebaseHelper {
                 Log.e(TAG,"getDetails",databaseError.toException());
             }
         };
-        usersProfile.addValueEventListener(postListener);
+        usersProfile.addListenerForSingleValueEvent(postListener);
     }
 
     public void setDetails(String child,String value){
@@ -217,7 +245,6 @@ public class FirebaseHelper {
 
             }
         });
-
     }
 
     private DatabaseReference getRootRef(){
@@ -285,7 +312,7 @@ public class FirebaseHelper {
 
             }
         };
-        productImageRef.addValueEventListener(eventListener);
+        productImageRef.addListenerForSingleValueEvent(eventListener);
 
     }
 
@@ -309,7 +336,7 @@ public class FirebaseHelper {
 
             }
         };
-        productProfileRef.addValueEventListener(eventListener);
+        productProfileRef.addListenerForSingleValueEvent(eventListener);
     }
 
     public void addOrder(OrdersDetailsModel model) {
@@ -351,7 +378,7 @@ public class FirebaseHelper {
 
             }
         };
-        userOrderRef.addValueEventListener(eventListener);
+        userOrderRef.addListenerForSingleValueEvent(eventListener);
     }
 
     private void getOrderByKey(final List<String> key){
@@ -574,6 +601,7 @@ public class FirebaseHelper {
                 public void onComplete(@NonNull Task<Void> task) {
 
                     FirebaseBooleanEvent result = new FirebaseBooleanEvent(task.isSuccessful());
+                    result.setId(RESETPASSWORD);
 
                     if(task.isSuccessful()){
                         result.setMessage("A reset password has been sent to your email");

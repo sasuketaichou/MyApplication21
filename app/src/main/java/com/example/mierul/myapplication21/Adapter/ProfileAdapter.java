@@ -58,12 +58,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
                 if(item.address != null){
                     String address = item.address.get("address");
-                    String city =item.address.get("city");
-                    String postcode = item.address.get("postcode");
-                    String country =  item.address.get("country");
-                    String space = " ";
+                    if(!address.isEmpty()){
+                        String city =item.address.get("city");
+                        String postcode = item.address.get("postcode");
+                        String country =  item.address.get("country");
+                        String space = " ";
 
-                    mContent = address+space+city+space+postcode+space+country;
+                        mContent = address+space+city+space+postcode+space+country;
+                    }
                 }
                 break;
             case 3:

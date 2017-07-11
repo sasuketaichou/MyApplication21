@@ -156,15 +156,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     private void showPasswordResetDialog() {
         String mTitle = "Reset Password";
-        String message = "Press RESET to send a reset password to your email." +
-                "\nChange your password immediately after you have retrieve it.";
-//        alertUserDialog(title, message, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                helper.resetPassword();
-//                dialog.dismiss();
-//            }
-//        });
+        String message = "Press RESET to send a reset password to your email.\nChange your password immediately after you have retrieve it.";
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.input_dialog,null);
@@ -234,16 +226,26 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     @Subscribe
     public void FirebaseHelperListener(FirebaseBooleanEvent result){
-        Log.v("naruto","boolean event "+result.getResult());
-        if(result.getResult()){
-            if(result.getMessage() != null){
-                Log.v("naruto","showLaunchEmailApp");
-                hideProgressDialog();
+
+        int id = result.getId();
+
+        switch (id){
+            case FirebaseHelper.SIGNINEMAILPASSWORD:
+            case FirebaseHelper.CREATEUSEREMAILPASSWORD:
+                //return previous fragment
+                if(result.getResult()){
+                    previousFragment();
+                } else {
+                    String errorMessage = result.getMessage();
+                    snackBarToToast(errorMessage);
+                }
+                break;
+
+            case FirebaseHelper.RESETPASSWORD:
                 showLaunchEmailApp(result.getMessage());
-                return;
-            }
-            previousFragment();
+                break;
         }
+
         hideProgressDialog();
     }
 

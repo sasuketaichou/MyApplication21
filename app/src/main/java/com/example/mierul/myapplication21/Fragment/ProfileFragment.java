@@ -100,8 +100,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             //trigger getDetails to get data
             helper.getDetails();
 
-            showProgressDialog();
-
             //get display name and email
             ProfileFirebaseModel model =helper.getProfile();
             name = model.getDisplayName();
@@ -145,6 +143,5 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         //TODO diminish model
         adapter.refresh(model);
-        hideProgressDialog();
     }
 }
