@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
             form = rHelper.getOrder(id);
 
             //triggered get address to save address to form
-            if(form.getAddress().isEmpty()){
+            if(form.getAddress().trim().isEmpty()){
                 helper.getDetails();
             }
         }
@@ -129,7 +130,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         note_input.setOnClickListener(this);
 
         if(isLogin){
-            if(!form.getAddress().isEmpty()){
+            if(!form.getAddress().trim().isEmpty()){
                 address_input.setText(form.getAddress());
             }
 
@@ -183,7 +184,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         ConfirmDialogFragment dialogFragment = ConfirmDialogFragment.newInstance(model);
         dialogFragment.show(getFragmentManager(),dialogFragment.getTag());
 
-        //switchFragment(ConfirmDialogFragment.newInstance(model));
     }
 
     private void holdOrder(){
@@ -275,12 +275,16 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         //new device
         if(model.address != null){
 
-            form.setAddress(model.address);
-            //default address is save
-            rHelper.saveOrder(form);
+            String address = model.address.get("address");
+            if(!address.isEmpty()){
 
-            //show default address
-            address_input.setText(form.getAddress());
+                form.setAddress(model.address);
+                //default address is save
+                rHelper.saveOrder(form);
+
+                //show default address
+                address_input.setText(form.getAddress());
+            }
         }
     }
 }
