@@ -24,11 +24,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -603,10 +605,27 @@ public class FirebaseHelper {
                     FirebaseBooleanEvent result = new FirebaseBooleanEvent(task.isSuccessful());
                     result.setId(RESETPASSWORD);
 
+                    String message = "";
+
                     if(task.isSuccessful()){
-                        result.setMessage("A reset password has been sent to your email");
+                        message = "A reset password has been sent to your email";
+                    } else {
+
+                        Exception e = task.getException();
+
+                        if( e != null){
+                            if(e instanceof FirebaseAuthInvalidUserException){
+                                message = "No user registered for this email";
+                            } else if (e instanceof FirebaseException){
+                                message = "Invalid email";
+                            }
+
+                            Log.e(TAG,e.getMessage()+"\n"+e);
+                        }
+
                     }
 
+                    result.setMessage(message);
                     postToBus(result);
 
                 }

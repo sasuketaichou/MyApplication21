@@ -3,6 +3,10 @@ package com.example.mierul.myapplication21.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +27,9 @@ import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.R;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mierul on 3/26/2017.
@@ -70,6 +77,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
         initView(view);
 
+        //testing
+        launchEmailApp();
         return view;
     }
 
@@ -90,19 +99,21 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         Button buttonRegister = (Button)view.findViewById(R.id.btn_register);
 
         switch(type){
-            case 1:
+            case LOGIN_PAGE:
                 buttonLogin.setText("Login");
                 buttonRegister.setText("Sign Up");
                 buttonLogin.setOnClickListener(this);
                 buttonRegister.setOnClickListener(this);
                 break;
 
-            case 2:
+            case SIGNUP_PAGE:
                 buttonLogin.setOnClickListener(this);
                 buttonLogin.setText("Create Account");
                 buttonRegister.setVisibility(View.GONE);
 
-                view.findViewById(R.id.link_forgot_password).setOnClickListener(this);
+                TextView loginPage = (TextView) view.findViewById(R.id.link_forgot_password);
+                loginPage.setText("Already registered? Go to Login page.");
+                loginPage.setOnClickListener(this);
                 break;
         }
     }
@@ -236,13 +247,18 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                 if(result.getResult()){
                     previousFragment();
                 } else {
-                    String errorMessage = result.getMessage();
-                    snackBarToToast(errorMessage);
+                    showErrorMessage(result.getMessage());
                 }
                 break;
 
             case FirebaseHelper.RESETPASSWORD:
-                showLaunchEmailApp(result.getMessage());
+
+                if(result.getResult()){
+                    showLaunchEmailApp(result.getMessage());
+                } else {
+                    showErrorMessage(result.getMessage());
+                }
+
                 break;
         }
 
@@ -269,16 +285,57 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 //testing
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setType("message/rfc822");
-                try {
-                    startActivity(Intent.createChooser(intent,"Launch email."));
-                } catch (ActivityNotFoundException anfe){
-                    anfe.printStackTrace();
-                }
+                launchEmailApp();
 
             }
         });
 
+    }
+
+    //https://stackoverflow.com/questions/3489068/how-do-i-launch-the-email-client-directly-to-inbox-view
+    private void launchEmailApp() {
+
+        Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:"));
+
+        PackageManager pm = getActivity().getPackageManager();
+
+        List<ResolveInfo> resInfo = pm.queryIntentActivities(emailIntent, 0);
+
+        if (resInfo.size() > 0) {
+
+            ResolveInfo ri = resInfo.get(0);
+            Log.e(TAG,"ri size = "+resInfo.size());
+            Log.e(TAG,"ri package name = "+ri.activityInfo.packageName);
+            // First create an intent with only the package name of the first registered email app
+            // and build a picked based on it
+            Intent intentChooser = pm.getLaunchIntentForPackage(ri.activityInfo.packageName);
+
+            Log.e(TAG,"intent chooser :"+intentChooser);
+            Intent openInChooser =
+                    Intent.createChooser(intentChooser,
+                            "Choose email app");
+
+            // Then create a list of LabeledIntent for the rest of the registered email apps
+            List<LabeledIntent> intentList = new ArrayList<>();
+
+            for (int i = 1; i < resInfo.size(); i++) {
+                // Extract the label and repackage it in a LabeledIntent
+                ri = resInfo.get(i);
+                String packageName = ri.activityInfo.packageName;
+                Intent intent = pm.getLaunchIntentForPackage(packageName);
+                intentList.add(new LabeledIntent(intent, packageName, ri.loadLabel(pm), ri.icon));
+            }
+
+            LabeledIntent[] extraIntents = intentList.toArray(new LabeledIntent[intentList.size()]);
+
+            // Add the rest of the email apps to the picker selection
+            openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+            startActivity(openInChooser);
+        }
+    }
+
+    public void showErrorMessage(String errorMessage){
+        snackBarToToast(errorMessage);
     }
 }
