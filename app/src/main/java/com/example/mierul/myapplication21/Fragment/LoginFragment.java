@@ -78,7 +78,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         initView(view);
 
         //testing
-        launchEmailApp();
+        //launchEmailApp();
         return view;
     }
 
@@ -304,34 +304,40 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         if (resInfo.size() > 0) {
 
             ResolveInfo ri = resInfo.get(0);
-            Log.e(TAG,"ri size = "+resInfo.size());
-            Log.e(TAG,"ri package name = "+ri.activityInfo.packageName);
-            // First create an intent with only the package name of the first registered email app
-            // and build a picked based on it
-            Intent intentChooser = pm.getLaunchIntentForPackage(ri.activityInfo.packageName);
 
-            Log.e(TAG,"intent chooser :"+intentChooser);
-            Intent openInChooser =
-                    Intent.createChooser(intentChooser,
-                            "Choose email app");
+            String notFallbackPackageName = ri.activityInfo.packageName;
+            String fallback = "com.android.fallback";
 
-            // Then create a list of LabeledIntent for the rest of the registered email apps
-            List<LabeledIntent> intentList = new ArrayList<>();
+            //check for fallback, the app must hv emaip app, otherwise return fallback and nullpointer exception
+            if(!notFallbackPackageName.equals(fallback)){
+                // First create an intent with only the package name of the first registered email app
+                // and build a picked based on it
+                Intent intentChooser = pm.getLaunchIntentForPackage(notFallbackPackageName);
 
-            for (int i = 1; i < resInfo.size(); i++) {
-                // Extract the label and repackage it in a LabeledIntent
-                ri = resInfo.get(i);
-                String packageName = ri.activityInfo.packageName;
-                Intent intent = pm.getLaunchIntentForPackage(packageName);
-                intentList.add(new LabeledIntent(intent, packageName, ri.loadLabel(pm), ri.icon));
+                Log.e(TAG,"intent chooser :"+intentChooser);
+                Intent openInChooser =
+                        Intent.createChooser(intentChooser,
+                                "Choose email app");
+
+                // Then create a list of LabeledIntent for the rest of the registered email apps
+                List<LabeledIntent> intentList = new ArrayList<>();
+
+                for (int i = 1; i < resInfo.size(); i++) {
+                    // Extract the label and repackage it in a LabeledIntent
+                    ri = resInfo.get(i);
+                    String packageName = ri.activityInfo.packageName;
+                    Intent intent = pm.getLaunchIntentForPackage(packageName);
+                    intentList.add(new LabeledIntent(intent, packageName, ri.loadLabel(pm), ri.icon));
+                }
+
+                LabeledIntent[] extraIntents = intentList.toArray(new LabeledIntent[intentList.size()]);
+
+                // Add the rest of the email apps to the picker selection
+                openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+                startActivity(openInChooser);
+            } else {
+                showErrorMessage("You have no email app in your device.");
             }
-
-            LabeledIntent[] extraIntents = intentList.toArray(new LabeledIntent[intentList.size()]);
-
-            // Add the rest of the email apps to the picker selection
-            openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
-
-            startActivity(openInChooser);
         }
     }
 
