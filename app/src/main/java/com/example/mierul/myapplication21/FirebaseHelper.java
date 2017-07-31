@@ -506,6 +506,8 @@ public class FirebaseHelper {
 
     public void setUserProfileImage(final Uri file){
 
+        //Todo get image url and store in firebase storage
+
         StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("image").child("User").child(getUid()+"/user.jpg");
 
         final ProgressDialog progressDialog = new ProgressDialog(context);

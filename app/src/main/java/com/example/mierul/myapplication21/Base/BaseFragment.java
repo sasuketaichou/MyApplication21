@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -245,7 +246,9 @@ public abstract class BaseFragment extends Fragment {
     public void snackBarToToast(String message){
         CoordinatorLayout layout = getCoordinatorLayout();
         if(layout!=null){
-            Snackbar.make(layout,message,Snackbar.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(layout,message,Snackbar.LENGTH_SHORT);
+            snackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.medium_colorPrimaryDark));
+            snackbar.show();
         }
     }
 

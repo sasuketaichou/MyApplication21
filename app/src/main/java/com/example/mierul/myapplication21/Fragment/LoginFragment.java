@@ -284,9 +284,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         snackBarWithMessageAndListener(message, "EMAIL", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //testing
                 launchEmailApp();
-
             }
         });
 

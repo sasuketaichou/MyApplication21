@@ -2,6 +2,7 @@ package com.example.mierul.myapplication21.Fragment;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -71,6 +72,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         Uri uri = helper.getProfile().getPhoto();
 
         if(uri != null){
+
             Bitmap bitmap= getBitmapFromUri(uri);
             RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
             roundDrawable.setCircular(true);
@@ -145,5 +147,16 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         //TODO diminish model
         adapter.refresh(model);
+    }
+
+    private class ImageLoader extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            
+            return null;
+        }
+
+
     }
 }
