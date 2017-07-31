@@ -66,6 +66,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         ImageView userPhoto = (ImageView)view.findViewById(R.id.user_profile_photo);
         userPhoto.setOnClickListener(this);
 
+        //Todo get profile picture to background
+
         Uri uri = helper.getProfile().getPhoto();
 
         if(uri != null){

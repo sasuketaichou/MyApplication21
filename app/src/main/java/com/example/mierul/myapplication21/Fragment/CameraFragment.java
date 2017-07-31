@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.DialogUtil;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.R;
@@ -173,12 +174,19 @@ public class CameraFragment extends BaseFragment {
     }
 
     private void showAskPermission() {
-        alertUserDialog("Permission", "Need user permission to continue.", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                requestPermissions(permissionType, PERMISSION_GRANTED);
-            }
-        });
+        DialogUtil.alertUserDialog(getContext(),"Permission",
+                "Need user permission to continue.",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestPermissions(permissionType, PERMISSION_GRANTED);
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
     }
 
     private void showAskToSetting(){

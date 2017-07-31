@@ -424,13 +424,11 @@ public class FirebaseHelper {
         }
     }
 
-    public void removeOrderByKey(List<Map<String,String>> mapKey){
+    public void removeOrderByKey(Map<String,String> mapKey){
 
         if(mapKey!= null){
-            for(Map<String,String> key : mapKey){
-                removeOrderAtOrders(key.get(Constant.NODE_ORDKEY.getNode()));
-                removeOrderAtUsersOrder(key.get(Constant.NODE_USRORDKEY.getNode()));
-            }
+            removeOrderAtOrders(mapKey.get(Constant.NODE_ORDKEY.getNode()));
+            removeOrderAtUsersOrder(mapKey.get(Constant.NODE_USRORDKEY.getNode()));
         }
     }
 

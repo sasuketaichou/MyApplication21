@@ -1,5 +1,6 @@
 package com.example.mierul.myapplication21.Fragment;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import com.example.mierul.myapplication21.Adapter.CheckoutAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.Constant;
+import com.example.mierul.myapplication21.DialogUtil;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Event.FirebaseListEvent;
 import com.example.mierul.myapplication21.Model.CheckoutModel;
@@ -46,8 +48,6 @@ import java.util.Map;
 public class CheckoutFragment extends BaseFragment implements View.OnClickListener {
     private FirebaseHelper helper;
     private List<CheckoutModel> item;
-    List<Map<String,String>> removeKey;
-    List<Integer> removePosition;
     private CheckoutAdapter adapter;
     private int checkUpdate;
 
@@ -57,18 +57,7 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        item = new ArrayList<>();
-        if(removeKey == null){
-            removeKey = new ArrayList<>();
-        } else {
-            removeKey.clear();
-        }
 
-        if(removePosition == null){
-            removePosition = new ArrayList<>();
-        } else {
-            removePosition.clear();
-        }
         if(helper == null){
             helper = new FirebaseHelper();
         }
@@ -76,6 +65,8 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         if(helper.isLogin()) {
             //trigger get order
             helper.getOrder();
+
+            item = new ArrayList<>();
         }
     }
 
@@ -146,33 +137,34 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
         return simpleCallback;
     }
 
-    private void confirmDel(int position) {
-
-        Map<String,String> key = new HashMap<>();
-        key.put(Constant.NODE_ORDKEY.getNode(),item.get(position).ordKey);
-        key.put(Constant.NODE_USRORDKEY.getNode(),item.get(position).usrOrdKey);
-        removeKey.add(key);
-        removePosition.add(position);
-
+    private void confirmDel(final int position) {
         //show dialog here
-        snackBarWithMessageAndListener("Confirm to delete " + removeKey.size() + " item?",
-                "delete",
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        helper.removeOrderByKey(removeKey);
-                        for(Integer remove: removePosition){
-                            adapter.removeItem(remove);
-                        }
-                        clearKey();
-                    }
-                });
-    }
+        DialogUtil.alertUserDialog(getContext(),
+                "Delete",
+                "Confirm to delete?",
+                new DialogInterface.OnClickListener() {
 
-    private void clearKey() {
-        //for every success transaction/click
-        removeKey.clear();
-        removePosition.clear();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Map<String,String> key = new HashMap<>();
+                        key.put(Constant.NODE_ORDKEY.getNode(),item.get(position).ordKey);
+                        key.put(Constant.NODE_USRORDKEY.getNode(),item.get(position).usrOrdKey);
+                        helper.removeOrderByKey(key);
+                        adapter.removeItem(position);
+                        dialog.dismiss();
+
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        adapter.notifyItemChanged(position);
+                        dialog.dismiss();
+
+                    }
+                }
+        );
     }
 
     public static CheckoutFragment newInstance(String address) {
@@ -240,10 +232,10 @@ public class CheckoutFragment extends BaseFragment implements View.OnClickListen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_refresh:
-                for(Integer remove: removePosition){
-                    adapter.notifyItemChanged(remove);
-                }
-                clearKey();
+//                for(Integer remove: removePosition){
+//                    adapter.notifyItemChanged(remove);
+//                }
+//                clearKey();
                 break;
         }
         return super.onOptionsItemSelected(item);
