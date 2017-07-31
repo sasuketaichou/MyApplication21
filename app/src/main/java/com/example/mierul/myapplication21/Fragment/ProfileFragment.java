@@ -153,7 +153,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         @Override
         protected Void doInBackground(Void... voids) {
-            
+
             return null;
         }
 
