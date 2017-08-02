@@ -11,6 +11,7 @@ public class ProfileDetailsModel {
     public String contact;
     public String email;
     public Map<String,String> address;
+    public String url;
 
     public ProfileDetailsModel(){
     }

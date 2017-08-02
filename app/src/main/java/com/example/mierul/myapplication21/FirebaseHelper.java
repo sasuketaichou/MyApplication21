@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -234,6 +235,7 @@ public class FirebaseHelper {
         detailsModel.name = empty;
         detailsModel.contact = empty;
         detailsModel.email = mAuth.getCurrentUser().getEmail();
+        detailsModel.url = empty;
 
         detailsModel.address = new HashMap<>();
         detailsModel.address.put("address",empty);
@@ -244,6 +246,9 @@ public class FirebaseHelper {
         usersProfile.setValue(detailsModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.v(TAG,"set new user success");
+                }
 
             }
         });
@@ -257,6 +262,7 @@ public class FirebaseHelper {
         String uId = getUid();
         return uId.isEmpty()? null:getRootRef().child(ROOT_USERS).child(uId);
     }
+
 
     private DatabaseReference getOrdersRef(){
         String uId = getUid();
@@ -528,9 +534,9 @@ public class FirebaseHelper {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 //upload the same image to firebase user profile
-                setProfileImage(file);
+                //setProfileImage(file);
+                setDetails(CHILD_URL,taskSnapshot.getDownloadUrl().toString());
                 progressDialog.dismiss();
-                postToBus(new FirebaseBooleanEvent(true));
 
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -631,7 +637,5 @@ public class FirebaseHelper {
                 }
             });
         }
-
-
     }
 }

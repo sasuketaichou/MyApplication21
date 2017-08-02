@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.DialogUtil;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
@@ -66,6 +67,15 @@ public class CameraFragment extends BaseFragment {
     private FirebaseHelper fHelper;
 
     private Uri takePhotoUri;
+    private String url;
+
+    public static CameraFragment newInstance(String url){
+        CameraFragment fragment = new CameraFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("URL",url);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,12 +83,24 @@ public class CameraFragment extends BaseFragment {
         if(fHelper == null){
             fHelper = new FirebaseHelper(getContext());
         }
+
+        if(getArguments() != null){
+            url = getArguments().getString("URL");
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_camera,container,false);
+
+        View view = inflater.inflate(R.layout.fragment_camera,container,false);
+        profilePhoto = (ImageView) view.findViewById(R.id.profile_photo);
+
+        if(!url.isEmpty()){
+            Glide.with(getActivity()).load(url).into(profilePhoto);
+        }
+
+        return view;
     }
 
     @Override
@@ -97,7 +119,6 @@ public class CameraFragment extends BaseFragment {
             }
         });
 
-        profilePhoto = (ImageView) view.findViewById(R.id.profile_photo);
         saveButton = (Button)view.findViewById(R.id.btn_save);
         disableButton();
         saveButton.setOnClickListener(new View.OnClickListener() {

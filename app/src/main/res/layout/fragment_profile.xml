@@ -26,8 +26,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_centerHorizontal="true"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/ic_launcher"/>
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:layout_below="@+id/user_profile_photo"

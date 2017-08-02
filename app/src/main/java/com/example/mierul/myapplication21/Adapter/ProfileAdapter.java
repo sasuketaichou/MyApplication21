@@ -9,10 +9,7 @@ import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.Model.ProfileDetailsModel;
-import com.example.mierul.myapplication21.Event.ProfileAdapterEvent;
 import com.example.mierul.myapplication21.R;
-
-import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -21,9 +18,18 @@ import org.greenrobot.eventbus.EventBus;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
     private ProfileDetailsModel item;
+    public OnProfileAdapterListener listener;
 
     public ProfileAdapter(ProfileDetailsModel profile){
         item = profile;
+    }
+
+    public interface OnProfileAdapterListener {
+        void onItemClick(int position);
+    }
+
+    public void setProfileAdapterListener(OnProfileAdapterListener listener){
+        this.listener = listener;
     }
 
     @Override
@@ -75,7 +81,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         }
         title.setText(mTitle.getTitle());
         content.setText(mContent);
-
     }
 
     @Override
@@ -91,7 +96,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView title;
         TextView content;
@@ -107,9 +112,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             itemView.setOnClickListener(this);
         }
 
+
         @Override
         public void onClick(View v) {
-            EventBus.getDefault().post(new ProfileAdapterEvent(getLayoutPosition()));
+
+            if(listener != null){
+                listener.onItemClick(getLayoutPosition());
+            }
         }
     }
 }

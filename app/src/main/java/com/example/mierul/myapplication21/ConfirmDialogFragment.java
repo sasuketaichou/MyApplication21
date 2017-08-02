@@ -57,6 +57,7 @@ public class ConfirmDialogFragment extends BottomSheetDialogFragment implements 
         return fragment;
     }
 
+    //Todo change to onActivityResult
     @Override
     public void onClick(View v) {
         switch (v.getId()){
