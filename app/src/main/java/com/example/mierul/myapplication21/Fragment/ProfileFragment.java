@@ -103,12 +103,14 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         switch(v.getId()){
             case R.id.btn_signout:
                 helper.sign_out();
-                previousFragment();
+                switchFragment(new LogoutFragment());
                 break;
             case R.id.user_profile_photo:
                //open camera
-                if(url.isEmpty()){
-                    replaceFragment(new CameraFragment());
+                if(url != null){
+                    if(url.isEmpty()){
+                        replaceFragment(new CameraFragment());
+                    }
                 } else {
                     replaceFragment(CameraFragment.newInstance(url));
                 }

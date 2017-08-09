@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -26,7 +25,6 @@ import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Event.FirebaseListEvent;
 import com.example.mierul.myapplication21.GridSpacingItemDecoration;
-import com.example.mierul.myapplication21.ItemClickSupport;
 import com.example.mierul.myapplication21.Model.ProductUrlPictureModel;
 import com.example.mierul.myapplication21.Model.ProfileFirebaseModel;
 import com.example.mierul.myapplication21.R;
@@ -40,7 +38,7 @@ import java.util.List;
 /**
  * Created by mierul on 3/14/2017.
  */
-public class FirstFragment extends BaseFragment implements ItemClickSupport.OnItemClickListener {
+public class FirstFragment extends BaseFragment implements ProductAdapter.OnProductAdapterListener {
     private DrawerLayout drawer;
     private List<ProductUrlPictureModel> item;
     private FirebaseHelper helper;
@@ -75,11 +73,10 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(numColumns, dpToPx(15), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new ProductAdapter(getContext(),item);
+        adapter.setProfileAdapterListener(this);
         recyclerView.setAdapter(adapter);
 
         //Todo create progres bar that ends when recyclerview finished
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(this);
-
         //change background drawer
 
         return view;
@@ -177,15 +174,6 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
     }
 
     @Override
-    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
-        ProductUrlPictureModel model = item.get(position);
-        String[] url = model.toArray();
-        String key = model.getKey();
-        replaceFragment(SecondFragment.newInstance(url,key));
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -255,5 +243,14 @@ public class FirstFragment extends BaseFragment implements ItemClickSupport.OnIt
             item.add(model);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+        ProductUrlPictureModel model = item.get(position);
+        String[] url = model.toArray();
+        String key = model.getKey();
+        replaceFragment(SecondFragment.newInstance(url,key));
     }
 }

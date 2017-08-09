@@ -84,6 +84,15 @@ public class FirebaseHelper {
     public void createUserWithEmailAndPassword(String email,String password){
         final String[] errorMessage = new String[1];
 
+        /**
+         For some reason, this method can be call even
+         after a user using the same email right after
+         triggering this method
+
+         Solution : bring user to front page after
+         trigerring this method
+        **/
+
         try {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(email,password)
@@ -104,7 +113,6 @@ public class FirebaseHelper {
                     if(errorMessage[0] != null){
                         event.setMessage(errorMessage[0]);
                     }
-                    postToBus(event);
                     postToBus(event);
                 }
             });

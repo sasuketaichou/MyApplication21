@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Base.BaseFragment;
+import com.example.mierul.myapplication21.DialogUtil;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Event.FirebaseBooleanEvent;
 import com.example.mierul.myapplication21.R;
@@ -41,6 +42,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     private FirebaseHelper helper;
     private EditText username,password;
+    private TextView tv_error;
     private int type = -1;
 
     private final static int LOGIN_PAGE = 1;
@@ -75,10 +77,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
         view.findViewById(R.id.link_forgot_password).setOnClickListener(this);
 
+        tv_error = (TextView)view.findViewById(R.id.tv_login_error);
+
         initView(view);
 
-        //testing
-        //launchEmailApp();
         return view;
     }
 
@@ -127,6 +129,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                     String email = username.getText().toString();
                     String pass = password.getText().toString();
 
+                    if(tv_error.getVisibility() == View.VISIBLE){
+                        tv_error.setVisibility(View.GONE);
+                    }
+
                     showProgressDialog();
 
                     switch(type){
@@ -167,7 +173,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     private void showPasswordResetDialog() {
         String mTitle = "Reset Password";
-        String message = "Press RESET to send a reset password to your email.\nChange your password immediately after you have retrieve it.";
+        String message = "Press RESET to send a reset password to your email.\nChange your password immediately after you have retrieve the password.";
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.input_dialog,null);
@@ -242,10 +248,18 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
         switch (id){
             case FirebaseHelper.SIGNINEMAILPASSWORD:
-            case FirebaseHelper.CREATEUSEREMAILPASSWORD:
                 //return previous fragment
                 if(result.getResult()){
                     previousFragment();
+                } else {
+                    showErrorMessage(result.getMessage());
+                }
+                break;
+            case FirebaseHelper.CREATEUSEREMAILPASSWORD:
+
+                if(result.getResult()){
+                    //display congratz message
+                    showCongratzMessage();
                 } else {
                     showErrorMessage(result.getMessage());
                 }
@@ -264,6 +278,21 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
         hideProgressDialog();
     }
+
+    private void showCongratzMessage() {
+
+        DialogUtil.alertUserDialog(getContext(), "Congratulation",
+                "you have successfully registered.",
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                previousFragment();
+
+            }
+        });
+    }
+
 
     @Override
     public void onResume() {
@@ -340,6 +369,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
     }
 
     public void showErrorMessage(String errorMessage){
-        snackBarToToast(errorMessage);
+        //snackBarToToast(errorMessage);
+        tv_error.setVisibility(View.VISIBLE);
+        tv_error.setText(errorMessage);
     }
 }

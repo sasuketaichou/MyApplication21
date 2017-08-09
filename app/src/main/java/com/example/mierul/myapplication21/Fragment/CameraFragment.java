@@ -19,6 +19,9 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +83,7 @@ public class CameraFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if(fHelper == null){
             fHelper = new FirebaseHelper(getContext());
         }
@@ -96,9 +100,12 @@ public class CameraFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_camera,container,false);
         profilePhoto = (ImageView) view.findViewById(R.id.profile_photo);
 
-        if(!url.isEmpty()){
-            Glide.with(getActivity()).load(url).into(profilePhoto);
+        if(url != null){
+            if(!url.isEmpty()){
+                Glide.with(getActivity()).load(url).into(profilePhoto);
+            }
         }
+
 
         return view;
     }
@@ -110,12 +117,7 @@ public class CameraFragment extends BaseFragment {
         view.findViewById(R.id.camera_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isPermissionGranted()){
-                    //choose camera or gallery
-                    showOptionCameraGallery();
-                } else {
-                    checkPermission();
-                }
+                startCamera();
             }
         });
 
@@ -131,6 +133,15 @@ public class CameraFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    public void startCamera(){
+        if(isPermissionGranted()){
+            //choose camera or gallery
+            showOptionCameraGallery();
+        } else {
+            checkPermission();
+        }
     }
 
     private void disableButton(){
@@ -356,5 +367,21 @@ public class CameraFragment extends BaseFragment {
         if(event.getResult()){
             previousFragment();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.camerafragment_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_camera:
+                startCamera();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

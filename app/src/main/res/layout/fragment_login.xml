@@ -56,7 +56,17 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:hint="Password"/>
+
+                <TextView
+                    android:id="@+id/tv_login_error"
+                    style="@style/ErrorTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Error"
+                    android:visibility="gone" />
             </android.support.design.widget.TextInputLayout>
+
+
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_login"

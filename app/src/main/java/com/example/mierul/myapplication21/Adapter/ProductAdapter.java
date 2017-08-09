@@ -26,6 +26,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private List<ProductUrlPictureModel> item;
     private Context context;
+    private OnProductAdapterListener listener;
 
     public ProductAdapter(Context context,List<ProductUrlPictureModel> item) {
         this.item = item;
@@ -79,7 +80,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return item.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView name_product;
         ImageView pict_product;
@@ -91,6 +92,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             progressBar = (ProgressBar)itemView.findViewById(R.id.progress_pic);
             name_product = (TextView) itemView.findViewById(R.id.product_name);
             pict_product = (ImageView) itemView.findViewById(R.id.product_pic);
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if(listener != null){
+                listener.onItemClick(getLayoutPosition());
+            }
+        }
+    }
+
+    public interface OnProductAdapterListener {
+        void onItemClick(int position);
+    }
+    public void setProfileAdapterListener(OnProductAdapterListener listener){
+        this.listener = listener;
     }
 }
