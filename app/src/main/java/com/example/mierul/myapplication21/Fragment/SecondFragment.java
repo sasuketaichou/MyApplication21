@@ -1,10 +1,11 @@
 package com.example.mierul.myapplication21.Fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.ConfirmDialogFragment;
-import com.example.mierul.myapplication21.Event.ConfirmDialogFragmentEvent;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
@@ -25,14 +25,13 @@ import com.example.mierul.myapplication21.RealmHelper;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Map;
-
 /**
  * Created by mierul on 3/16/2017.
  */
 
 public class SecondFragment extends BaseFragment implements View.OnClickListener{
     private static final String TAG = "SecondFragment";
+    public static final int CONFIRM_REQUEST_CODE = 2001 ;
     private OrderForm form;
     private String[] url;
     private String picKey;
@@ -182,6 +181,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         model.total = total;
 
         ConfirmDialogFragment dialogFragment = ConfirmDialogFragment.newInstance(model);
+        dialogFragment.setTargetFragment(this,CONFIRM_REQUEST_CODE);
         dialogFragment.show(getFragmentManager(),dialogFragment.getTag());
 
     }
@@ -262,14 +262,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Subscribe
-    public void onConfirmDialogFragmentListener(ConfirmDialogFragmentEvent result) {
-        if(result.getResult()){
-            helper.addOrder(model);
-            switchFragment(new CheckoutFragment());
-        }
-    }
-
-    @Subscribe
     public void FirebaseHelperGetProfileListener(ProfileDetailsModel model){
 
         //new device
@@ -284,6 +276,27 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
                 //show default address
                 address_input.setText(form.getAddress());
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == Activity.RESULT_OK){
+            switch (requestCode){
+                case CONFIRM_REQUEST_CODE:
+
+                    if(data!=null){
+                        boolean proceed = data.getBooleanExtra(ConfirmDialogFragment.RESULT,false);
+
+                        if(proceed){
+                            helper.addOrder(model);
+                            switchFragment(new CheckoutFragment());
+                        }
+                    }
+
+                    break;
             }
         }
     }

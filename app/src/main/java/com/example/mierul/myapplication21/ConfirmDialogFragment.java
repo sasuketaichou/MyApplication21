@@ -1,5 +1,8 @@
 package com.example.mierul.myapplication21;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -8,10 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.mierul.myapplication21.Event.ConfirmDialogFragmentEvent;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Hexa-Amierul.Japri on 28/5/2017.
@@ -20,13 +20,12 @@ import org.greenrobot.eventbus.EventBus;
 public class ConfirmDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener {
     private OrdersDetailsModel model;
     private static String modelTag = "ordersdetailsmodel";
-    private EventBus eventBus;
+    public static String RESULT = "result";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = getArguments().getParcelable(modelTag);
-        eventBus =EventBus.getDefault();
 
     }
 
@@ -57,18 +56,28 @@ public class ConfirmDialogFragment extends BottomSheetDialogFragment implements 
         return fragment;
     }
 
-    //Todo change to onActivityResult
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_ok:
-                eventBus.post(new ConfirmDialogFragmentEvent(true));
+                proceed();
                 break;
             case R.id.btn_cancel:
-                eventBus.post(new ConfirmDialogFragmentEvent(false));
                 break;
         }
 
         dismiss();
+    }
+
+    private void proceed(){
+        Intent intent = new Intent();
+        intent.putExtra(RESULT,true);
+        getActivity().setIntent(intent);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK,getActivity().getIntent());
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
     }
 }

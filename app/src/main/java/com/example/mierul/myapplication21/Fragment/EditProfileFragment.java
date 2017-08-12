@@ -114,8 +114,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         view.findViewById(R.id.btn_ok).setOnClickListener(this);
         view.findViewById(R.id.btn_cancel).setOnClickListener(this);
 
-        //TODO make auto show softkeyboard
-        //without lagging ui
+        showSoftKeyboardBackground();
         return view;
     }
 
@@ -334,5 +333,15 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onDestroyView() {
         super.onDestroyView();
         hideProgressDialog();
+    }
+
+    public void showSoftKeyboardBackground(){
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                showSoftKeyboard();
+            }
+        });
+
     }
 }

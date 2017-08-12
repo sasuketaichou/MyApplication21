@@ -20,8 +20,8 @@ import java.util.List;
  */
 
 public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHolder> {
-    List<CheckoutModel> item;
-    Context context;
+    private List<CheckoutModel> item;
+    private Context context;
 
     public CheckoutAdapter(Context context, List<CheckoutModel> item) {
         this.item = item;

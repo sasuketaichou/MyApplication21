@@ -5,7 +5,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent">
 
         <include
             layout="@layout/toolbar"
@@ -13,12 +14,12 @@
             android:layout_height="wrap_content"/>
 
         <RelativeLayout
-            android:background="@color/colorAccent"
             android:layout_below="@+id/toolbar"
             android:id="@+id/profile_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp">
+            android:paddingBottom="24dp"
+            android:background="@color/colorPrimary">
 
             <ImageView
                 android:layout_marginTop="20dp"
@@ -52,31 +53,31 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/profile_linear_layout"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/profile_layout"
-            android:paddingTop="20dp"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:background="@color/white"
-                android:id="@+id/profileRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary"
+            android:layout_below="@+id/profile_layout">
         </LinearLayout>
 
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/white"
+            android:id="@+id/profileRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/profile_layout" />
+
         <android.support.v7.widget.AppCompatButton
-            android:layout_below="@+id/profile_linear_layout"
+            android:layout_below="@+id/profileRecyclerView"
             android:textColor="@color/white"
             android:background="@color/colorPrimaryDark"
             android:id="@+id/btn_signout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:layout_alignParentBottom="true"
             android:padding="12dp"
             android:text="Sign Out"/>
     </RelativeLayout>

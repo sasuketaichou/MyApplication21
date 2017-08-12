@@ -8,6 +8,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,11 +109,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.user_profile_photo:
                //open camera
                 if(url != null){
-                    if(url.isEmpty()){
-                        replaceFragment(new CameraFragment());
+                    if(!url.isEmpty()){
+                        replaceFragment(CameraFragment.newInstance(url));
                     }
                 } else {
-                    replaceFragment(CameraFragment.newInstance(url));
+                    replaceFragment(new CameraFragment());
                 }
 
                 break;
