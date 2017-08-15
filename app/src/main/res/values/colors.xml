@@ -19,4 +19,6 @@
 
     <color name="button_default">#008975</color>
     <color name="button_hold">#A9A9A9</color>
+
+    <color name="grey.divider">#80E0E0E0</color>
 </resources>

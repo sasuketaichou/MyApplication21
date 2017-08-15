@@ -111,6 +111,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 if(url != null){
                     if(!url.isEmpty()){
                         replaceFragment(CameraFragment.newInstance(url));
+                    } else {
+                        replaceFragment(new CameraFragment());
                     }
                 } else {
                     replaceFragment(new CameraFragment());

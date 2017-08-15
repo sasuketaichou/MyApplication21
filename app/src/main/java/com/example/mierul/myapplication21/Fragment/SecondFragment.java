@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
@@ -34,6 +35,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     public static final int CONFIRM_REQUEST_CODE = 2001 ;
     private OrderForm form;
     private String[] url;
+
     private String picKey;
     private int mInteger =1;
     private FirebaseHelper helper;
@@ -97,7 +99,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_second,container,false);
 
-        numberOfOrder = (TextView)view.findViewById(R.id.num_order);
+        LinearLayout ll_product_order = (LinearLayout)view.findViewById(R.id.ll_product_order);
+        numberOfOrder = (TextView)ll_product_order.findViewById(R.id.num_order);
         numberOfOrder.setText(String.valueOf(mInteger));
 
         Button checkOutButton =(Button) view.findViewById(R.id.btn_addToCart);
@@ -114,11 +117,24 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         viewPager.setAdapter(new ProductPicturePagerAdapter(getContext(),url));
 
         //TODO add pager indicator
+        LinearLayout ll_product_name = (LinearLayout)view.findViewById(R.id.ll_product_name);
+        LinearLayout ll_product_type = (LinearLayout)view.findViewById(R.id.ll_product_type);
+        LinearLayout ll_product_cost = (LinearLayout)view.findViewById(R.id.ll_product_cost);
+        LinearLayout ll_product_pieces = (LinearLayout)view.findViewById(R.id.ll_product_pieces);
 
-        productName = (TextView)view.findViewById(R.id.tv_product_name);
-        productCost = (TextView)view.findViewById(R.id.tv_product_cost);
-        productType = (TextView)view.findViewById(R.id.tv_product_type);
-        productPieces = (TextView)view.findViewById(R.id.tv_product_pieces);
+        TextView tv_lbl_product_name = (TextView)ll_product_name.findViewById(R.id.tv_label);
+        tv_lbl_product_name.setText("Name");
+        TextView tv_lbl_product_type = (TextView)ll_product_type.findViewById(R.id.tv_label);
+        tv_lbl_product_type.setText("Type");
+        TextView tv_lbl_product_cost = (TextView)ll_product_cost.findViewById(R.id.tv_label);
+        tv_lbl_product_cost.setText("Cost (RM)");
+        TextView tv_lbl_product_pieces = (TextView)ll_product_pieces.findViewById(R.id.tv_label);
+        tv_lbl_product_pieces.setText("Pieces");
+
+        productName = (TextView)ll_product_name.findViewById(R.id.tv_value);
+        productCost = (TextView)ll_product_cost.findViewById(R.id.tv_value);
+        productType = (TextView)ll_product_type.findViewById(R.id.tv_value);
+        productPieces = (TextView)ll_product_pieces.findViewById(R.id.tv_value);
 
         address_input = (TextView)view.findViewById(R.id.tv_product_address_input);
         note_input = (TextView)view.findViewById(R.id.tv_product_note_input);
