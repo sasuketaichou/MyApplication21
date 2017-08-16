@@ -136,13 +136,18 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         productType = (TextView)ll_product_type.findViewById(R.id.tv_value);
         productPieces = (TextView)ll_product_pieces.findViewById(R.id.tv_value);
 
-        address_input = (TextView)view.findViewById(R.id.tv_product_address_input);
-        note_input = (TextView)view.findViewById(R.id.tv_product_note_input);
+        LinearLayout ll_product_address = (LinearLayout)view.findViewById(R.id.ll_product_address);
+        ll_product_address.setOnClickListener(this);
+        LinearLayout ll_product_note = (LinearLayout)view.findViewById(R.id.ll_product_note);
+        ll_product_note.setOnClickListener(this);
 
-        view.findViewById(R.id.tv_product_address).setOnClickListener(this);
-        address_input.setOnClickListener(this);
-        view.findViewById(R.id.tv_product_note).setOnClickListener(this);
-        note_input.setOnClickListener(this);
+        TextView tv_lbl_product_address = (TextView)ll_product_address.findViewById(R.id.tv_label);
+        tv_lbl_product_address.setText("Address");
+        TextView tv_lbl_product_note = (TextView)ll_product_note.findViewById(R.id.tv_label);
+        tv_lbl_product_note.setText("Note");
+
+        address_input = (TextView)ll_product_address.findViewById(R.id.tv_value);
+        note_input = (TextView)ll_product_note.findViewById(R.id.tv_value);
 
         if(isLogin){
             if(!form.getAddress().trim().isEmpty()){
@@ -153,10 +158,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                 note_input.setText(form.getNote());
             }
         }
-
-        //imageview pencil
-        view.findViewById(R.id.iv_edit_address).setOnClickListener(this);
-        view.findViewById(R.id.iv_edit_note).setOnClickListener(this);
 
         return view;
     }
@@ -219,14 +220,10 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
             case R.id.btn_plus:
                 increaseInteger();
                 break;
-            case R.id.tv_product_address:
-            case R.id.tv_product_address_input:
-            case R.id.iv_edit_address:
+            case R.id.ll_product_address:
                 holdEdit(4);
                 break;
-            case R.id.tv_product_note:
-            case R.id.tv_product_note_input:
-            case R.id.iv_edit_note:
+            case R.id.ll_product_note:
                 holdEdit(5);
                 break;
         }

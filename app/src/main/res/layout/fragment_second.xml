@@ -68,76 +68,20 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"/>
 
-            <RelativeLayout
-                android:id="@+id/rl_tv"
-                android:layout_below="@+id/ll_product_order"
-                android:padding="5dp"
-                android:layout_width="match_parent"
+            <include
+                android:id="@+id/ll_product_address"
+                layout="@layout/view_product_row_edit"
                 android:layout_height="wrap_content"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                android:layout_width="match_parent"
+                />
 
-                <TextView
-                    android:id="@+id/tv_product_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:text="ADDRESS"
-                    android:textStyle="bold" />
+            <include
+                android:id="@+id/ll_product_note"
+                layout="@layout/view_product_row_edit"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                />
 
-                <TextView
-                    android:background="@color/light_grey"
-                    android:id="@+id/tv_product_address_input"
-                    android:layout_below="@id/tv_product_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:layout_margin="5dp"
-                    android:hint="Enter address to be deliver"
-                    android:layout_toLeftOf="@+id/iv_edit_address"
-                    android:layout_toStartOf="@+id/iv_edit_address"/>
-
-                <ImageView
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/tv_product_address"
-                    android:id="@+id/iv_edit_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/pencil"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-
-                <TextView
-                    android:layout_below="@+id/tv_product_address_input"
-                    android:id="@+id/tv_product_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="NOTE"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:background="@color/light_grey"
-                    android:id="@+id/tv_product_note_input"
-                    android:layout_below="@id/tv_product_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:layout_margin="5dp"
-                    android:hint="Enter some note"
-                    android:layout_toLeftOf="@+id/iv_edit_note"
-                    android:layout_toStartOf="@+id/iv_edit_note"/>
-
-                <ImageView
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/tv_product_note"
-                    android:id="@+id/iv_edit_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/pencil"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-
-            </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>
