@@ -28,7 +28,10 @@
             android:layout_weight="0.6"
             android:background="@null"
             android:maxLines="1"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textAllCaps="true"/>
     </LinearLayout>
 
     <include

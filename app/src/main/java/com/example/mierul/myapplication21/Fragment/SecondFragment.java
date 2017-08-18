@@ -100,6 +100,9 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_second,container,false);
 
         LinearLayout ll_product_order = (LinearLayout)view.findViewById(R.id.ll_product_order);
+        TextView tv_lbl_product_order = (TextView)ll_product_order.findViewById(R.id.tv_label);
+        tv_lbl_product_order.setText("Order");
+        
         numberOfOrder = (TextView)ll_product_order.findViewById(R.id.num_order);
         numberOfOrder.setText(String.valueOf(mInteger));
 
