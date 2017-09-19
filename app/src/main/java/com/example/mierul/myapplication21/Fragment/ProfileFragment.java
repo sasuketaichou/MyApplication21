@@ -32,12 +32,13 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener, ProfileAdapter.OnProfileAdapterListener {
-    private FirebaseHelper helper;
+
     private String name;
     private String email;
     private String url;
-    private ProfileAdapter adapter;
 
+    private ProfileAdapter adapter;
+    private FirebaseHelper helper;
     private ImageView userPhoto;
 
     @Override
