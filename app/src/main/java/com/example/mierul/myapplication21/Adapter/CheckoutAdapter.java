@@ -65,7 +65,14 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return item.size();
+
+        int size  = 0;
+
+        if(!item.isEmpty()){
+            size = item.size();
+        }
+
+        return size;
     }
 
     public void removeItem(int position){
@@ -76,7 +83,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView order;
         TextView address;

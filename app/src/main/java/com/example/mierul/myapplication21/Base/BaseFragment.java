@@ -261,5 +261,10 @@ public abstract class BaseFragment extends Fragment {
                     .show();
         }
     }
+
+    //for testing purpose
+    public void log(String message){
+        Log.v("naruto",message);
+    }
 }
 

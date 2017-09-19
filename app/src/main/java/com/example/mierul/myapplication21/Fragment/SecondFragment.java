@@ -14,8 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mierul.myapplication21.Adapter.ProductPicturePagerAdapter;
+import com.example.mierul.myapplication21.AddressDialogFragment;
 import com.example.mierul.myapplication21.Base.BaseFragment;
 import com.example.mierul.myapplication21.ConfirmDialogFragment;
+import com.example.mierul.myapplication21.Constant;
 import com.example.mierul.myapplication21.FirebaseHelper;
 import com.example.mierul.myapplication21.Model.OrdersDetailsModel;
 import com.example.mierul.myapplication21.Model.ProductProfileModel;
@@ -26,6 +28,8 @@ import com.example.mierul.myapplication21.RealmHelper;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Map;
+
 /**
  * Created by mierul on 3/16/2017.
  */
@@ -33,11 +37,12 @@ import org.greenrobot.eventbus.Subscribe;
 public class SecondFragment extends BaseFragment implements View.OnClickListener{
     private static final String TAG = "SecondFragment";
     public static final int CONFIRM_REQUEST_CODE = 2001 ;
-    private OrderForm form;
+    public static final int ADDRESS_REQUEST_CODE = 2002 ;
     private String[] url;
-
     private String picKey;
     private int mInteger =1;
+
+    private OrderForm form;
     private FirebaseHelper helper;
     private RealmHelper rHelper;
     private OrdersDetailsModel model;
@@ -52,6 +57,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     private TextView note_input;
 
     private boolean isLogin;
+
+    private Map<String, String> addressMap;
 
     public static SecondFragment newInstance(String[] url,String key) {
 
@@ -81,16 +88,10 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         //trigger getDetails
         helper.getProductProfile(picKey);
 
-        //get address from server and store in realm and update address view
+        //get address from server and update address view
         isLogin = helper.isLogin();
         if(isLogin){
-            String id = helper.getUid();
-            form = rHelper.getOrder(id);
-
-            //triggered get address to save address to form
-            if(form.getAddress().trim().isEmpty()){
-                helper.getDetails();
-            }
+            helper.getDetails();
         }
     }
 
@@ -102,7 +103,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         LinearLayout ll_product_order = (LinearLayout)view.findViewById(R.id.ll_product_order);
         TextView tv_lbl_product_order = (TextView)ll_product_order.findViewById(R.id.tv_label);
         tv_lbl_product_order.setText("Order");
-        
+
         numberOfOrder = (TextView)ll_product_order.findViewById(R.id.num_order);
         numberOfOrder.setText(String.valueOf(mInteger));
 
@@ -152,16 +153,6 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         address_input = (TextView)ll_product_address.findViewById(R.id.tv_value);
         note_input = (TextView)ll_product_note.findViewById(R.id.tv_value);
 
-        if(isLogin){
-            if(!form.getAddress().trim().isEmpty()){
-                address_input.setText(form.getAddress());
-            }
-
-            if(!form.getNote().isEmpty()){
-                note_input.setText(form.getNote());
-            }
-        }
-
         return view;
     }
 
@@ -179,15 +170,14 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void proceedOrder() {
-        String order = numberOfOrder.getText().toString();
-        String name = productName.getText().toString();
-
         String address = address_input.getText().toString();
 
         if(address.isEmpty()){
             snackBarToToast("Please fill in your address.");
             return;
         }
+        String order = numberOfOrder.getText().toString();
+        String name = productName.getText().toString();
         String note = note_input.getText().toString();
 
         String total = getTotal();
@@ -234,7 +224,14 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
 
     private void holdEdit(int type) {
         if(isLogin){
-            replaceFragment(EditProfileFragment.newInstance(type));
+
+            if(type == 4){
+                showAddressDialog();
+            } else {
+
+                //show edit dialog for note only for now
+                replaceFragment(EditProfileFragment.newInstance(type));
+            }
         } else {
             snackBarToLogin("Please login before edit");
         }
@@ -256,13 +253,13 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Subscribe
-    public void FirebaseHelperListener(ProductProfileModel event){
+    public void FirebaseHelperListener(ProductProfileModel product){
 
-        if (event != null){
-            productName.setText(event.name);
-            productCost.setText(event.getCost());
-            productPieces.setText(event.getPieces());
-            productType.setText(event.type);
+        if (product != null){
+            productName.setText(product.name);
+            productCost.setText(product.getCost());
+            productPieces.setText(product.getPieces());
+            productType.setText(product.type);
         }
 
     }
@@ -286,12 +283,8 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
             String address = model.address.get("address");
             if(!address.isEmpty()){
 
-                form.setAddress(model.address);
-                //default address is save
-                rHelper.saveOrder(form);
-
-                //show default address
-                address_input.setText(form.getAddress());
+                //set addressMap
+                addressMap = model.address;
             }
         }
     }
@@ -313,7 +306,40 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                     }
 
                     break;
+
+                case ADDRESS_REQUEST_CODE:
+
+                    if(data != null){
+
+                        Map<String,String> address = (Map<String,String>)data.getSerializableExtra(AddressDialogFragment.KEY_ADDRESS_NEW);
+
+                        if (!address.isEmpty()){
+                            String address_string = simplifyAddress(address);
+                            address_input.setText(address_string);
+                        }
+                    }
+                    break;
             }
         }
+    }
+
+    private String simplifyAddress(Map<String, String> addressMap) {
+
+        String address_value = addressMap.get(Constant.ADDRESS_ADDRESS.getString());
+        String city_value = addressMap.get(Constant.ADDRESS_CITY.getString());
+        String postcode_value = addressMap.get(Constant.ADDRESS_POSTCODE.getString());
+        String country_value = addressMap.get(Constant.ADDRESS_COUNTRY.getString());
+
+        String space = " ";
+        String fullAddress = address_value+space+city_value+space+postcode_value+space+country_value;
+        return fullAddress.trim().isEmpty()? "": fullAddress;
+    }
+
+    private void showAddressDialog(){
+
+        AddressDialogFragment addressDialogFragment = AddressDialogFragment.newInstance(addressMap);
+        addressDialogFragment.setTargetFragment(this,ADDRESS_REQUEST_CODE);
+        addressDialogFragment.show(getFragmentManager(),addressDialogFragment.getTag());
+
     }
 }

@@ -20,7 +20,13 @@ public enum Constant {
     NODE_EMAIL,
     NODE_CONTACT,
     NODE_USRORDKEY,
-    NODE_ORDKEY;
+    NODE_ORDKEY,
+
+    //address map
+    ADDRESS_ADDRESS,
+    ADDRESS_CITY,
+    ADDRESS_POSTCODE,
+    ADDRESS_COUNTRY;
 
     public String getTitle(){
         switch (this){
@@ -45,6 +51,17 @@ public enum Constant {
             case NODE_USRORDKEY: return "usrOrdKey";
 
             default: return "";
+        }
+    }
+
+    public String getString(){
+        switch (this){
+            case ADDRESS_ADDRESS: return "address";
+            case ADDRESS_CITY: return "city";
+            case ADDRESS_POSTCODE: return "postcode";
+            case ADDRESS_COUNTRY: return "country";
+            default:
+                return "";
         }
     }
 }

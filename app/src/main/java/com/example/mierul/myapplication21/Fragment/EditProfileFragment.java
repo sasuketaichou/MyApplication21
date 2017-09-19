@@ -3,7 +3,6 @@ package com.example.mierul.myapplication21.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -265,6 +264,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                             }
                         } else {
                             form.setAddress(userAddress);
+                            // TODO no need to save order address
+                            //make a dialog to passs addresss to second fragment
                             rHelper.saveOrder(form);
                             previousFragment();
                         }

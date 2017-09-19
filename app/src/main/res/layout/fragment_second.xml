@@ -72,15 +72,13 @@
                 android:id="@+id/ll_product_address"
                 layout="@layout/view_product_row_edit"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                />
+                android:layout_width="match_parent"/>
 
             <include
                 android:id="@+id/ll_product_note"
                 layout="@layout/view_product_row_edit"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                />
+                android:layout_width="match_parent"/>
 
         </LinearLayout>
     </RelativeLayout>

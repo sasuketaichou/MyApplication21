@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/address_address"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edittext_style"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:hint="Address"
+        android:maxLines="4"
+        android:padding="15dp" />
+
+    <TextView
+        android:id="@+id/tv_address_error"
+        style="@style/ErrorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Error"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/address_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_style"
+        android:hint="City"
+        android:padding="15dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_city_error"
+        style="@style/ErrorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Error"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/address_postcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_style"
+        android:hint="Postcode"
+        android:padding="15dp"
+        android:layout_marginBottom="10dp"
+        android:inputType="number"
+        android:maxLength="5"/>
+
+    <TextView
+        android:id="@+id/tv_postcode_error"
+        style="@style/ErrorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Error"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/address_country"
+        android:enabled="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_style"
+        android:hint="Malaysia"
+        android:padding="15dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_country_error"
+        style="@style/ErrorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Error"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"/>
+
+    <CheckBox
+        android:layout_marginTop="10dp"
+        android:id="@+id/checkbox_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Same as default address" />
+
+</LinearLayout>

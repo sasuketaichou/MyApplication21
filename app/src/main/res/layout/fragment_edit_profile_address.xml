@@ -9,76 +9,14 @@
         android:layout_height="wrap_content"/>
 
     <ScrollView
-        android:id="@+id/editProfile_scrollLayout"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/address_address"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/edittext_style"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:hint="Address"
-                android:maxLines="4"
-                android:padding="15dp" />
-
-            <EditText
-                android:id="@+id/address_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_style"
-                android:hint="City"
-                android:padding="15dp"
-                android:layout_marginBottom="10dp"/>
-
-            <EditText
-                android:id="@+id/address_postcode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_style"
-                android:hint="Postcode"
-                android:padding="15dp"
-                android:layout_marginBottom="10dp"
-                android:inputType="number"
-                android:maxLength="5"/>
-
-            <EditText
-                android:id="@+id/address_country"
-                android:enabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_style"
-                android:hint="Malaysia"
-                android:padding="15dp"/>
-
-        </LinearLayout>
-
+        <include
+            layout="@layout/view_address_form"/>
 
     </ScrollView>
-
-    <CheckBox
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/checkbox_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Same as default address"
-        android:layout_below="@+id/editProfile_scrollLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="19dp" />
 
     <include
         layout="@layout/button_confirm"
