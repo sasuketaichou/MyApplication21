@@ -35,7 +35,7 @@ import java.util.Map;
  */
 
 public class SecondFragment extends BaseFragment implements View.OnClickListener{
-    private static final String TAG = "SecondFragment";
+    private static final String TAG = SecondFragment.class.getSimpleName();
     public static final int CONFIRM_REQUEST_CODE = 2001 ;
     public static final int ADDRESS_REQUEST_CODE = 2002 ;
     private String[] url;
@@ -183,12 +183,12 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
         String total = getTotal();
 
         model = new OrdersDetailsModel();
-        model.productName = name;
-        model.numOrder = order;
-        model.picKey = picKey;
-        model.productAddress = address;
-        model.productNote = note;
-        model.total = total;
+        model.setProductName(name);
+        model.setNumOrder(order);
+        model.setPicKey(picKey);
+        model.setProductAddress(address);
+        model.setProductNote(note);
+        model.setTotal(total);
 
         ConfirmDialogFragment dialogFragment = ConfirmDialogFragment.newInstance(model);
         dialogFragment.setTargetFragment(this,CONFIRM_REQUEST_CODE);
@@ -300,6 +300,7 @@ public class SecondFragment extends BaseFragment implements View.OnClickListener
                         boolean proceed = data.getBooleanExtra(ConfirmDialogFragment.RESULT,false);
 
                         if(proceed){
+
                             helper.addOrder(model);
                             switchFragment(new CheckoutFragment());
                         }

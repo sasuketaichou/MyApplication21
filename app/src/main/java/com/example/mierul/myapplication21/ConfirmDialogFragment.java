@@ -35,11 +35,11 @@ public class ConfirmDialogFragment extends BottomSheetDialogFragment implements 
 
         View view = inflater.inflate(R.layout.fragment_confirm_dialog,container,false);
 
-        ((TextView)view.findViewById(R.id.tv_product_name)).setText(model.productName);
-        ((TextView)view.findViewById(R.id.tv_product_address)).setText(model.productAddress);
-        ((TextView)view.findViewById(R.id.tv_product_note)).setText(model.productNote);
-        ((TextView)view.findViewById(R.id.tv_product_order)).setText(model.numOrder);
-        ((TextView)view.findViewById(R.id.tv_product_total)).setText(model.total);
+        ((TextView)view.findViewById(R.id.tv_product_name)).setText(model.getProductName());
+        ((TextView)view.findViewById(R.id.tv_product_address)).setText(model.getProductAddress());
+        ((TextView)view.findViewById(R.id.tv_product_note)).setText(model.getProductNote());
+        ((TextView)view.findViewById(R.id.tv_product_order)).setText(model.getNumOrder());
+        ((TextView)view.findViewById(R.id.tv_product_total)).setText(model.getTotal());
 
         view.findViewById(R.id.btn_ok).setOnClickListener(this);
         view.findViewById(R.id.btn_cancel).setOnClickListener(this);

@@ -273,8 +273,7 @@ public class FirebaseHelper {
 
 
     private DatabaseReference getOrdersRef(){
-        String uId = getUid();
-        return uId.isEmpty()? null:getRootRef().child(ROOT_ORDERS).child(uId);
+        return getRootRef().child(ROOT_ORDERS);
     }
 
     private DatabaseReference getUsersProfileRef(){
@@ -364,8 +363,11 @@ public class FirebaseHelper {
         String usrOrdKey = userOrderRef.push().getKey();
         userOrderRef.child(usrOrdKey).setValue(ordersId);
 
+        //timestamp
+        long timestamp = 0 - DateUtil.getTimestampInMS();
+        model.setTimestamp(timestamp);
+
         DatabaseReference ordersUserKey = orderRef.child(ordersId);
-        model.usrOrdKey = usrOrdKey;
         ordersUserKey.setValue(model);
 
     }
@@ -414,14 +416,14 @@ public class FirebaseHelper {
                     if(model != null){
                         CheckoutModel checkoutModel = new CheckoutModel();
 
-                        checkoutModel.productName =model.productName;
-                        checkoutModel.numOrder =model.numOrder;
-                        checkoutModel.picKey= model.picKey;
-                        checkoutModel.address =model.productAddress;
-                        checkoutModel.note=model.productNote;
-                        checkoutModel.total = model.total;
+                        checkoutModel.productName =model.getProductName();
+                        checkoutModel.numOrder =model.getNumOrder();
+                        checkoutModel.picKey= model.getPicKey();
+                        checkoutModel.address =model.getProductAddress();
+                        checkoutModel.note=model.getProductNote();
+                        checkoutModel.total = model.getTotal();
                         checkoutModel.ordKey = ordKey;
-                        checkoutModel.usrOrdKey = model.usrOrdKey;
+                        checkoutModel.usrOrdKey = dataSnapshot.getKey();
 
                         list.add(checkoutModel);
                     }
