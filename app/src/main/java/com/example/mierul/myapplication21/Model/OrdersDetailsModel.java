@@ -14,6 +14,7 @@ public class OrdersDetailsModel implements Parcelable {
     private String numOrder;
     private String picKey;
     private String total;
+    private String usrOrdKey;
     private long timestamp;
 
     public OrdersDetailsModel(){
@@ -27,6 +28,7 @@ public class OrdersDetailsModel implements Parcelable {
         picKey = in.readString();
         total = in.readString();
         timestamp = in.readLong();
+        usrOrdKey = in.readString();
     }
 
     @Override
@@ -38,6 +40,7 @@ public class OrdersDetailsModel implements Parcelable {
         dest.writeString(picKey);
         dest.writeString(total);
         dest.writeLong(timestamp);
+        dest.writeString(usrOrdKey);
     }
 
     @Override
@@ -111,5 +114,13 @@ public class OrdersDetailsModel implements Parcelable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getUsrOrdKey() {
+        return usrOrdKey;
+    }
+
+    public void setUsrOrdKey(String usrOrdKey) {
+        this.usrOrdKey = usrOrdKey;
     }
 }

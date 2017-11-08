@@ -43,7 +43,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
     private FirebaseHelper helper;
     private EditText username,password;
     private TextView tv_error;
-    private int type = -1;
+    private int type;
 
     private final static int LOGIN_PAGE = 1;
     private final static int SIGNUP_PAGE = 2;
@@ -63,7 +63,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         helper = new FirebaseHelper(getContext());
-        type= getArguments().getInt("type");
+        type= getArguments().getInt("type", -1);
     }
 
     @Nullable

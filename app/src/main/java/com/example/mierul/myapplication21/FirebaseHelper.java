@@ -368,6 +368,7 @@ public class FirebaseHelper {
         model.setTimestamp(timestamp);
 
         DatabaseReference ordersUserKey = orderRef.child(ordersId);
+        model.setUsrOrdKey(usrOrdKey);
         ordersUserKey.setValue(model);
 
     }
@@ -423,7 +424,7 @@ public class FirebaseHelper {
                         checkoutModel.note=model.getProductNote();
                         checkoutModel.total = model.getTotal();
                         checkoutModel.ordKey = ordKey;
-                        checkoutModel.usrOrdKey = dataSnapshot.getKey();
+                        checkoutModel.usrOrdKey = model.getUsrOrdKey();
 
                         list.add(checkoutModel);
                     }
